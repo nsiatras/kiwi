@@ -1,30 +1,16 @@
 #include once "kiwi\lang\System.bi"
 
-Dim src()As Integer 
-Dim dest() As Integer
+Dim src(10) As String 
+Dim dest(10) As String
 Dim i as Integer
 
-Redim src(10)
-Redim dest(10)
-
 for i = 0 to 9
-	src(i) = i 
+	src(i) = "String #" & str(i)
 next
 
 
-For i As Integer = 0 to ubound(src)-1
-    Print src(i) 
-Next i
-
-print "" 
-
-
-System.arraycopy(src(),2,dest(), 0 , 5)
-
+System.arraycopy(src(),0,dest(), 0 , 10)
 
 For i As Integer = 0 To Ubound(dest)-1
-    Print dest(i)
+	Print dest(i)
 Next i
-
-
-
