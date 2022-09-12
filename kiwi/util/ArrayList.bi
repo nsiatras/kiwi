@@ -43,7 +43,8 @@
 				declare function remove(byval index as Integer) As ##list_type
 				declare function get(byval index as integer) as ##list_type
 				declare function size() as Integer
-				declare function isEmpty() as Boolean					
+				declare function isEmpty() as Boolean
+				declare sub removeAll() 				
 		end Type
 
 		/'
@@ -113,11 +114,20 @@
 		end function
 		
 		/'
-			Returns the number of elements in this list.
+			Returns the number of elements in this Arraylist.
 		'/
 		function ArrayList_##list_type.isEmpty() as Boolean
 			return fCount = 0
 		end function
+		
+		/'
+			Removes all of the elements from this ArrayList. The ArrayList will
+			be empty after this call returns.
+		'/
+		sub ArrayList_##list_type.removeAll() 
+			redim this.fElements(0) 
+			this.fCount = 0
+		end sub
 		
 		/'
 			ArrayList.ResizeList is used internally whenever elements 
