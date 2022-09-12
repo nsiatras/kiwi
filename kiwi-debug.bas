@@ -1,5 +1,9 @@
 #include once "kiwi\lang\System.bi"
 #include once "kiwi\lang\Math.bi"
 
-' Prints "PI", the ratio of the circumference of a circle to its diameter
-print Math.PI
+Dim a as Double, b as Double
+a = 3.14
+b = 7.77
+
+print Math.max(a,b)
+
