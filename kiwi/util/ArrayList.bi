@@ -115,7 +115,7 @@
 			@param index is the index of the element to replace.
 			@param element is the element to be stored at the specified position
 		'/
-		function ArrayList_##list_type.set(byval index as integer, byref element as ##list_type) As ##list_type
+		function ArrayList_##list_type.set(byval index as integer, byref element as ##list_type) as ##list_type
 			Dim previousElement as ##list_type
 			previousElement = this.fElements(index) 
 			this.fElements(index) = element
@@ -123,14 +123,14 @@
 		end function
 		
 		/'
-			Returns the number of elements in this list.
+			Returns the number of elements in this ArrayList.
 		'/
 		function ArrayList_##list_type.size() as Integer
 			return fCount
 		end function
 		
 		/'
-			Returns the number of elements in this Arraylist.
+			Returns true if this ArrayList contains no elements.
 		'/
 		function ArrayList_##list_type.isEmpty() as Boolean
 			return fCount = 0
