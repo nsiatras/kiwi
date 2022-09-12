@@ -172,6 +172,7 @@
 	DefineArrayList(UInteger)
 	DefineArrayList(Long)
 	DefineArrayList(ULong)
+	DefineArrayList(LongInt)
 	DefineArrayList(ULongInt)
 	DefineArrayList(Single)
 	DefineArrayList(Double)

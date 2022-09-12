@@ -16,6 +16,8 @@ myList.add("FreeBasic")
 print "Arraylist contains " & myList.size() & " elements"
 print ""
 
+
+
 for i as Integer = 0 to myList.size()-1
 	print "Element " & i &" = " & myList.get(i)
 next i
