@@ -1,3 +1,26 @@
+/'
+	MIT License
+
+	Copyright (c) 2022 Nikos Siatras
+
+	Permission is hereby granted, free of charge, to any person obtaining a copy
+	of this software and associated documentation files (the "Software"), to deal
+	in the Software without restriction, including without limitation the rights
+	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+	copies of the Software, and to permit persons to whom the Software is
+	furnished to do so, subject to the following conditions:
+
+	The above copyright notice and this permission notice shall be included in all
+	copies or substantial portions of the Software.
+
+	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+	SOFTWARE.
+'/
 #include once "..\core\Core.bi"
 #include once "vbcompat.bi"
 
@@ -10,18 +33,17 @@
 		Type ArrayList_##list_type extends object
 			
 			protected:
-				Declare Sub ResizeList(items as Integer)
+				declare sub ResizeList(items as Integer)
 				Dim fElements(any) as list_type
 				Dim fCount as Integer	
-				
-			private:
-			
+							
 			public:
-				Declare constructor()
-				Declare Function add(byref e as list_type) As Boolean
-				Declare Function get(byval index as integer) as ##list_type
-				Declare Function size() as Integer
-				Declare Function isEmpty() as Boolean					
+				declare constructor()
+				declare function add(byref e as list_type) As Boolean
+				declare function remove(byval index as Integer) As ##list_type
+				declare function get(byval index as integer) as ##list_type
+				declare function size() as Integer
+				declare function isEmpty() as Boolean					
 		end Type
 
 		/'
@@ -36,11 +58,77 @@
 			
 			@param e is the element to be appended to this Array List.
 		'/
-		Function ArrayList_##list_type.add(byref e as list_type) as Boolean
+		function ArrayList_##list_type.add(byref e as list_type) as Boolean
 			ResizeList(1)
 			this.fElements(fCount - 1) = e
 			return true
-		End Function
+		end function
+		
+		/'
+			Removes the element at the specified position in this list.
+			Shifts any subsequent elements to the left (subtracts one from their
+			indices).
+			
+			@param index is the index of the element to be removed
+		'/
+		function ArrayList_##list_type.remove(byval index as integer) as ##list_type
+			dim elementToRemove as ##list_type
+			elementToRemove = this.fElements(index)
+			
+			' Removal of the last item of the list
+			if index = (this.fCount-1) then
+				this.ResizeList(-1)
+				return elementToRemove ' Return the removed element
+			endif
+			
+			' The list has only 2 elements and we have to remove the first
+			if (index = 0) and (fCount < 3) then
+				this.fElements(0) = this.fElements(1)
+				this.ResizeList(-1)
+				return elementToRemove ' Return the removed element
+			endif
+			
+			' The rest of the code applies for 3 or more elements
+			dim tmp as const integer = fCount - 1 - index
+			memcpy(@this.fElements(index), @this.fElements(index + 1), tmp * sizeOf(##list_type) )
+			this.ResizeList(-1)
+			
+			return elementToRemove ' Return the removed element
+		end function
+		
+		/'
+		'' removes an item from the list by index
+		'' don't allow removal out of bounds
+		index = min( m_count - 1, max( 0, index ) )
+
+		dim as any ptr ret = m_element( index )
+		
+		if( index = m_count - 1 ) then
+		'' trivial removal, the last item
+			resizeElements( -1 )
+			
+			return( ret )
+		end if
+		
+		'' only 2 elements to remove remaining
+		if( ( index = 0 ) andAlso ( m_count < 3 ) ) then
+			m_element( 0 ) = m_element( 1 )
+			
+			resizeElements( -1 )
+			
+			return( ret )
+		end if
+		
+		'' general case (elements > 2)
+		'' number of elements to move
+		dim as uinteger elem = m_count - 1 - index
+		'' move the rest of the elements 
+		memcpy( @m_element( index ), @m_element( index + 1 ), elem * sizeOf( any ptr ) )
+		
+		resizeElements( -1 )
+		
+		return( ret )
+		'/
 
 		/'
 			Returns the element at the specified position in this list.
@@ -54,22 +142,22 @@
 		/'
 			Returns the number of elements in this list.
 		'/
-		Function ArrayList_##list_type.size() as Integer
+		function ArrayList_##list_type.size() as Integer
 			return fCount
-		End Function
+		end function
 		
 		/'
 			Returns the number of elements in this list.
 		'/
-		Function ArrayList_##list_type.isEmpty() as Boolean
+		function ArrayList_##list_type.isEmpty() as Boolean
 			return fCount = 0
-		End Function
+		end function
 		
 		/'
 			ArrayList.ResizeList is used internally whenever elements 
 			are added or removed.
 		'/
-		Sub ArrayList_##list_type.ResizeList(itemsToAdd as Integer)
+		sub ArrayList_##list_type.ResizeList(itemsToAdd as Integer)
 			this.fCount += itemsToAdd
 			redim preserve this.fElements(fCount)
 		End Sub
