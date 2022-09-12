@@ -119,13 +119,3 @@ Sub System.arraycopy(src() As Object, srcPos as Integer, dest() As Object, destP
 		dest(i + destPos) = src(i + srcPos)
 	next i
 End Sub
-
-
-
-
-
-
-
-
-
-

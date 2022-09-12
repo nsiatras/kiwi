@@ -1,9 +1,9 @@
 #include once "kiwi\lang\System.bi"
 #include once "kiwi\lang\Math.bi"
 
-Dim a as Double, b as Double
-a = 3.14
-b = 7.77
+Dim a as short, b as short
+a = 1
+b = 5
 
-print Math.max(a,b)
+print Math.min(a,b)
 

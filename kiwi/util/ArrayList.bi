@@ -181,23 +181,3 @@
 	
 	#define KIWI_ARRAYLISTS_FOR_ALL_STANDARD_DATA_TYPES
 #endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

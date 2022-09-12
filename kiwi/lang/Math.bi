@@ -186,8 +186,3 @@ End Function
 Function Math.toDegrees(angdeg as Double) As Double	
 	return angdeg * Math.DEGREES_TO_RADIANS
 End Function
-
-
-
-
-
