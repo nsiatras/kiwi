@@ -39,9 +39,10 @@
 							
 			public:
 				declare constructor()
-				declare function add(byref e as list_type) As Boolean
-				declare function remove(byval index as Integer) As ##list_type
+				declare function add(byref e as list_type) as Boolean
+				declare function remove(byval index as Integer) as ##list_type
 				declare function get(byval index as integer) as ##list_type
+				declare function set(byval index as integer, byref element as ##list_type) as ##list_type
 				declare function size() as Integer
 				declare function isEmpty() as Boolean
 				declare sub removeAll() 				
@@ -104,6 +105,21 @@
 		'/
 		function ArrayList_##list_type.get(byval index as integer) as ##list_type
 			return this.fElements(index)
+		end function
+		
+		/'
+			Replaces the element at the specified position in this list with
+			the specified element and returns the element previously 
+			at the specified position.
+			
+			@param index is the index of the element to replace.
+			@param element is the element to be stored at the specified position
+		'/
+		function ArrayList_##list_type.set(byval index as integer, byref element as ##list_type) As ##list_type
+			Dim previousElement as ##list_type
+			previousElement = this.fElements(index) 
+			this.fElements(index) = element
+			return previousElement
 		end function
 		
 		/'
