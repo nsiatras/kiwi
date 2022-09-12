@@ -95,40 +95,6 @@
 			
 			return elementToRemove ' Return the removed element
 		end function
-		
-		/'
-		'' removes an item from the list by index
-		'' don't allow removal out of bounds
-		index = min( m_count - 1, max( 0, index ) )
-
-		dim as any ptr ret = m_element( index )
-		
-		if( index = m_count - 1 ) then
-		'' trivial removal, the last item
-			resizeElements( -1 )
-			
-			return( ret )
-		end if
-		
-		'' only 2 elements to remove remaining
-		if( ( index = 0 ) andAlso ( m_count < 3 ) ) then
-			m_element( 0 ) = m_element( 1 )
-			
-			resizeElements( -1 )
-			
-			return( ret )
-		end if
-		
-		'' general case (elements > 2)
-		'' number of elements to move
-		dim as uinteger elem = m_count - 1 - index
-		'' move the rest of the elements 
-		memcpy( @m_element( index ), @m_element( index + 1 ), elem * sizeOf( any ptr ) )
-		
-		resizeElements( -1 )
-		
-		return( ret )
-		'/
 
 		/'
 			Returns the element at the specified position in this list.
