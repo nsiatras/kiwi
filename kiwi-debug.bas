@@ -1,33 +1,12 @@
 #include once "kiwi\lang\System.bi"
-#include once "kiwi\util\ArrayList.bi"
+#include once "kiwi\io\File.bi"
 
-' In this example we will create an ArrayList that holds Students
-Type student
-	firstName as String
-	lastName As String
-End Type
+Dim myFile as File Ptr = new File("C:\Users\nsiat\Desktop\Test.txt")
+print "File Created:" & myFile->createNewFile()
 
-' Define a new ArrayList type that hold's student
-DefineArrayList(student)
+print "File Path: " & myFile->getPath()
+print "File Exists: " & myFile->exists()
+print "Read Access: " & myFile->canRead()
+print "Write Access: " & myFile->canWrite()
 
-' Initialize a new ArrayList to hold the student
-Dim students As ArrayList_Student Ptr = new ArrayList_Student()
-
-Dim student1 As student
-student1.firstName = "Nikos"
-student1.lastName = "Siatras"
-students->Add(student1) ' Add student1 to students ArrayList
-
-Dim student2 As student
-student2.firstName = "James"
-student2.lastName = "Gosling"
-students->Add(student2) ' Add student2 to students ArrayList
-
-print "Students List contains " & students->size() & " elements"
-print ""
-
-print "Students: "
-for i as Integer = 0 to students->size()-1
-	print "Student " & i & " = " & students->get(i).firstName &" " & students->get(i).lastName 
-next i
 

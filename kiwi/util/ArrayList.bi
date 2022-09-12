@@ -35,15 +35,15 @@
 			protected:
 				declare sub ResizeList(items as Integer)
 				Dim fElements(any) as list_type
-				Dim fCount as Integer	
+				Dim fCount as UInteger	
 							
 			public:
 				declare constructor()
 				declare function add(byref e as list_type) as Boolean
-				declare function remove(byval index as Integer) as ##list_type
-				declare function get(byval index as integer) as ##list_type
-				declare function set(byval index as integer, byref element as ##list_type) as ##list_type
-				declare function size() as Integer
+				declare function remove(byval index as UInteger) as ##list_type
+				declare function get(byval index as UInteger) as ##list_type
+				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
+				declare function size() as UInteger
 				declare function isEmpty() as Boolean
 				declare sub removeAll() 				
 		end Type
@@ -73,7 +73,7 @@
 			
 			@param index is the index of the element to be removed
 		'/
-		function ArrayList_##list_type.remove(byval index as integer) as ##list_type
+		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
 			dim elementToRemove as ##list_type
 			elementToRemove = this.fElements(index)
 			
@@ -103,7 +103,7 @@
 			
 			@param index is the index of the element to return.
 		'/
-		function ArrayList_##list_type.get(byval index as integer) as ##list_type
+		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
 			return this.fElements(index)
 		end function
 		
@@ -115,7 +115,7 @@
 			@param index is the index of the element to replace.
 			@param element is the element to be stored at the specified position
 		'/
-		function ArrayList_##list_type.set(byval index as integer, byref element as ##list_type) as ##list_type
+		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
 			Dim previousElement as ##list_type
 			previousElement = this.fElements(index) 
 			this.fElements(index) = element
@@ -125,7 +125,7 @@
 		/'
 			Returns the number of elements in this ArrayList.
 		'/
-		function ArrayList_##list_type.size() as Integer
+		function ArrayList_##list_type.size() as UInteger
 			return fCount
 		end function
 		
