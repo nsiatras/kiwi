@@ -30,7 +30,7 @@
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
 		
-		Type ArrayList_##list_type extends object
+		Type ArrayList_##list_type extends Object
 			
 			protected:
 				declare sub ResizeList(items as Integer)
