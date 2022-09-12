@@ -1,51 +1,57 @@
 #include once "vbcompat.bi"
-
-#ifdef class
-	#undef class
-	#define class type
-#endif
-
-class List extends object
+ 
+Type List extends object
 	
 	public:
 		Declare constructor()
-		Declare Function add(byval e as any ptr) As Boolean
-		Declare Function get(byval index as integer ) as any ptr
+		Declare Function add(byref e as Object) As Boolean
+		Declare Function getItem(byval index as integer) as Object
 		Declare Function size() as Integer
 		
 	private:
 	
 	protected:
 		Declare Sub ResizeList(items as Integer)
-	
-		fElements(any) as any ptr
+		fElements(any) as Object
 		fCount as Integer
 				
-end class
+end Type
 
-
+/'
+	Initializes a new List Object
+'/
 constructor List()
-	fCount = 0
+	this.fCount = 0
 end constructor
 
 Sub List.ResizeList(itemsToAdd as Integer)
-	fCount += itemsToAdd
-	redim preserve fElements(0 to fCount - 1)
+	this.fCount += itemsToAdd
+	redim preserve this.fElements(0 to fCount - 1)
 End Sub
 
-Function List.add (byval e as any ptr) as Boolean
+/'
+	Adds a new item to the list
+'/
+Function List.add(byref e as Object) as Boolean
 	this.ResizeList(1)
-	fElements(fCount - 1) = e
+	this.fElements(fCount - 1) = e
 	return true
 End Function
 
-function List.get(byval index as integer) as any ptr
-	return(fElements(index))
+function List.getItem(byval index as integer) as Object
+	return this.fElements(index)
 end function
 
 Function List.size() as Integer
-	return fCount
+	return this.fCount
 End Function
+
+
+
+
+
+
+
 
 
 

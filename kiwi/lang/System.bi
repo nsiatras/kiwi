@@ -3,12 +3,7 @@
 
 #undef System
 
-#ifdef class
-	#undef class
-	#define class type
-#endif
-
-class System extends object
+Type System extends object
 	
 	public:
 		Declare Static Function currentTimeSeconds() As Double
@@ -25,7 +20,7 @@ class System extends object
 
 	private:
 		
-end class
+end Type
 
 /'
 	Returns a date serial containing the system's date and time at execution time.
