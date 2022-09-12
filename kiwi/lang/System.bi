@@ -17,9 +17,7 @@ Type System extends object
 		Declare Static Sub arraycopy(src() As Long, srcPos as Integer, dest() As Long, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As String, srcPos as Integer, dest() As String, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Object, srcPos as Integer, dest() As Object, destPos as Integer, length as Integer)
-
-	private:
-		
+	
 end Type
 
 /'

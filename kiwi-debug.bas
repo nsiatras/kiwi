@@ -1,27 +1,22 @@
 #include once "kiwi\lang\System.bi"
-#include once "kiwi\util\List.bi"
+#include once "kiwi\util\ArrayList.bi"
+
+
+Dim myList as ArrayList_String
+
+
+myList.add("Hello")
+myList.add("World!")
+
+
+for i as Integer = 0 to myList.size()-1
+	print "Element " & i &" is " & myList.get(i)
+next i
+
+print "Size:" & myList.size()
 
 
 
-DefineList(String)
-
-
-Dim aaaaaa as List_list_type
-
-
-
-
-
-
-
-/'
-Dim a as String
-
-myList.add(@"1")
-myList.add(@"2")
-myList.add(@"3")
-
-print "Items count : " & myList.size()'/
 
 
 
