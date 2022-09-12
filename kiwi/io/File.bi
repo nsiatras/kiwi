@@ -37,9 +37,8 @@ Type File extends Object
 		declare function canWrite() as Boolean
 		
 		declare function createNewFile() as Boolean
-		
 					
-end Type
+End Type
 
 constructor File(ByVal pathname as String)
 	fPathName = pathName
@@ -115,6 +114,7 @@ end function
     filesystem activities that might affect the file.
 '/
 function File.createNewFile() as Boolean
+	
 	dim as Integer f, e
 
 	if this.exists() = true then
@@ -131,6 +131,7 @@ function File.createNewFile() as Boolean
 	close #f
 		
 	return true
+	
 end function
 
 
