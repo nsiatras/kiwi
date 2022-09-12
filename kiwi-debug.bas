@@ -1,15 +1,12 @@
 #include once "kiwi\lang\System.bi"
 #include once "kiwi\util\List.bi"
 
-Dim obj as Object
-Dim l as List
 
-l.add(obj)
-l.add(obj)
-l.add(obj)
 
-print "List has " & l.size() & " items"
+DefineList(String)
 
+
+Dim aaaaaa as List_list_type
 
 
 
