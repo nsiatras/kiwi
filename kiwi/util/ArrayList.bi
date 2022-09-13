@@ -22,7 +22,6 @@
 	SOFTWARE.
 '/
 #include once "..\core\Core.bi"
-#include once "..\io\File.bi"
 #include once "vbcompat.bi"
 
 #macro DefineArrayList(list_type)
@@ -179,7 +178,6 @@
 	DefineArrayList(Double)
 	DefineArrayList(String)
 	DefineArrayList(Object)
-	
 	
 	#define KIWI_ARRAYLISTS_FOR_ALL_STANDARD_DATA_TYPES
 #endif

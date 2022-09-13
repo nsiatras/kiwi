@@ -23,7 +23,7 @@
 '/
 #include once "..\core\Core.bi"
 #include once "vbcompat.bi"
-		
+
 Type File extends Object
 	
 	protected:
@@ -45,7 +45,7 @@ Type File extends Object
 		declare function deleteFile() as Boolean
 		
 		declare sub listFiles(files() as File)
-		
+				
 		declare sub setPathName(ByVal pathname as String)
 		declare function getPath() as String
 			
@@ -90,13 +90,7 @@ end sub
 	pathname exists and is a normal file, otherwise return false
 '/
 function File.isFile() as Boolean
-	
-	if Dir(fPathName) = "" then
-		return false
-	end if
-	
-	return true
-	
+	return IIf(Dir(fPathName) = "", false, true)
 end function
 
 /'
@@ -245,9 +239,13 @@ sub File.listFiles(files() as File)
 	Dim f as Integer = freefile ' Get a free file
 	
 	Open this.fPathName For Output As #f
-	' The SYSTEM_PATH_SEPARATOR is defined in kiwi/core/Core.bi
 	
-	Dim mask as Integer = fbDirectory Or fbHidden Or fbSystem Or fbArchive Or fbReadOnly		
+	' This "mask" allows the following Dir function to show any files 
+	' that have directory attribute and don't care if it is system, 
+	' hidden, read-only, or archive
+	Dim mask as Integer = fbDirectory Or fbHidden Or fbSystem Or fbArchive Or fbReadOnly
+	
+	' The SYSTEM_PATH_SEPARATOR is defined in kiwi/core/Core.bi		
 	filename = Dir(this.fPathName & SYSTEM_PATH_SEPARATOR & "*", mask)				
 
 	Dim counter as Integer = 0
@@ -259,8 +257,8 @@ sub File.listFiles(files() as File)
 			case "."    ' list of file names to ignore
 			case ".."
 			case else
+				' Create a new File and add it to the files() array
 				Dim newFile as File = this.fPathName & SYSTEM_PATH_SEPARATOR & filename
-				
 				Redim preserve files(counter) as File
 				files(counter) = newFile
 				counter = counter + 1
@@ -269,7 +267,9 @@ sub File.listFiles(files() as File)
 		filename = Dir()
 	Loop
 	
+	' Close the file
 	Close #f
 	
 end sub		
+
 
