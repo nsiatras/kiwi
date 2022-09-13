@@ -30,19 +30,40 @@ Type File extends Object
 		Dim fPathName as String
 					
 	public:
+		declare constructor()
 		declare constructor(byVal pathname as String)
-		declare function exists() as Boolean
+		
+		declare sub setPathName(pathname as String)
 		declare function getPath() as String
+		
+		declare function exists() as Boolean
+		
 		declare function canRead() as Boolean
 		declare function canWrite() as Boolean
 		
 		declare function createNewFile() as Boolean
+		declare function deleteFile() as Boolean
 					
 End Type
 
+constructor File()
+	fPathName = ""
+end constructor
+
+/'
+	Creates a new File instance by converting the given
+    pathname string into an abstract pathname.
+'/
 constructor File(ByVal pathname as String)
 	fPathName = pathName
 end constructor
+
+/'
+	Sets the pathname of this File instance
+'/
+sub File.setPathName(pathname as String)
+	fPathName = pathName
+end sub
 
 /'
 	Tests whether the file or directory denoted by this abstract pathname
@@ -54,12 +75,10 @@ function File.exists() as Boolean
 end function
 
 /'
-	Tests whether the file or directory denoted by this abstract pathname
-	exists. Returns true if and only if the file or directory denoted
-    by this abstract pathname exists.
+	Converts abstract pathname into a pathname string and returns it.
 '/
 function File.getPath() as String
-	return this.fPathName
+	return fPathName
 end function
 
 /'
@@ -122,7 +141,7 @@ function File.createNewFile() as Boolean
 	endif
 	
 	f = freefile
-	e = open (this.fPathName For Output as #f)
+	e = open (fPathName For Output as #f)
 	if e <> 0 then
 		return false
 	endif
@@ -132,6 +151,28 @@ function File.createNewFile() as Boolean
 		
 	return true
 	
+end function
+
+/'
+	Deletes the file or directory denoted by this abstract pathname.
+'/
+function File.deleteFile() as Boolean
+
+	' Return false if file doesn't exist
+	if fileexists(fPathName) = false then
+		return false
+	end if
+	
+	' Delete file
+	kill(fPathName)
+	
+	' Return false if file exists
+	if fileexists(fPathName) then
+		return false
+	end if
+	
+	return true
+
 end function
 
 

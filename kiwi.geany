@@ -27,6 +27,7 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=0
-FILE_NAME_0=368;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi-debug.bas;0;4
-FILE_NAME_1=2467;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi%5Cio%5CFile.bi;0;4
+current_page=1
+FILE_NAME_0=463;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi-debug.bas;0;4
+FILE_NAME_1=4124;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi%5Cio%5CFile.bi;0;4
+FILE_NAME_2=1202;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi%5Cutil%5CArrayList.bi;0;4
