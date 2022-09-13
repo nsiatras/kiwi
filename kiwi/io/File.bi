@@ -44,13 +44,16 @@ Type File extends Object
 		declare function createNewFile() as Boolean
 		declare function deleteFile() as Boolean
 		
+		declare sub listFiles(files() as File)
+		
 		declare sub setPathName(ByVal pathname as String)
 		declare function getPath() as String
-		
-		
-					
+			
 End Type
 
+/'
+	Creates a new File instance
+'/
 constructor File()
 	this.setPathName("")
 end constructor
@@ -226,6 +229,54 @@ function File.deleteFile() as Boolean
 	return true
 
 end function
+
+
+sub File.listFiles(files() as File)
+
+	if this.isDirectory = false then
+		return
+	end if
+
+	Dim filename as String 
+	Dim systemPathSeparator as String 
+	dim f as Integer
+	#ifdef __FB_LINUX__
+		systemPathSeparator = "/"
+	#else
+		systemPathSeparator = "\"
+	#endif  
+	 
+	f = freefile
+	Open this.fPathName For Output As #f		
+	filename = Dir(this.fPathName & systemPathSeparator & "*", &h21)				
+
+	Dim counter as Integer = 0
+	Dim newFile as File
+	
+	do while len(filename)
+	
+		select case filename
+			Case "."    ' list of file names to ignore
+			Case ".."
+			Case else
+				Dim newFile as File = this.fPathName & systemPathSeparator & filename
+				
+				Redim preserve files(counter) as File
+				files(counter) = newFile
+				counter = counter + 1
+								
+				'print counter
+				'files(counter) = newFile
+				'counter = counter + 1
+				'Redim files(counter) as File
+		end select
+		
+		filename = Dir()
+	Loop
+	
+	Close #f
+	
+end sub
 
 
 
