@@ -42,6 +42,7 @@ Type Math extends object
 		Declare Static Function max(a as Long, b as Long) As Long
 		Declare Static Function max(a as ULong, b as ULong) As ULong
 		Declare Static Function max(a as LongInt, b as LongInt) As LongInt
+		Declare Static Function max(a as ULongInt, b as ULongInt) As LongInt
 		Declare Static Function max(a as Single, b as Single) As Single
 		Declare Static Function max(a as Double, b as Double) As Double
 		
@@ -54,6 +55,7 @@ Type Math extends object
 		Declare Static Function min(a as Long, b as Long) As Long
 		Declare Static Function min(a as ULong, b as ULong) As ULong
 		Declare Static Function min(a as LongInt, b as LongInt) As LongInt
+		Declare Static Function min(a as ULongInt, b as ULongInt) As LongInt
 		Declare Static Function min(a as Single, b as Single) As Single
 		Declare Static Function min(a as Double, b as Double) As Double
 		
@@ -111,6 +113,9 @@ End Function
 Function Math.max(a as LongInt, b as LongInt) As LongInt
 	return IIf(a > b, a, b)
 End Function
+Function Math.max(a as ULongInt, b as ULongInt) As LongInt
+	return IIf(a > b, a, b)
+End Function
 Function Math.max(a as Single, b as Single) As Single
 	return IIf(a > b, a, b)
 End Function
@@ -147,6 +152,9 @@ Function Math.min(a as ULong, b as ULong) As ULong
 	return IIf(a < b, a, b)
 End Function
 Function Math.min(a as LongInt, b as LongInt) As LongInt
+	return IIf(a < b, a, b)
+End Function
+Function Math.min(a as ULongInt, b as ULongInt) As LongInt
 	return IIf(a < b, a, b)
 End Function
 Function Math.min(a as Single, b as Single) As Single

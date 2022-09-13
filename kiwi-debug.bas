@@ -1,15 +1,16 @@
 #include once "kiwi\lang\System.bi"
-#include once "kiwi\io\File.bi"
+#include once "kiwi\util\ArrayList.bi"
 
-' Declare a new file
-Dim myFile as File = "C:\Users\nsiat\Desktop\Test.txt"
+Dim i as Integer
+Dim myList as ArrayList_String
 
-' Check if path leads to a file
-if myFile.isFile() then
-	print "Path " & myFile.getPath() & " leads to a file"
-end if
+myList.add("1")
+myList.add("2")
+myList.add("3")
+myList.add("4")
 
-' Check if path leads to a directory
-if myFile.isDirectory() then
-	print "Path " & myFile.getPath() & " leads to a directory"
-end if
+for i = 0 to myList.size() - 1 
+	print myList.get(i)
+next
+
+
