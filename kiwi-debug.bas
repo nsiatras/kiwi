@@ -13,4 +13,16 @@ for i = 0 to myList.size() - 1
 	print myList.get(i)
 next
 
+Type Student
+	Dim fName as String
+End Type
+
+DefineArrayList(Student)
+Dim myList2 as ArrayList_Student
+
+
+Dim student1 as Student
+myList2.add(student1)
+
+
 

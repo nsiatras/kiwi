@@ -21,6 +21,14 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 '/
+
+/'
+	<b>Description:</b> An abstract representation of file and directory pathnames.
+	
+	Author: Nikos Siatras
+	Url: https://www.github.com/nsiatras
+'/
+
 #include once "..\core\Core.bi"
 #include once "vbcompat.bi"
 
