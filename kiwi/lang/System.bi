@@ -21,6 +21,7 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 '/
+#include once "..\core\Core.bi"
 #include once "vbcompat.bi"
 #include once "crt/string.bi"
 

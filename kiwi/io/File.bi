@@ -230,45 +230,40 @@ function File.deleteFile() as Boolean
 
 end function
 
-
+/'
+	Returns an array of Files contained in the directory denoted by this 
+	abstract pathname.
+'/
 sub File.listFiles(files() as File)
 
+	' If this File is not a directory then return
 	if this.isDirectory = false then
 		return
 	end if
 
-	Dim filename as String 
-	Dim systemPathSeparator as String 
-	dim f as Integer
-	#ifdef __FB_LINUX__
-		systemPathSeparator = "/"
-	#else
-		systemPathSeparator = "\"
-	#endif  
-	 
-	f = freefile
-	Open this.fPathName For Output As #f		
-	filename = Dir(this.fPathName & systemPathSeparator & "*", &h21)				
+	Dim filename as String = "" 
+	Dim f as Integer = freefile ' Get a free file
+	
+	Open this.fPathName For Output As #f
+	' The SYSTEM_PATH_SEPARATOR is defined in kiwi/core/Core.bi
+	
+	Dim mask as Integer = fbDirectory Or fbHidden Or fbSystem Or fbArchive Or fbReadOnly		
+	filename = Dir(this.fPathName & SYSTEM_PATH_SEPARATOR & "*", mask)				
 
 	Dim counter as Integer = 0
 	Dim newFile as File
 	
-	do while len(filename)
+	Do While len(filename)
 	
 		select case filename
-			Case "."    ' list of file names to ignore
-			Case ".."
-			Case else
-				Dim newFile as File = this.fPathName & systemPathSeparator & filename
+			case "."    ' list of file names to ignore
+			case ".."
+			case else
+				Dim newFile as File = this.fPathName & SYSTEM_PATH_SEPARATOR & filename
 				
 				Redim preserve files(counter) as File
 				files(counter) = newFile
 				counter = counter + 1
-								
-				'print counter
-				'files(counter) = newFile
-				'counter = counter + 1
-				'Redim files(counter) as File
 		end select
 		
 		filename = Dir()
@@ -276,13 +271,5 @@ sub File.listFiles(files() as File)
 	
 	Close #f
 	
-end sub
+end sub		
 
-
-
-
-
-
-		
-
-	

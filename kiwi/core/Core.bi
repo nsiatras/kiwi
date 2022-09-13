@@ -23,7 +23,12 @@
 '/
 #ifndef KIWI_CORE_INITIALIZED
 	
-	' Initialize Kiwi Core
-
+	' Defines the System path Separator
+	#ifdef __FB_WIN32__
+		#define SYSTEM_PATH_SEPARATOR  "\"
+	#else
+		#define SYSTEM_PATH_SEPARATOR  "/"
+	#endif
+	
 
 #endif
