@@ -33,8 +33,8 @@ Type File extends Object
 		declare constructor()
 		declare constructor(byVal pathname as String)
 		
-		declare sub setPathName(pathname as String)
-		declare function getPath() as String
+		declare function isFile() as Boolean
+		declare function isDirectory() as Boolean
 		
 		declare function exists() as Boolean
 		
@@ -43,11 +43,16 @@ Type File extends Object
 		
 		declare function createNewFile() as Boolean
 		declare function deleteFile() as Boolean
+		
+		declare sub setPathName(ByVal pathname as String)
+		declare function getPath() as String
+		
+		
 					
 End Type
 
 constructor File()
-	fPathName = ""
+	this.setPathName("")
 end constructor
 
 /'
@@ -55,15 +60,62 @@ end constructor
     pathname string into an abstract pathname.
 '/
 constructor File(ByVal pathname as String)
-	fPathName = pathName
+	this.setPathName(pathname)
 end constructor
 
 /'
 	Sets the pathname of this File instance
 '/
-sub File.setPathName(pathname as String)
+sub File.setPathName(ByVal pathname as String)
+	
+	' Trim the pathName
+	pathName = trim(pathname)
+		
+	' Remove the last \ if any...
+	if mid(pathname, len(pathname), len(pathname)) = "\" then
+		pathName = mid(pathname,1,len(pathname)-1)
+	endif 
+	
 	fPathName = pathName
 end sub
+
+/'
+	Tests whether the file denoted by this abstract pathname is a normal
+	file.
+	
+	@return true if and only if the file denoted by this abstract 
+	pathname exists and is a normal file, otherwise return false
+'/
+function File.isFile() as Boolean
+	
+	if Dir(fPathName) = "" then
+		return false
+	end if
+	
+	return true
+	
+end function
+
+/'
+	Tests whether the file denoted by this abstract pathname is a normal
+	directory.
+	
+	@return true if and only if the file denoted by this abstract 
+	pathname exists and is a directory, otherwise return false
+'/
+function File.isDirectory() as Boolean
+
+	const InAttr = fbReadOnly or fbHidden or fbSystem or fbDirectory or fbArchive
+	Dim AttrTester as Integer
+	Dim DirString as String = Dir(fPathName, InAttr, AttrTester)
+	
+	if (AttrTester and fbDirectory) Then
+		return true
+	end If
+	
+	return false
+    
+end function
 
 /'
 	Tests whether the file or directory denoted by this abstract pathname

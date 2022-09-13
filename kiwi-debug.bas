@@ -1,18 +1,17 @@
 #include once "kiwi\lang\System.bi"
-#include once "kiwi\util\ArrayList.bi"
 #include once "kiwi\io\File.bi"
 
-DefineArrayList(File)
+' Declare a new file
+Dim myFile as File = "C:\Users\nsiat\Desktop\"
 
-Dim myFile as File = "C:\Users\nsiat\Desktop\Test.txt"
+' Check if path leads to a file
+if myFile.isFile() then
+	print "Path " & myFile.getPath() & " leads to a file"
+end if
 
-print "File Created:" & myFile.createNewFile()
-print "File Path: " & myFile.getPath()
-print "File Exists: " & myFile.exists()
-print "Read Access: " & myFile.canRead()
-print "Write Access: " & myFile.canWrite()
-
-print "Delete File: " & myFile.deleteFile()
-
+' Check if path leads to a directory
+if myFile.isDirectory() then
+	print "Path " & myFile.getPath() & " leads to a directory"
+end if
 
 
