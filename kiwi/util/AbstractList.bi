@@ -62,7 +62,7 @@
 			Initializes a new List Object
 		'/
 		constructor AbstractList_##list_type()
-			
+			fCount = 0
 		end constructor
 
 		/'
@@ -133,7 +133,8 @@
 			are added or removed.
 		'/
 		sub AbstractList_##list_type.ResizeList(itemsToAdd as Integer)
-			
+				this.fCount += itemsToAdd
+				redim preserve this.fElements(fCount)
 		End Sub
 
 

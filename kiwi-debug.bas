@@ -23,6 +23,3 @@ Dim myList2 as ArrayList_Student
 
 Dim student1 as Student
 myList2.add(student1)
-
-
-

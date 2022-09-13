@@ -44,12 +44,7 @@
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
 		
 		Type ArrayList_##list_type extends AbstractList_##list_type
-			
-			protected:
-				declare sub ResizeList(items as Integer)
-				Dim fElements(any) as list_type
-				Dim fCount as UInteger	
-							
+									
 			public:
 				declare constructor()
 				declare function add(byref e as list_type) as Boolean
@@ -158,16 +153,7 @@
 			this.fCount = 0
 		end sub
 		
-		/'
-			ArrayList.ResizeList is used internally whenever elements 
-			are added or removed.
-		'/
-		sub ArrayList_##list_type.ResizeList(itemsToAdd as Integer)
-			this.fCount += itemsToAdd
-			redim preserve this.fElements(fCount)
-		End Sub
-
-	
+			
 		' define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
 		#define KIWI_ARRAYLIST_TYPE_##list_type 
 	
