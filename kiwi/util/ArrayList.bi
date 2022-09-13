@@ -21,16 +21,29 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 '/
+
+/'
+	<b>Description:</b> Resizable-array implementation of the List interface. 
+	Implements all optional list operations,  permits all element types 
+	and maintains insertion order.
+	
+	Author: Nikos Siatras
+	Url: https://www.github.com/nsiatras
+'/
+
 #include once "..\core\Core.bi"
+#include once "AbstractList.bi"
 #include once "vbcompat.bi"
 
 #macro DefineArrayList(list_type)
+	
+	DefineAbstractList(list_type)
 	
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
 		
-		Type ArrayList_##list_type extends Object
+		Type ArrayList_##list_type extends AbstractList_##list_type
 			
 			protected:
 				declare sub ResizeList(items as Integer)
