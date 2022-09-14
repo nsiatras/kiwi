@@ -47,7 +47,6 @@ Type System extends object
 	
 End Type
 
-
 /'
 	Returns the number of seconds elapsed since midnight (00:00:00), 
 	January 1st, 1970, Coordinated Universal Time (UTC), 

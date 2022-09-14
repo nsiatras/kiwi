@@ -3,7 +3,3 @@
 
 
 
-print "C Time: " & System.currentTimeSeconds()
-
-print "FreeBasic Now: " & now 
-print "FreeBasic Timer: " & timer 
