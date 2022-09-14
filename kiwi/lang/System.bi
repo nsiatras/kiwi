@@ -21,18 +21,21 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 '/
+
+#include "crt.bi"						' Needs to measure time	
 #include once "..\core\Core.bi"
 #include once "vbcompat.bi"
-#include once "crt/string.bi"
+#include once "crt\string.bi"
 
 #undef System
 
 Type System extends object
 	
 	public:
-		Declare Static Function currentTimeSeconds() As Double
+		Declare Static Function currentTimeSeconds() As Long
+				
 		Declare Static Function lineSeparator() as String
-		
+	
 		Declare Static Sub arraycopy(src() As Boolean, srcPos as Integer, dest() As Boolean, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Byte, srcPos as Integer, dest() As Byte, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Short, srcPos as Integer, dest() As Short, destPos as Integer, length as Integer)
@@ -42,13 +45,17 @@ Type System extends object
 		Declare Static Sub arraycopy(src() As String, srcPos as Integer, dest() As String, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Object, srcPos as Integer, dest() As Object, destPos as Integer, length as Integer)
 	
-end Type
+End Type
+
 
 /'
-	Returns a date serial containing the system's date and time at execution time.
+	Returns the number of seconds elapsed since midnight (00:00:00), 
+	January 1st, 1970, Coordinated Universal Time (UTC), 
+	according to the system clock.
 '/
-Function System.currentTimeSeconds() As Double
-	Return now
+Function System.currentTimeSeconds() As Long
+	dim as time_t timerC
+	return time_(@timerC)
 End Function
 
 /'
