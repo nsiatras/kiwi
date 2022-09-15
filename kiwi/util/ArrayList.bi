@@ -23,7 +23,7 @@
 '/
 
 /'
-	<b>Description:</b> Resizable-array implementation of the List interface. 
+	Description: Resizable-array implementation of the List interface. 
 	Implements all optional list operations,  permits all element types 
 	and maintains insertion order.
 	

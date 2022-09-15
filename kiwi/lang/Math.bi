@@ -113,7 +113,7 @@ End Function
 Function Math.max(a as LongInt, b as LongInt) As LongInt
 	return IIf(a > b, a, b)
 End Function
-Function Math.max(a as ULongInt, b as ULongInt) As LongInt
+Function Math.max(a as ULongInt, b as ULongInt) As ULongInt
 	return IIf(a > b, a, b)
 End Function
 Function Math.max(a as Single, b as Single) As Single
@@ -154,7 +154,7 @@ End Function
 Function Math.min(a as LongInt, b as LongInt) As LongInt
 	return IIf(a < b, a, b)
 End Function
-Function Math.min(a as ULongInt, b as ULongInt) As LongInt
+Function Math.min(a as ULongInt, b as ULongInt) As ULongInt
 	return IIf(a < b, a, b)
 End Function
 Function Math.min(a as Single, b as Single) As Single
