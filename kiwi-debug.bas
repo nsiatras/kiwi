@@ -1,21 +1,22 @@
-#include once "kiwi\lang\System.bi"
-#include once "kiwi\io\File.bi"
-#include once "kiwi\util\ArrayList.bi"
+#include once "kiwi\kiwi.bi"
 
-' Declare a new File
-Dim myDirectory as File = "C:\Users\nsiat\Desktop\"
 
-MACRO_DefineArrayList(File)
-Dim filesList as ArrayList_File
+' In this example we will create an ArrayList that holds String.
+' String is a FreeBasic Standard Type variable
 
-Dim filesInDirectory() as File 			' This array holds the files included in the directory
-myDirectory.listFiles(filesInDirectory())	' List all files from the directory to filesInDirectory() array
+' Initialize a new ArrayList for String elements
+Dim myStringArrayList As ArrayList_String
 
-print "Files count: " & ubound(filesInDirectory) + 1
+' Add Data To myStringArrayList
+myStringArrayList.add("FreeBasic")
+myStringArrayList.add("Basic")
+myStringArrayList.add("Array")
+myStringArrayList.add("List")
 
-for i as Integer = 0 to ubound(filesInDirectory)
-	print "File " & i & " " & filesInDirectory(i).getPath()
-	filesList.add(filesInDirectory(i))
+print "ArrayList contains " & myStringArrayList.size() & " elements"
+print ""
+
+print "Array List Data:"
+for i as Integer = 0 to myStringArrayList.size()-1
+	print "Element " & i &" = " & myStringArrayList.get(i)
 next
-
-print System.currentTimeMillis
