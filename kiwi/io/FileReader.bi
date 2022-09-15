@@ -34,9 +34,7 @@
 #include once "..\nio\Charset.bi"
 #include once "crt\string.bi"
 #include once "vbcompat.bi"
-
 #include once "File.bi"
-
 
 Type FileReader extends Object
 	
@@ -45,10 +43,8 @@ Type FileReader extends Object
 		Dim fMyCharset as Charset
 		Dim fFileIsOpened as Boolean = false
 		Dim fFreeFileNumber as Integer
-		
-		Dim fCharacter as String*1
-		
-		Dim fCharacter2 as Byte
+			
+		Dim fCharacter as Byte
 		
 		declare Sub OpenFile()
 		declare Sub CloseFile()
@@ -78,7 +74,6 @@ constructor FileReader(f as File, ch as Charset)
 	fMyCharset = ch
 end constructor
 
-
 function FileReader.read() as Integer
 
 	' If the file is not opened then open the file
@@ -86,7 +81,7 @@ function FileReader.read() as Integer
 		this.OpenFile()	
 	end if
 	
-	get #fFreeFileNumber,,this.fCharacter2
+	get #fFreeFileNumber,,this.fCharacter
 	
 	if EOF(fFreeFileNumber) = true then
 		this.CloseFile()
@@ -94,9 +89,8 @@ function FileReader.read() as Integer
 	endif
 	
 	' Return the character
-	return this.fCharacter2
+	return this.fCharacter
 end function
-
 
 sub FileReader.OpenFile()
 	fFreeFileNumber = freefile ' Get a free file number
@@ -105,8 +99,6 @@ sub FileReader.OpenFile()
 end sub
 
 
-
 sub FileReader.CloseFile()
 	Close #fFreeFileNumber
 end sub
-

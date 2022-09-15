@@ -3,16 +3,18 @@
 ' Create an instance of a new File
 Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
 
-' Create an instance of a new FileReader
-Dim myFileReader as FileReader = FileReader(myFile)
-
+' Initialize the charset to use during file read
 Dim charsetToUse as Charset = Charset.forName("ascii") 
+
+' Create an instance of a new FileReader
+Dim myFileReader as FileReader = FileReader(myFile, charsetToUse)
 
 Dim i as Integer = myFileReader.read()
 do while i > -1
 	
-	print wchr(i); ' Print each character read from the file
+	print chr(i); 
 	
+
 	i = myFileReader.read()
 loop
 
