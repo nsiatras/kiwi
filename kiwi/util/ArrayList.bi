@@ -35,9 +35,9 @@
 #include once "AbstractList.bi"
 #include once "vbcompat.bi"
 
-#macro DefineArrayList(list_type)
+#macro MACRO_DefineArrayList(list_type)
 	
-	DefineAbstractList(list_type)
+	MACRO_INTERNAL_DefineAbstractList(list_type)
 	
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
@@ -162,21 +162,21 @@
 
 ' Define lists for all Standard Data Types
 #ifndef KIWI_ARRAYLISTS_FOR_ALL_STANDARD_DATA_TYPES
-	DefineArrayList(Boolean)
-	DefineArrayList(Byte)
-	DefineArrayList(UByte)
-	DefineArrayList(Short)
-	DefineArrayList(UShort)
-	DefineArrayList(Integer)
-	DefineArrayList(UInteger)
-	DefineArrayList(Long)
-	DefineArrayList(ULong)
-	DefineArrayList(LongInt)
-	DefineArrayList(ULongInt)
-	DefineArrayList(Single)
-	DefineArrayList(Double)
-	DefineArrayList(String)
-	DefineArrayList(Object)
+	MACRO_DefineArrayList(Boolean)
+	MACRO_DefineArrayList(Byte)
+	MACRO_DefineArrayList(UByte)
+	MACRO_DefineArrayList(Short)
+	MACRO_DefineArrayList(UShort)
+	MACRO_DefineArrayList(Integer)
+	MACRO_DefineArrayList(UInteger)
+	MACRO_DefineArrayList(Long)
+	MACRO_DefineArrayList(ULong)
+	MACRO_DefineArrayList(LongInt)
+	MACRO_DefineArrayList(ULongInt)
+	MACRO_DefineArrayList(Single)
+	MACRO_DefineArrayList(Double)
+	MACRO_DefineArrayList(String)
+	MACRO_DefineArrayList(Object)
 	
 	#define KIWI_ARRAYLISTS_FOR_ALL_STANDARD_DATA_TYPES
 #endif

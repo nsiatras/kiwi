@@ -34,7 +34,7 @@
 #include once "..\core\Core.bi"
 #include once "vbcompat.bi"
 
-#macro DefineAbstractList(list_type)
+#macro MACRO_INTERNAL_DefineAbstractList(list_type)
 	
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
