@@ -53,24 +53,24 @@
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function size() as UInteger
 				declare function isEmpty() as Boolean
-				declare sub removeAll() 				
+				declare sub clean() 				
 		end Type
 		
 		/'
 			Initializes a new ArrayList Object
 		'/
 		constructor ArrayList_##list_type()
-			this.fCount = 0
+			base.fCount = 0
 		end constructor
 			
 		/'
 			Appends the specified element to the end of this list.
 			
-			@param e is the element to be appended to this Array List.
+			@param e is the element to be appended to this ArrayList.
 		'/
 		function ArrayList_##list_type.add(byref e as list_type) as Boolean
 			ResizeList(1)
-			this.fElements(fCount - 1) = e
+			base.fElements(fCount - 1) = e
 			return true
 		end function
 		
@@ -87,21 +87,21 @@
 			
 			' Removal of the last item of the list
 			if index = (this.fCount-1) then
-				this.ResizeList(-1)
+				base.ResizeList(-1)
 				return elementToRemove ' Return the removed element
 			endif
 			
 			' The list has only 2 elements and we have to remove the first
 			if (index = 0) and (fCount < 3) then
-				this.fElements(0) = this.fElements(1)
-				this.ResizeList(-1)
+				base.fElements(0) = this.fElements(1)
+				base.ResizeList(-1)
 				return elementToRemove ' Return the removed element
 			endif
 			
 			' The rest of the code applies for 3 or more elements
 			dim tmp as const integer = fCount - 1 - index
 			memcpy(@this.fElements(index), @this.fElements(index + 1), tmp * sizeOf(##list_type) )
-			this.ResizeList(-1)
+			base.ResizeList(-1)
 			
 			return elementToRemove ' Return the removed element
 		end function
@@ -112,7 +112,7 @@
 			@param index is the index of the element to return.
 		'/
 		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
-			return this.fElements(index)
+			return base.fElements(index)
 		end function
 		
 		/'
@@ -126,7 +126,7 @@
 		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
 			Dim previousElement as ##list_type
 			previousElement = this.fElements(index) 
-			this.fElements(index) = element
+			base.fElements(index) = element
 			return previousElement
 		end function
 		
@@ -141,16 +141,16 @@
 			Returns true if this ArrayList contains no elements.
 		'/
 		function ArrayList_##list_type.isEmpty() as Boolean
-			return fCount = 0
+			return base.fCount = 0
 		end function
 		
 		/'
 			Removes all of the elements from this ArrayList. The ArrayList will
 			be empty after this call returns.
 		'/
-		sub ArrayList_##list_type.removeAll() 
+		sub ArrayList_##list_type.clean() 
 			Erase this.fElements
-			this.fCount = 0
+			base.fCount = 0
 		end sub
 		
 			

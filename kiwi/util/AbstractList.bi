@@ -55,7 +55,7 @@
 				declare virtual function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare virtual function size() as UInteger
 				declare virtual function isEmpty() as Boolean
-				declare virtual sub removeAll() 				
+				declare virtual sub clean() 				
 		end Type
 
 		/'
@@ -130,8 +130,8 @@
 			Removes all of the elements from this AbstractList. The AbstractList will
 			be empty after this call returns.
 		'/
-		sub AbstractList_##list_type.removeAll() 
-			print "AbstractList_##list_type.removeAll() not yet implemented!"
+		sub AbstractList_##list_type.clean() 
+			print "AbstractList_##list_type.clean() not yet implemented!"
 		end sub
 		
 		/'
