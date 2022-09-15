@@ -1,15 +1,12 @@
 #include once "kiwi\kiwi.bi"
 
-' Declare a new file
-Dim myDirectory as File = "C:\Users\nsiat\Desktop\"
+Dim fStringToSplit as String = "Welcome###to###Free###Basic###!"
+Dim fSplitParts () as String
 
-MACRO_DefineArrayList(File)
+' Splits  fStringToSplit using "###" as a delimeter
+StringUtils.Split(fStringToSplit,"###",fSplitParts())
 
-Dim filesInDirectory() as File 			' This array holds the files included in the directory
-myDirectory.listFiles(filesInDirectory())	' List all files from the directory to filesInDirectory() array
-
-print "Files count: " & ubound(filesInDirectory) + 1
-
-for i as Integer = 0 to ubound(filesInDirectory)
-	print "File " & i & " " & filesInDirectory(i).getPath()
+' Print the fSplitParts
+for i as Integer = 0 to ubound(fSplitParts)
+    print "Part no." & i & " = " & fSplitParts(i)
 next

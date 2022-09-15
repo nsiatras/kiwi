@@ -34,12 +34,14 @@
 ' The kiwi/io/File.bi undefs that type in order to define the File
 #include once "time\RealTimeClock.bi"
 
+
 #include once "core\Core.bi"
 
 #include once "io\File.bi"
 
 #include once "lang\System.bi"
 #include once "lang\Math.bi"
+#include once "lang\StringUtils.bi"
 
 #include once "util\ArrayList.bi"
 
