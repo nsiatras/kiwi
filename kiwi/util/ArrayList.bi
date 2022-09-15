@@ -68,12 +68,13 @@
 			Initializes a new ArrayList Object with predefined records
 		'/
 		constructor ArrayList_##list_type(dataArray(any) as ##list_type)		
+			
 			Dim i as Integer = 0
 			Redim base.fElements(ubound(dataArray))
 			for i = 0 to ubound(dataArray)
 				base.fElements(i) = dataArray(i)
 			next
-			fCount =i
+			fCount = i
 			print fCount
 		end constructor
 		

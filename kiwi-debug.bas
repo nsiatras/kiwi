@@ -23,7 +23,7 @@ dataA(1) = student2
 ' Initialize a new ArrayList to hold students
 MACRO_DefineArrayList(Student)
 
-Dim studentsList As ArrayList_Student = ArrayList_Student(dataA())
+Dim studentsList As ArrayList_Student = dataA()
 
 print "Students: "
 for i as Integer = 0 to studentsList.size()-1
