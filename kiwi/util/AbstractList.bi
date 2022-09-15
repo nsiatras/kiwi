@@ -23,12 +23,11 @@
 '/
 
 /'
-	<b>Description:</b> AbstractList class provides a skeletal implementation of the List
+	Description: AbstractList class provides a skeletal implementation of the List
 	interface to minimize the effort required to implement this interface
 	backed by a sequential access data store (such as an array). 
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
 #include once "..\core\Core.bi"

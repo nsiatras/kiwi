@@ -23,10 +23,9 @@
 '/
 
 /'
-	<b>Description:</b> An abstract representation of file and directory pathnames.
+	Description: An abstract representation of file and directory pathnames.
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
 #include once "..\core\Core.bi"

@@ -27,8 +27,7 @@
 	Implements all optional list operations,  permits all element types 
 	and maintains insertion order.
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
 #include once "..\core\Core.bi"

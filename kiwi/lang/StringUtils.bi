@@ -32,13 +32,16 @@ Type StringUtils extends object
 		
 end Type
 
-
 /'
+	Split Text Algorithm v2.1 for FreeBasic 
+	Author: Nikos Siatras (https://github.com/nsiatras)
+	
 	Splits the textToSplit string into multiple Strings, given the delimiter 
 	that separates them and adds them to the result array.
 	
-	Split Text Algorithm v2.1 for FreeBasic 
-	Author: Nikos Siatras (https://github.com/nsiatras)
+	@stringToSplit is the string to split
+	@delimeter is the delimeter to use
+	@result is an array of strings, each of which is a substring of string formed by splitting it on boundaries formed by the string delimeter.	
 '/
 Sub StringUtils.Split(byref stringToSplit as const String, byref delimeter as const String, result() as String)
 	
@@ -50,13 +53,13 @@ Sub StringUtils.Split(byref stringToSplit as const String, byref delimeter as co
     
     ' Find how many times the delimeter exists in the stringToSplit
     Do
-	indexOfDelimeter = InStr(indexOfDelimeter, stringToSplit, delimeter)
-	if indexOfDelimeter >0 then
-	    delimeterCount += 1
-	    indexOfDelimeter = indexOfDelimeter + lengthOfDelimeter
-	else
-	    Exit Do ' Exit Do Loop
-	endif
+		indexOfDelimeter = InStr(indexOfDelimeter, stringToSplit, delimeter)
+		if indexOfDelimeter >0 then
+			delimeterCount += 1
+			indexOfDelimeter = indexOfDelimeter + lengthOfDelimeter
+		else
+			Exit Do ' Exit Do Loop
+		endif
     Loop
     
     ' The delimeter wasn't found in the string

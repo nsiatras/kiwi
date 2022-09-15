@@ -23,7 +23,7 @@
 '/
 
 /'
-	<b>Description:</b> The intention of this binary include (bi) is to
+	Description: The intention of this binary include (bi) is to
 	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
 	
 	Author: Nikos Siatras

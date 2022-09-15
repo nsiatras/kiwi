@@ -23,14 +23,13 @@
 '/
 
 /'
-	<b>Description:</b> This binary include (bi) contains methods in 
+	Description: This binary include (bi) contains methods in 
 	order to get data from the System's clock 
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "crt.bi"						' Needs to measure time	
+#include once "crt.bi"	
 
 extern "C"
 	type RealTimeClock_TimeContainer
