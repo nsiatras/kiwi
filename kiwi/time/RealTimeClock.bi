@@ -21,17 +21,33 @@
 	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 	SOFTWARE.
 '/
-#ifndef KIWI_CORE_INITIALIZED
-  
 
-	' Defines the System path Separator
-	#ifdef __FB_WIN32__
-		#define SYSTEM_PATH_SEPARATOR  "\"
-	#else
-		#define SYSTEM_PATH_SEPARATOR  "/"
-	#endif
+/'
+	<b>Description:</b> This (bi) binary include contains methods in 
+	order to get data from the System's clock 
 	
-	
-	
-	#define KIWI_CORE_INITIALIZED
-#endif
+	Author: Nikos Siatras
+	Url: https://www.github.com/nsiatras
+'/
+
+#include once "crt.bi"						' Needs to measure time	
+
+extern "C"
+	type RealTimeClock_TimeContainer
+		as long timeValue_Seconds
+		as long timeValue_USeconds
+	end type
+  	declare function gettimeofday(as RealTimeClock_TimeContainer ptr, as any ptr) as long
+end extern
+
+/'
+	Returns the number of milliseconds elapsed since midnight (00:00:00), 
+	January 1st, 1970, Coordinated Universal Time (UTC), 
+	according to the system clock. This method is intended to use with
+	System.CurrentTimeMillis() but it can also be used as standalone.
+'/
+function REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS() as longint
+	dim realTimeValue as RealTimeClock_TimeContainer
+	gettimeofday(@realTimeValue, NULL ) ' Set the current date time to realTimeValue
+	return(realTimeValue.timeValue_Seconds * 1000LL + realTimeValue.timeValue_USeconds / 1000)
+end function

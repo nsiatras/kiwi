@@ -22,8 +22,8 @@
 	SOFTWARE.
 '/
 
-#include "crt.bi"						' Needs to measure time	
 #include once "..\core\Core.bi"
+#include once "..\time\RealTimeClock.bi"
 #include once "vbcompat.bi"
 #include once "crt\string.bi"
 
@@ -33,6 +33,7 @@ Type System extends object
 	
 	public:
 		Declare Static Function currentTimeSeconds() As Long
+		Declare Static Function currentTimeMillis() As LongInt
 				
 		Declare Static Function lineSeparator() as String
 	
@@ -55,6 +56,15 @@ End Type
 Function System.currentTimeSeconds() As Long
 	dim as time_t timerC
 	return time_(@timerC)
+End Function
+
+/'
+	Returns the number of milliseconds elapsed since midnight (00:00:00), 
+	January 1st, 1970, Coordinated Universal Time (UTC), 
+	according to the system clock.
+'/
+Function System.currentTimeMillis() As LongInt
+	return REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS
 End Function
 
 /'
