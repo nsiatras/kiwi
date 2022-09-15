@@ -38,6 +38,7 @@
 #include once "core\Core.bi"
 
 #include once "io\File.bi"
+#include once "io\FileReader.bi"
 
 #include once "lang\System.bi"
 #include once "lang\Math.bi"

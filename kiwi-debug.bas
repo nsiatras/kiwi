@@ -1,17 +1,17 @@
 #include once "kiwi\kiwi.bi"
 
-' Initialize a new ArrayList for String elements
-Dim myStringArrayList As ArrayList_String
+' Create an instance of a new File
+Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
 
-' Add Data To myStringArrayList
-myStringArrayList.add("FreeBasic")
-myStringArrayList.add("Array")
-myStringArrayList.add("List")
+' Create an instance of a new FileReader
+Dim myFileReader as FileReader = FileReader(myFile)
 
-print "ArrayList contains " & myStringArrayList.size() & " elements"
-print ""
+Dim char as String*1
+Dim i as Integer = myFileReader.read()
+do while i > -1
 
-print "Array List Data:"
-for i as Integer = 0 to myStringArrayList.size()-1
-	print "Element " & i &" = " & myStringArrayList.get(i)
-next
+	print i
+	i = myFileReader.read()
+loop
+
+
