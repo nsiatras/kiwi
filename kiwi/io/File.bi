@@ -30,7 +30,15 @@
 '/
 
 #include once "..\core\Core.bi"
+#include once "crt\string.bi"
 #include once "vbcompat.bi"
+
+' stdio.bi Defines a Type with name File
+' The following undef undefines that type
+' and makes the File "keyword" available for Kiwi's File Type
+#ifdef File
+	#undef File
+#endif
 
 Type File extends Object
 	

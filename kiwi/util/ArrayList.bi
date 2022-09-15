@@ -149,7 +149,7 @@
 			be empty after this call returns.
 		'/
 		sub ArrayList_##list_type.removeAll() 
-			redim this.fElements(0) 
+			Erase this.fElements
 			this.fCount = 0
 		end sub
 		

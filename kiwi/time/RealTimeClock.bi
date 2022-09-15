@@ -23,7 +23,7 @@
 '/
 
 /'
-	<b>Description:</b> This (bi) binary include contains methods in 
+	<b>Description:</b> This binary include (bi) contains methods in 
 	order to get data from the System's clock 
 	
 	Author: Nikos Siatras

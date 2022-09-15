@@ -24,8 +24,10 @@
 
 #include once "..\core\Core.bi"
 #include once "..\time\RealTimeClock.bi"
-#include once "vbcompat.bi"
+
 #include once "crt\string.bi"
+#include once "vbcompat.bi"
+#include once "crt.bi" 
 
 #undef System
 
@@ -64,7 +66,7 @@ End Function
 	according to the system clock.
 '/
 Function System.currentTimeMillis() As LongInt
-	return REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS
+	return REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS()
 End Function
 
 /'
