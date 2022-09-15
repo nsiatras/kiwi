@@ -46,6 +46,8 @@
 									
 			public:
 				declare constructor()
+				declare constructor(dataArray(any) as ##list_type)
+				
 				declare function add(byref e as list_type) as Boolean
 				declare function remove(byval index as UInteger) as ##list_type
 				declare function get(byval index as UInteger) as ##list_type
@@ -54,14 +56,25 @@
 				declare function isEmpty() as Boolean
 				declare sub removeAll() 				
 		end Type
-
+		
 		/'
-			Initializes a new List Object
+			Initializes a new ArrayList Object
 		'/
 		constructor ArrayList_##list_type()
+			print "Constructor 2"
 			this.fCount = 0
 		end constructor
-
+		
+		/'
+			Initializes a new ArrayList Object
+		'/
+		constructor ArrayList_##list_type(dataArray(any) as ##list_type)
+			print "Constructor 2"
+			'KIWI_FastArrayCopy(dataArray, base.fElements)
+			'fCount = ubound(base.fElements)-1
+		end constructor
+		
+	
 		/'
 			Appends the specified element to the end of this list.
 			

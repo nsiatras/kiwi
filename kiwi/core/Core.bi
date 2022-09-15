@@ -31,6 +31,9 @@
 	#else
 		#define SYSTEM_PATH_SEPARATOR  "/"
 	#endif
+	
+	' Fast Array Copy
+	#Define KIWI_FastArrayCopy(src, dest) memcpy(@dest(LBound(dest)), @src(LBound(dest)), SizeOf(dest) * (UBound(dest) - LBound(dest) + 1))
 
 	
 	#define KIWI_CORE_INITIALIZED

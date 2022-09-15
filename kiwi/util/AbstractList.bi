@@ -44,11 +44,12 @@
 			protected:
 				declare sub ResizeList(items as Integer)
 				Dim fElements(any) as list_type
-				Dim fCount as UInteger	
+				Dim fCount as UInteger = 0 
 							
 			public:
 				declare constructor()
-				declare virtual function add(byref e as list_type) as Boolean
+
+				declare virtual function add(byref e as ##list_type) as Boolean
 				declare virtual function remove(byval index as UInteger) as ##list_type
 				declare virtual function get(byval index as UInteger) as ##list_type
 				declare virtual function set(byval index as UInteger, byref element as ##list_type) as ##list_type
@@ -61,15 +62,16 @@
 			Initializes a new List Object
 		'/
 		constructor AbstractList_##list_type()
-			fCount = 0
+			
 		end constructor
-
+		
 		/'
 			Appends the specified element to the end of this list.
 			
 			@param e is the element to be appended to this Array List.
 		'/
-		function AbstractList_##list_type.add(byref e as list_type) as Boolean
+		function AbstractList_##list_type.add(byref e as ##list_type) as Boolean
+			print "AbstractList_##list_type.add() not yet implemented!"
 			return false
 		end function
 		
@@ -81,6 +83,7 @@
 			@param index is the index of the element to be removed
 		'/
 		function AbstractList_##list_type.remove(byval index as UInteger) as ##list_type
+			print "AbstractList_##list_type.remove() not yet implemented!"
 			return fElements(0)
 		end function
 
@@ -90,6 +93,7 @@
 			@param index is the index of the element to return.
 		'/
 		function AbstractList_##list_type.get(byval index as UInteger) as ##list_type
+			print "AbstractList_##list_type.get() not yet implemented!"
 			return this.fElements(index)
 		end function
 		
@@ -102,6 +106,7 @@
 			@param element is the element to be stored at the specified position
 		'/
 		function AbstractList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
+			print "AbstractList_##list_type.set() not yet implemented!"
 			return fElements(0)
 		end function
 		
@@ -109,6 +114,7 @@
 			Returns the number of elements in this AbstractList.
 		'/
 		function AbstractList_##list_type.size() as UInteger
+			print "AbstractList_##list_type.size() not yet implemented!"
 			return 0
 		end function
 		
@@ -116,6 +122,7 @@
 			Returns true if this AbstractList contains no elements.
 		'/
 		function AbstractList_##list_type.isEmpty() as Boolean
+			print "AbstractList_##list_type.isEmpty() not yet implemented!"
 			return false
 		end function
 		
@@ -124,7 +131,7 @@
 			be empty after this call returns.
 		'/
 		sub AbstractList_##list_type.removeAll() 
-			
+			print "AbstractList_##list_type.removeAll() not yet implemented!"
 		end sub
 		
 		/'
@@ -132,8 +139,8 @@
 			are added or removed.
 		'/
 		sub AbstractList_##list_type.ResizeList(itemsToAdd as Integer)
-				this.fCount += itemsToAdd
-				redim preserve this.fElements(fCount)
+			this.fCount += itemsToAdd
+			redim preserve this.fElements(fCount)
 		End Sub
 
 
