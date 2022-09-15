@@ -1,22 +1,15 @@
 #include once "kiwi\kiwi.bi"
 
+' Declare a new file
+Dim myDirectory as File = "C:\Users\nsiat\Desktop\"
 
-' In this example we will create an ArrayList that holds String.
-' String is a FreeBasic Standard Type variable
+MACRO_DefineArrayList(File)
 
-' Initialize a new ArrayList for String elements
-Dim myStringArrayList As ArrayList_String
+Dim filesInDirectory() as File 			' This array holds the files included in the directory
+myDirectory.listFiles(filesInDirectory())	' List all files from the directory to filesInDirectory() array
 
-' Add Data To myStringArrayList
-myStringArrayList.add("FreeBasic")
-myStringArrayList.add("Basic")
-myStringArrayList.add("Array")
-myStringArrayList.add("List")
+print "Files count: " & ubound(filesInDirectory) + 1
 
-print "ArrayList contains " & myStringArrayList.size() & " elements"
-print ""
-
-print "Array List Data:"
-for i as Integer = 0 to myStringArrayList.size()-1
-	print "Element " & i &" = " & myStringArrayList.get(i)
+for i as Integer = 0 to ubound(filesInDirectory)
+	print "File " & i & " " & filesInDirectory(i).getPath()
 next
