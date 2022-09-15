@@ -6,11 +6,13 @@ Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
 ' Create an instance of a new FileReader
 Dim myFileReader as FileReader = FileReader(myFile)
 
-Dim char as String*1
+Dim charsetToUse as Charset = Charset.forName("ascii") 
+
 Dim i as Integer = myFileReader.read()
 do while i > -1
-
-	print i
+	
+	print wchr(i); ' Print each character read from the file
+	
 	i = myFileReader.read()
 loop
 

@@ -23,30 +23,45 @@
 '/
 
 /'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
+	Description: Charset for Kiwi...
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-' Real Time Clock uses stdio.bi which defines a Type with name File
-' The kiwi/io/File.bi undefs that type in order to define the File
-#include once "time\RealTimeClock.bi"
+#include once "..\core\Core.bi"
 
+Type Charset extends Object
+	
+	protected:
+		Dim fCharsetName as String
+					
+	public:
+		Declare constructor()
+		
+		declare static function forName(charsetName as String) as Charset
+		
+		declare function getCharsetName() as String
+					
+End Type
 
-#include once "core\Core.bi"
+constructor Charset()
+	fCharsetName = "ascii" ' Ascii is the default charset
+end constructor
 
-#include once "nio\Charset.bi"
+/'
+	Returns the charset's name
+'/
+function Charset.getCharsetName() as String
+	return fCharsetName
+end function
 
-#include once "io\File.bi"
-#include once "io\FileReader.bi"
-
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-#include once "lang\StringUtils.bi"
-
-#include once "util\ArrayList.bi"
-
+/'
+	Returns a new Charset instance
+'/
+function Charset.forName(charsetName as String) as Charset
+	Dim ch as Charset
+	ch.fCharsetName = charsetName
+	return ch
+end function
 
 

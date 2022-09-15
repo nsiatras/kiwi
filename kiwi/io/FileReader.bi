@@ -31,15 +31,18 @@
 '/
 
 #include once "..\core\Core.bi"
+#include once "..\nio\Charset.bi"
 #include once "crt\string.bi"
 #include once "vbcompat.bi"
 
 #include once "File.bi"
 
+
 Type FileReader extends Object
 	
 	protected:
 		Dim fMyFile as File
+		Dim fMyCharset as Charset
 		Dim fFileIsOpened as Boolean = false
 		Dim fFreeFileNumber as Integer
 		
@@ -52,17 +55,29 @@ Type FileReader extends Object
 					
 	public:
 		declare constructor(f as File)
+		declare constructor(f as File, ch as Charset)
 		declare function read() as Integer
 		
 End Type
 
 /'
-	Creates a new FileReader instane
+	Creates a new FileReader instance
 '/
 constructor FileReader(f as File)
 	this.fMyFile = f
+	fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
 end constructor
+
+/'
+	Creates a new FileReader instance with preselected Charset
+'/
+constructor FileReader(f as File, ch as Charset)
+	this.fMyFile = f
+	this.fFileIsOpened = false
+	fMyCharset = ch
+end constructor
+
 
 function FileReader.read() as Integer
 
@@ -72,7 +87,6 @@ function FileReader.read() as Integer
 	end if
 	
 	get #fFreeFileNumber,,this.fCharacter2
-	
 	
 	if EOF(fFreeFileNumber) = true then
 		this.CloseFile()
@@ -85,17 +99,14 @@ end function
 
 
 sub FileReader.OpenFile()
-	print "File opened!";
 	fFreeFileNumber = freefile ' Get a free file number
-	Open fMyFile.getPath() For Binary As #fFreeFileNumber
-
+	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() As #fFreeFileNumber
 	fFileIsOpened = true
 end sub
 
 
 
 sub FileReader.CloseFile()
-	print "File closed!";
 	Close #fFreeFileNumber
 end sub
 
