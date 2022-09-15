@@ -81,6 +81,8 @@ function FileReader.read() as Integer
 		this.OpenFile()	
 	end if
 	
+	print WInput(1, fFreeFileNumber)
+	
 	get #fFreeFileNumber,,this.fCharacter
 	
 	if EOF(fFreeFileNumber) = true then
