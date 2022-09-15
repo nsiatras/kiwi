@@ -78,7 +78,7 @@ end constructor
 	Creates a new File instance by converting the given
     pathname string into an abstract pathname.
 '/
-constructor File(ByVal pathname as String = "")
+constructor File(ByVal pathname as String)
 	this.setPathName(pathname)
 end constructor
 
