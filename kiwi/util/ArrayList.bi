@@ -61,17 +61,16 @@
 			Initializes a new ArrayList Object
 		'/
 		constructor ArrayList_##list_type()
-			print "Constructor 2"
 			this.fCount = 0
 		end constructor
 		
 		/'
-			Initializes a new ArrayList Object
+			Initializes a new ArrayList Object with predefined records
 		'/
 		constructor ArrayList_##list_type(dataArray(any) as ##list_type)
-			print "Constructor 2"
-			'KIWI_FastArrayCopy(dataArray, base.fElements)
-			'fCount = ubound(base.fElements)-1
+			Redim base.fElements(ubound(dataArray))
+			KIWI_FastArrayCopy(dataArray, base.fElements)
+			fCount = ubound(base.fElements) + 1
 		end constructor
 		
 	

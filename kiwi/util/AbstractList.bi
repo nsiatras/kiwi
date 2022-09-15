@@ -48,6 +48,7 @@
 							
 			public:
 				declare constructor()
+				declare constructor(dataArray(any) as ##list_type)
 
 				declare virtual function add(byref e as ##list_type) as Boolean
 				declare virtual function remove(byval index as UInteger) as ##list_type
@@ -59,10 +60,10 @@
 		end Type
 
 		/'
-			Initializes a new List Object
+			Initializes a new Abstract List Object
 		'/
 		constructor AbstractList_##list_type()
-			
+			fCount = 0
 		end constructor
 		
 		/'
