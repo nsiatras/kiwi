@@ -48,7 +48,6 @@
 							
 			public:
 				declare constructor()
-				declare constructor(dataArray(any) as ##list_type)
 
 				declare virtual function add(byref e as ##list_type) as Boolean
 				declare virtual function remove(byval index as UInteger) as ##list_type

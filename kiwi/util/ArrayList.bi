@@ -46,8 +46,7 @@
 									
 			public:
 				declare constructor()
-				declare constructor(dataArray(any) as ##list_type)
-				
+								
 				declare function add(byref e as list_type) as Boolean
 				declare function remove(byval index as UInteger) as ##list_type
 				declare function get(byval index as UInteger) as ##list_type
@@ -63,22 +62,7 @@
 		constructor ArrayList_##list_type()
 			this.fCount = 0
 		end constructor
-		
-		/'
-			Initializes a new ArrayList Object with predefined records
-		'/
-		constructor ArrayList_##list_type(dataArray(any) as ##list_type)		
 			
-			Dim i as Integer = 0
-			Redim base.fElements(ubound(dataArray))
-			for i = 0 to ubound(dataArray)
-				base.fElements(i) = dataArray(i)
-			next
-			fCount = i
-			print fCount
-		end constructor
-		
-	
 		/'
 			Appends the specified element to the end of this list.
 			
