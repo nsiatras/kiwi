@@ -67,10 +67,14 @@
 		/'
 			Initializes a new ArrayList Object with predefined records
 		'/
-		constructor ArrayList_##list_type(dataArray(any) as ##list_type)
+		constructor ArrayList_##list_type(dataArray(any) as ##list_type)		
+			Dim i as Integer = 0
 			Redim base.fElements(ubound(dataArray))
-			KIWI_FastArrayCopy(dataArray, base.fElements)
-			fCount = ubound(base.fElements) + 1
+			for i = 0 to ubound(dataArray)
+				base.fElements(i) = dataArray(i)
+			next
+			fCount =i
+			print fCount
 		end constructor
 		
 	
