@@ -82,6 +82,9 @@
 			Inserts the specified element at the specified position in this list.
 			Shifts the element currently at that position (if any) and any
 			subsequent elements to the right (adds one to their indices).
+			
+			@param index is the index at which the specified element is to be inserted
+			@param e is the element to be inserted
 		'/
 		function ArrayList_##list_type.add(index as UInteger, byref e as ##list_type) as Boolean
 						
