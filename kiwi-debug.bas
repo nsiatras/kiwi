@@ -1,27 +1,20 @@
 #include once "kiwi\kiwi.bi"
 
-
-Dim myList2 As ArrayList_String
+Dim myList As ArrayList_String
 
 ' Add Data To myStringArrayList
-myList2.add("1")
-myList2.add("2")
-myList2.add("3")
-myList2.add("4")
-myList2.add("5")
-myList2.add("6")
+myList.add("Position 0")
+myList.add("Position 1")
+myList.add("Position 2")
+myList.add("Position 3")
 
-print "ArrayList contains " & myList2.size() & " elements"
-print ""
+' Insert element "My Element" at position 1 of the ArrayList
+myList.add(1, "TEST")
 
-
-myList2.add(1, "TEST")
-myList2.add(4, "TEST")
-
-
+' Print array elements
 print "Array List Data:"
-for i as Integer = 0 to myList2.size()-1
-	print "Element " & i &" = " & myList2.get(i)
+for i as Integer = 0 to myList.size()-1
+	print "Element " & i &" = " & myList.get(i)
 next
 
 

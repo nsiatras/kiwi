@@ -50,7 +50,7 @@
 				declare constructor()
 								
 				declare function add(byref e as ##list_type) as Boolean
-				declare function add(index as UInteger, byref e as ##list_type) as Boolean
+				declare sub add(index as UInteger, byref e as ##list_type)
 				
 				declare function remove(byval index as UInteger) as ##list_type
 				declare function get(byval index as UInteger) as ##list_type
@@ -86,7 +86,7 @@
 			@param index is the index at which the specified element is to be inserted
 			@param e is the element to be inserted
 		'/
-		function ArrayList_##list_type.add(index as UInteger, byref e as ##list_type) as Boolean
+		sub ArrayList_##list_type.add(index as UInteger, byref e as ##list_type)
 						
 			' Check for insertion out of bounds !
 			index = Math.min(CUnsg(fCount), CUnsg(Math.max(CUnsg(0), CUnsg(index))))
@@ -97,16 +97,19 @@
 				base.fElements(fCount - 1) = base.fElements(fCount - 2)
 				base.fElements(fCount - 2) = e
 			else
+				' Make a new spot to the array
 				base.ResizeList(+1)
-				' Calculate the number of elements we have to move
-				dim as uinteger elem = fCount - 1 - index
 				
-				'Move them and make a free spot for the new element to add
+				' Calculate the number of elements we have to move
+				Dim elementsToMove as const uinteger = fCount - 1 - index
+				
+				'Move the elements to be moved...
 				#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
-					' We use memcpy only for standard/known length variables
-					memcpy(@base.fElements(index + 1), @base.fElements(index), elem * sizeOf(##list_type) )
+					' CAUTION: Use memcpy only for standard/known length variables
+					memcpy(@base.fElements(index + 1), @base.fElements(index), elementsToMove * sizeOf(##list_type) )
 				#else
-					' We use a simple for for variables with non standard type
+					' We use a simple for loop to move array elements
+					' that are Strings or UDT
 					for i as Integer = ubound(base.fElements) to index step -1
 						base.fElements(i) = base.fElements(i-1)
 					next i
@@ -115,9 +118,7 @@
 				base.fElements(index) = e	
 			end if
 			
-			return true
-			
-		end function
+		end sub
      
 		/'
 			Removes the element at the specified position in this list.
