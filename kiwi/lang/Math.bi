@@ -22,6 +22,8 @@
 	SOFTWARE.
 '/
 
+
+
 Type Math extends object
 	
 	protected:

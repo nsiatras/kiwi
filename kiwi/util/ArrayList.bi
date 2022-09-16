@@ -31,8 +31,10 @@
 '/
 
 #include once "..\core\Core.bi"
+#include once "..\lang\Math.bi"
 #include once "AbstractList.bi"
 #include once "vbcompat.bi"
+
 
 #macro MACRO_DefineArrayList(list_type)
 	
@@ -47,7 +49,9 @@
 			public:
 				declare constructor()
 								
-				declare function add(byref e as list_type) as Boolean
+				declare function add(byref e as ##list_type) as Boolean
+				declare function add(index as UInteger, byref e as ##list_type) as Boolean
+				
 				declare function remove(byval index as UInteger) as ##list_type
 				declare function get(byval index as UInteger) as ##list_type
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
@@ -68,12 +72,50 @@
 			
 			@param e is the element to be appended to this ArrayList.
 		'/
-		function ArrayList_##list_type.add(byref e as list_type) as Boolean
+		function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
 			ResizeList(1)
 			base.fElements(fCount - 1) = e
 			return true
 		end function
 		
+		/'
+			Inserts the specified element at the specified position in this list.
+			Shifts the element currently at that position (if any) and any
+			subsequent elements to the right (adds one to their indices).
+		'/
+		function ArrayList_##list_type.add(index as UInteger, byref e as ##list_type) as Boolean
+						
+			' Check for insertion out of bounds !
+			index = Math.min(CUnsg(fCount), CUnsg(Math.max(CUnsg(0), CUnsg(index))))
+	
+			' trivial case, inserting at the end of the list
+			if(index = fCount-1) then
+				base.ResizeList(+1)
+				base.fElements(fCount - 1) = base.fElements(fCount - 2)
+				base.fElements(fCount - 2) = e
+			else
+				base.ResizeList(+1)
+				' Calculate the number of elements we have to move
+				dim as uinteger elem = fCount - 1 - index
+				
+				'Move them and make a free spot for the new element to add
+				#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
+					' We use memcpy only for standard/known length variables
+					memcpy(@base.fElements(index + 1), @base.fElements(index), elem * sizeOf(##list_type) )
+				#else
+					' We use a simple for for variables with non standard type
+					for i as Integer = ubound(base.fElements) to index step -1
+						base.fElements(i) = base.fElements(i-1)
+					next i
+				#endif
+
+				base.fElements(index) = e	
+			end if
+			
+			return true
+			
+		end function
+     
 		/'
 			Removes the element at the specified position in this list.
 			Shifts any subsequent elements to the left (subtracts one from their
