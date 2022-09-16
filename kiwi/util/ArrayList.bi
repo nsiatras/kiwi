@@ -144,9 +144,18 @@
 				return elementToRemove ' Return the removed element
 			endif
 			
-			' The rest of the code applies for 3 or more elements
-			dim tmp as const integer = fCount - 1 - index
-			memcpy(@this.fElements(index), @this.fElements(index + 1), tmp * sizeOf(##list_type) )
+			' The rest of the code applies for 3 or more elements.
+			' Move the elements to be moved...
+			Dim elementsToMove as const uinteger = fCount - 1 - index
+			#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
+				' CAUTION: Use memcpy only for standard/known length variables
+				memcpy(@this.fElements(index), @this.fElements(index + 1), elementsToMove * sizeOf(##list_type) )
+			#else
+				for i as Integer = index + 1 to ubound(base.fElements)
+					base.fElements(i-1) = base.fElements(i)
+				next i
+			#endif
+			
 			base.ResizeList(-1)
 			
 			return elementToRemove ' Return the removed element

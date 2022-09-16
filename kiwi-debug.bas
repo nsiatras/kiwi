@@ -3,15 +3,18 @@
 Dim myList As ArrayList_String
 
 ' Add Data To myStringArrayList
-myList.add("Position 0")
-myList.add("Position 1")
-myList.add("Position 2")
-myList.add("Position 3")
+for i as Integer = 0 to 18
+	myList.add("Position "& str(i))
+next i
+
+
+print "Array List has " &myList.size()
 
 ' Insert element "My Element" at position 1 of the ArrayList
-myList.add(1, "TEST")
+
 
 ' Print array elements
+print "Array List has " &myList.size()
 print "Array List Data:"
 for i as Integer = 0 to myList.size()-1
 	print "Element " & i &" = " & myList.get(i)
