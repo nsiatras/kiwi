@@ -7,15 +7,10 @@ Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
 Dim charsetToUse as Charset = Charset.forName("ascii") 
 
 ' Create an instance of a new FileReader
-Dim myFileReader as FileReader = FileReader(myFile, charsetToUse)
-
-Dim i as Integer = myFileReader.read()
-do while i > -1
-	
-	print chr(i); 
-	
-
-	i = myFileReader.read()
-loop
-
+Dim fileScanner as Scanner = Scanner(myFile, charsetToUse)
+fileScanner.OpenFile()
+while fileScanner.hasNextLine()
+	print fileScanner.nextLine()	
+wend
+fileScanner.CloseFile()
 

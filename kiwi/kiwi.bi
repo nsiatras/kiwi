@@ -47,6 +47,7 @@
 #include once "lang\StringUtils.bi"
 
 #include once "util\ArrayList.bi"
+#include once "util\Scanner.bi"
 
 
 
