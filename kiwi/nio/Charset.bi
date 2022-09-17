@@ -37,11 +37,8 @@ Type Charset extends Object
 					
 	public:
 		Declare constructor()
-		
 		declare static function forName(charsetName as String) as Charset
-		
-		declare function getCharsetName() as String
-					
+		declare function getCharsetName() as String			
 End Type
 
 constructor Charset()
@@ -63,5 +60,3 @@ function Charset.forName(charsetName as String) as Charset
 	ch.fCharsetName = charsetName
 	return ch
 end function
-
-

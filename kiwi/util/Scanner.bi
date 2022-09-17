@@ -98,7 +98,9 @@ function Scanner.nextLine() as String
 	return strLine
 end function
 
-
+/'
+	Open a file 
+'/
 sub Scanner.OpenFile()
 	fFreeFileNumber = freefile ' Get a free file number
 	

@@ -43,16 +43,18 @@ Type FileReader extends Object
 		Dim fMyCharset as Charset
 		Dim fFileIsOpened as Boolean = false
 		Dim fFreeFileNumber as Integer
-			
-		Dim fCharacter as Byte
-		
-		declare Sub OpenFile()
-		declare Sub CloseFile()
 					
 	public:
 		declare constructor(f as File)
 		declare constructor(f as File, ch as Charset)
+		declare constructor(fileName as String)
+		declare constructor(fileName as String, ch as Charset)
 		declare function read() as Integer
+		
+		declare function OpenFile() as Boolean
+		declare Sub CloseFile()
+		
+		declare function getEncoding() as String
 		
 End Type
 
@@ -74,33 +76,71 @@ constructor FileReader(f as File, ch as Charset)
 	fMyCharset = ch
 end constructor
 
+/'
+	Creates a new FileReader instance
+'/
+constructor FileReader(fileName as String)
+	Dim f as File = File(fileName)
+	this.fMyFile = f
+	fMyCharset = Charset.forName("ascii")
+	this.fFileIsOpened = false
+end constructor
+
+/'
+	Creates a new FileReader instance with preselected Charset
+'/
+constructor FileReader(fileName as String, ch as Charset)
+	Dim f as File = File(fileName)
+	this.fMyFile = f
+	this.fFileIsOpened = false
+	fMyCharset = ch
+end constructor
+
+/'
+	Reads a single character.
+	@return The character read, or -1 if the end of the stream has been reached
+'/
 function FileReader.read() as Integer
 
-	' If the file is not opened then open the file
-	if fFileIsOpened = false then
-		this.OpenFile()	
-	end if
-	
-	print WInput(1, fFreeFileNumber)
-	
-	get #fFreeFileNumber,,this.fCharacter
-	
 	if EOF(fFreeFileNumber) = true then
-		this.CloseFile()
+		this.CloseFile() ' Close the file
 		return -1
-	endif
-	
-	' Return the character
-	return this.fCharacter
+	end if
+
+	return Asc(WInput(1, fFreeFileNumber))
 end function
 
-sub FileReader.OpenFile()
-	fFreeFileNumber = freefile ' Get a free file number
+/'
+	Opens a file Input Stream
+'/
+function FileReader.OpenFile() as Boolean
+	
+	' Get a free file number
+	fFreeFileNumber = freefile 
+	
+	' Open the file for Input (Read) with the given Encoding
 	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() As #fFreeFileNumber
-	fFileIsOpened = true
-end sub
+	
+	if err() then
+		return false
+	else
+		return true
+	end if
+	
+end function
 
-
+/'
+	Closes the file Input Stream
+'/
 sub FileReader.CloseFile()
 	Close #fFreeFileNumber
 end sub
+
+/'
+	Returns the name of the character encoding being used by this stream.
+	
+	@return The name of this encoding
+'/
+function FileReader.getEncoding() as String
+	return fMyCharset.getCharsetName()
+end function
