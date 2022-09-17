@@ -32,6 +32,8 @@
 
 ' Real Time Clock uses stdio.bi which defines a Type with name File
 ' The kiwi/io/File.bi undefs that type in order to define the File
+
+
 #include once "time\RealTimeClock.bi"
 
 #include once "core\Core.bi"
