@@ -148,6 +148,10 @@ end function
 /'
 	 Tests whether the application can read the file denoted by this
      abstract pathname.
+     
+     @return true if and only if the file specified by thisabstract 
+     pathname exists and can be read by the application. Otherwise it 
+     returns false
 '/
 function File.canRead() as Boolean
 	
@@ -170,6 +174,11 @@ end function
 /'
 	 Tests whether the application can write the file denoted by this
      abstract pathname.
+     
+     @return true if and only if the file system actually contains 
+     a file denoted by this abstract pathname and the application 
+     is allowed to write to the file.Otherwise it 
+     returns false
 '/
 function File.canWrite() as Boolean
 	

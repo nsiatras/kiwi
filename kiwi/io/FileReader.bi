@@ -49,10 +49,13 @@ Type FileReader extends Object
 		declare constructor(f as File, ch as Charset)
 		declare constructor(fileName as String)
 		declare constructor(fileName as String, ch as Charset)
+		
 		declare function read() as Integer
 		
 		declare function OpenFile() as Boolean
 		declare Sub CloseFile()
+		
+		declare Sub reset()
 		
 		declare function getEncoding() as String
 		
@@ -98,6 +101,7 @@ end constructor
 
 /'
 	Reads a single character.
+	
 	@return The character read, or -1 if the end of the stream has been reached
 '/
 function FileReader.read() as Integer
@@ -112,6 +116,8 @@ end function
 
 /'
 	Opens a file Input Stream
+	
+	@return true if file exists and can be read
 '/
 function FileReader.OpenFile() as Boolean
 	
@@ -134,6 +140,14 @@ end function
 '/
 sub FileReader.CloseFile()
 	Close #fFreeFileNumber
+end sub
+
+/'
+	Resets the stream and the file can be readed again.
+'/
+sub FileReader.reset()
+	this.CloseFile()
+	this.OpenFile()
 end sub
 
 /'
