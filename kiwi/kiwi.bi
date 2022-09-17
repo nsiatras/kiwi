@@ -37,7 +37,6 @@
 #include once "time\RealTimeClock.bi"
 
 #include once "core\Core.bi"
-#include once "core\UString.bi"
 
 #include once "nio\Charset.bi"
 

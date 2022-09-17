@@ -32,6 +32,7 @@
 #include once "crt\string.bi"
 #include once "vbcompat.bi"
 
+
 ' stdio.bi Defines a Type with name File
 ' The following undef undefines that type
 ' and makes the File "keyword" available for Kiwi's File Type
@@ -63,6 +64,7 @@ Type File extends Object
 				
 		declare sub setPathName(ByVal pathname as String)
 		declare function getPath() as String
+		declare function getSize() as LongInt
 			
 End Type
 
@@ -80,22 +82,6 @@ end constructor
 constructor File(ByVal pathname as String)
 	this.setPathName(pathname)
 end constructor
-
-/'
-	Sets the pathname of this File instance
-'/
-sub File.setPathName(ByVal pathname as String)
-	
-	' Trim the pathName
-	pathName = trim(pathname)
-		
-	' Remove the last \ if any...
-	if mid(pathname, len(pathname), len(pathname)) = "\" then
-		pathName = mid(pathname,1,len(pathname)-1)
-	endif 
-	
-	fPathName = pathName
-end sub
 
 /'
 	Tests whether the file denoted by this abstract pathname is a normal
@@ -136,13 +122,6 @@ end function
 '/
 function File.exists() as Boolean
 	return fileexists(this.fPathName)
-end function
-
-/'
-	Converts abstract pathname into a pathname string and returns it.
-'/
-function File.getPath() as String
-	return fPathName
 end function
 
 /'
@@ -221,8 +200,12 @@ function File.createNewFile() as Boolean
 	
 	print #f, ""
 	close #f
-		
-	return true
+	
+	if err() then 
+		return false
+	else
+		return true
+	end if
 	
 end function
 
@@ -295,3 +278,35 @@ sub File.listFiles(files() as File)
 	Close #f
 	
 end sub		
+
+/'
+	Sets the pathname of this File instance
+'/
+sub File.setPathName(ByVal pathname as String)
+	
+	' Trim the pathName
+	pathName = trim(pathname)
+		
+	' Remove the last \ if any...
+	if mid(pathname, len(pathname), len(pathname)) = "\" then
+		pathName = mid(pathname,1,len(pathname)-1)
+	endif 
+	
+	fPathName = pathName
+end sub
+
+/'
+	Converts abstract pathname into a pathname string and returns it.
+'/
+function File.getPath() as String
+	return fPathName
+end function
+
+/'
+	Returns the size of a file (in bytes). The size may differ from the
+    actual size on the file system due to compression, support for sparse
+    files, or other reasons.
+'/
+function File.getSize() as LongInt
+	return FileLen(this.fPathName)
+end function
