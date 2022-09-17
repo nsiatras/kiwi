@@ -32,8 +32,6 @@
 
 #include once "..\core\Core.bi"
 #include once "..\nio\Charset.bi"
-#include once "crt\string.bi"
-#include once "vbcompat.bi"
 #include once "File.bi"
 
 Type FileReader extends Object

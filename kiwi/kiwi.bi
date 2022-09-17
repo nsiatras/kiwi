@@ -36,6 +36,8 @@
 
 #include once "core\Core.bi"
 
+#include once "nio\Charset.bi"
+
 #include once "lang\System.bi"
 #include once "lang\Math.bi"
 #include once "lang\StringUtils.bi"

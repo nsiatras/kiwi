@@ -30,7 +30,6 @@
 	Url: https://www.github.com/nsiatras
 '/
 
-#include once "nio\Charset.bi"
 
 #include once "io\File.bi"
 #include once "io\FileReader.bi"
