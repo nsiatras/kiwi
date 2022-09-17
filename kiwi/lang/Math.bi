@@ -63,7 +63,7 @@ Type Math extends object
 		Static E as const Double
 		Static PI as const Double
 		
-end Type
+End Type
 
 /'
 	The Math.E value that is closer than any other to "e",

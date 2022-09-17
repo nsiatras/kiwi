@@ -221,6 +221,9 @@ function File.deleteFile() as Boolean
 	
 	' Delete file
 	kill(fPathName)
+	if err() then 
+		return false
+	end if
 	
 	' Return false if file exists
 	if fileexists(fPathName) then
@@ -259,7 +262,6 @@ sub File.listFiles(files() as File)
 	Dim newFile as File
 	
 	while len(filename)>0
-	
 		select case filename
 			case "."    ' list of file names to ignore
 			case ".."

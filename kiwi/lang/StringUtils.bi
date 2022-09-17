@@ -27,14 +27,13 @@ Type StringUtils extends object
 	public:
 		Declare Static Sub Split(byref stringToSplit as const String, byref delimeter as const String, result() as String)
 		
-end Type
+End Type
 
 /'
-	Split Text Algorithm v2.1 for FreeBasic 
-	Author: Nikos Siatras (https://github.com/nsiatras)
-	
 	Splits the textToSplit string into multiple Strings, given the delimiter 
 	that separates them and adds them to the result array.
+	
+	Author: Nikos Siatras (https://github.com/nsiatras)
 	
 	@stringToSplit is the string to split
 	@delimeter is the delimeter to use
