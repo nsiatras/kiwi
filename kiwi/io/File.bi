@@ -275,7 +275,7 @@ sub File.listFiles(files() as File)
 	Dim counter as Integer = 0
 	Dim newFile as File
 	
-	Do While len(filename)
+	while len(filename)>0
 	
 		select case filename
 			case "."    ' list of file names to ignore
@@ -289,7 +289,7 @@ sub File.listFiles(files() as File)
 		end select
 		
 		filename = Dir()
-	Loop
+	wend
 	
 	' Close the file
 	Close #f
