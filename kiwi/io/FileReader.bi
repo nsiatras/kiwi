@@ -48,11 +48,9 @@ Type FileReader extends Object
 		declare constructor(fileName as String)
 		declare constructor(fileName as String, ch as Charset)
 		
-		declare function read() as Integer
-		
 		declare function OpenFile() as Boolean
 		declare Sub CloseFile()
-		
+		declare function read() as Integer
 		declare Sub reset()
 		
 		declare function getEncoding() as String

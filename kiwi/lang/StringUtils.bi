@@ -24,9 +24,6 @@
 
 Type StringUtils extends object
 	
-	protected:
-		
-	
 	public:
 		Declare Static Sub Split(byref stringToSplit as const String, byref delimeter as const String, result() as String)
 		
