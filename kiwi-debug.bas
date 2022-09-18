@@ -4,7 +4,7 @@
 Dim myArrayList As ArrayList_Double
 
 ' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 1
+for i as Integer = 0 to 9
 	myArrayList.add(Math.random())
 next i 
 
@@ -21,7 +21,7 @@ End Type
 
 function myComparator.compare(a as Double, b as Double) as Integer
 	return iif(a < b , -1, 1) ' Ascending
-	'return iif(a > b , -1, 1) ' Descending
+
 end function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 

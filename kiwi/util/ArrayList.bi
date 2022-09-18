@@ -214,11 +214,12 @@
 		@param c is the Comparator to use for the ArrayList sorting
 	'/
 	sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
-		if fCount>1 then
-			Dim i as UInteger
-			Dim j as UInteger
-			for i = 1 to base.fCount-1
-				for j = 0 to base.fCount-1
+		
+		' ArrayList.sort will run only if the ArrayList holds
+		' more than 2 elements
+		if fCount > 1 then
+			for i as UInteger = 1 to base.fCount - 1
+				for j as UInteger = 0 to base.fCount - 1
 					if c.compare(this.fElements(i),this.fElements(j))<0 then
 						' Swap element i to j
 						Swap this.fElements(i), this.fElements(j)
@@ -226,6 +227,7 @@
 				next j
 			next i 
 		end if	
+		
 	end sub
 	
 	/'
