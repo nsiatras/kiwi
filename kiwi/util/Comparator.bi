@@ -30,4 +30,27 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
+#macro MACRO_DefineComparator(object_type)
+	' The following ifndef checks if a Comparator for the given
+	' type (object_type) has already been defined
+	#ifndef KIWI_COMPARATOR_TYPE_##object_type
+	
+	Type Comparator_##object_type extends Object
 
+		public:
+			declare constructor()
+			declare virtual function compare(a as ##object_type, b as ##object_type) as Integer
+	End Type
+
+	constructor Comparator_##object_type()
+			
+	end constructor
+	
+	function Comparator_##object_type.compare(a as ##object_type, b as ##object_type) as Integer
+		return 0
+	end function
+
+
+	#define KIWI_COMPARATOR_TYPE_##object_type
+#endif
+#endmacro 
