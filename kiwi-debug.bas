@@ -40,7 +40,8 @@ Type studentComparator extends Comparator_Student
 	declare function compare(a as student, b as student) as Integer
 End Type
 
-function studentComparator.compare(a as student, b as student) as Integer	
+function studentComparator.compare(a as student, b as student) as Integer
+
 	'return iif(a.grade >= b.grade , 1, -1) ' Ascending
 	return iif(a.grade <= b.grade , 1, -1) ' Descending
 end function
