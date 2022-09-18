@@ -65,8 +65,21 @@ Type File extends Object
 		declare sub setPathName(ByVal pathname as String)
 		declare function getPath() as String
 		declare function getSize() as LongInt
+		
+		' Constants
+		Static pathSeparator as const String*1
 			
 End Type
+
+/'
+	The system-dependent path-separator character, represented as a 
+	string for convenience.
+'/
+#ifdef __FB_WIN32__
+	dim File.pathSeparator as const String*1 = "\"
+#else
+	dim File.pathSeparator as const String*1 = "/"
+#endif
 
 /'
 	Creates a new File instance
@@ -256,7 +269,7 @@ sub File.listFiles(files() as File)
 	Dim mask as Integer = fbDirectory Or fbHidden Or fbSystem Or fbArchive Or fbReadOnly
 	
 	' The SYSTEM_PATH_SEPARATOR is defined in kiwi/core/Core.bi		
-	filename = Dir(this.fPathName & SYSTEM_PATH_SEPARATOR & "*", mask)				
+	filename = Dir(this.fPathName & File.pathSeparator & "*", mask)				
 
 	Dim counter as Integer = 0
 	Dim newFile as File
@@ -267,7 +280,7 @@ sub File.listFiles(files() as File)
 			case ".."
 			case else
 				' Create a new File and add it to the files() array
-				Dim newFile as File = this.fPathName & SYSTEM_PATH_SEPARATOR & filename
+				Dim newFile as File = this.fPathName & File.pathSeparator & filename
 				Redim preserve files(counter) as File
 				files(counter) = newFile
 				counter = counter + 1
