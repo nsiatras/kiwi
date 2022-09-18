@@ -206,41 +206,7 @@
 	function ArrayList_##list_type.isEmpty() as Boolean
 		return base.fCount = 0
 	end function
-	
-	Sub ArrayList_##list_type.quicksort(byref c as Comparator_##list_type, startIndex As UInteger, endIndex As UInteger)
-
-		Dim As UInteger sortSize = endIndex - startIndex + 1
-		Dim i as UInteger = startIndex
-		Dim j as UInteger = endIndex
 		
-		if sortSize < 2 then 
-			exit sub
-		end if
-		
-		Dim pivot as ##list_type = this.fElements(startIndex + sortSize \ 2)
-
-		Do
-			while c.Compare(this.fElements(i),pivot) < 0
-				i += 1
-			wend
-			
-			while c.Compare(pivot , this.fElements(j)) < 0
-				j -= 1
-			wend
-			
-			if i <= j then
-				Swap this.fElements(i), this.fElements(j)
-				i += 1
-				j -= 1
-			end if
-			
-		Loop Until i > j
-
-		if startIndex < j then this.quicksort(c, startIndex, j)
-		if i < endIndex then this.quicksort(c, i, endIndex)
-
-	End Sub
-	
 	/'
 		Sorts this ArrayList according to the order induced by the 
 		specified Comparator. The sort is stable: this method must 
@@ -249,7 +215,8 @@
 		@param c is the Comparator to use for the ArrayList sorting
 	'/
 	sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
-		this.quicksort(c,0, ubound(this.fElements)-1)			
+		' Ask the comparator to perform a Quick Sort
+		c.quicksort(this.fElements(), 0, ubound(this.fElements)-1)			
 	end sub
 	
 	/'
