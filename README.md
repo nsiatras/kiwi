@@ -17,4 +17,4 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 
 ### Kiwi.Util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/Collections#arraylist)
-* Comparator
+* [Comparator](https://github.com/nsiatras/kiwi/wiki/Collections#how-to-sort-an-array-using-a-comparator)
