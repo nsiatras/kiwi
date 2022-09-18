@@ -210,18 +210,17 @@
 		Sorts this ArrayList according to the order induced by the 
 		specified Comparator. The sort is stable: this method must 
 		not reorder equal elements.
+		
+		@param c is the Comparator to use for the ArrayList sorting
 	'/
 	sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
 		Dim i as UInteger
 		Dim j as UInteger
-		Dim tmp as ##list_type
-		
 		for i = 1 to base.fCount-1
 			for j = 0 to base.fCount-1
 				if c.compare(this.fElements(i),this.fElements(j))<0 then
-					tmp = this.fElements(j)
-					this.fElements(j) = this.fElements(i)
-					this.fElements(i) = tmp
+					' Swap element i to j
+					Swap this.fElements(i), this.fElements(j)
 				end if
 			next j
 		next i 	
