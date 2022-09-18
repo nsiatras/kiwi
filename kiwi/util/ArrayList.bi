@@ -211,7 +211,6 @@
 		@param c is the Comparator to use for the ArrayList sorting
 	'/
 	sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
-		
 		' ArrayList.sort will run only if the ArrayList holds
 		' more than 2 elements
 		if fCount > 1 then
@@ -224,7 +223,6 @@
 				next j
 			next i 
 		end if	
-		
 	end sub
 	
 	/'

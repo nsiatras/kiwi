@@ -4,9 +4,11 @@
 Dim myArrayList As ArrayList_Double
 
 ' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 9
+for i as Integer = 0 to 10000
 	myArrayList.add(Math.random())
 next i 
+
+
 
 'print "ArrayList Elements Before Sort:"
 'for i as Integer = 0 to myArrayList.size()-1
@@ -20,17 +22,26 @@ Type myComparator extends Comparator_Double
 End Type
 
 function myComparator.compare(a as Double, b as Double) as Integer
-	return iif(a < b , -1, 1) ' Ascending
-
+	if a < b then
+		return -1
+	elseif a > b then
+		return 1
+	else 
+		return 0
+	end if
+	
+	'return iif(a < b , -1, 1) ' Ascending
 end function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-' Sort the array using the comparator
-myArrayList.sort(myComparator)
+print "Sorting..."
 
-' Print the Sorted Data of the ArrayList
-print ""
-print "ArrayList Elements After Sort:"
+' Sort the array using the comparator
+Dim t as Double
+t = timer
+myArrayList.sort(myComparator)
+print timer - t
+
 for i as Integer = 0 to myArrayList.size()-1
-	print "Element " & i &" = " & myArrayList.get(i)
+	'print "Element " & i &" = " & myArrayList.get(i)
 next
