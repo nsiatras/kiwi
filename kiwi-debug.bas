@@ -4,7 +4,7 @@
 Dim myArrayList As ArrayList_Double
 
 ' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 10
+for i as Integer = 0 to 1
 	myArrayList.add(Math.random())
 next i 
 
