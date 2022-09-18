@@ -30,131 +30,45 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "..\core\Core.bi"
-#include once "Comparator.bi"
-#include once "vbcompat.bi"
-
-#macro MACRO_INTERNAL_DefineAbstractList(list_type)
+Type AbstractList extends Object
 	
-	' The following ifndef checks if a List for the given
-	' type (list_type) has already been defined
-	#ifndef KIWI_AbstractList_TYPE_##list_type
-		
-		Type AbstractList_##list_type extends Object
+	protected:
+		Dim fCount as UInteger = 0 
 			
-			protected:
-				declare sub ResizeList(items as Integer)
-				Dim fElements(any) as list_type
-				Dim fCount as UInteger = 0 
-							
-			public:
-				declare constructor()
+	public:
+		declare constructor()
 
-				declare virtual function add(byref e as ##list_type) as Boolean
-				declare virtual function remove(byval index as UInteger) as ##list_type
-				declare virtual function get(byval index as UInteger) as ##list_type
-				declare virtual function set(byval index as UInteger, byref element as ##list_type) as ##list_type
-				declare virtual function size() as UInteger
-				declare virtual function isEmpty() as Boolean
-				
-				'declare virtual sub sort(c as Comparator_##list_type)
-				
-				declare virtual sub clean() 				
-		End Type
+		declare virtual function size() as UInteger
+		declare virtual function isEmpty() as Boolean	
+		declare virtual sub clean() 				
+End Type
 
-		/'
-			Initializes a new Abstract List Object
-		'/
-		constructor AbstractList_##list_type()
-			fCount = 0
-		end constructor
-		
-		/'
-			Appends the specified element to the end of this list.
-			
-			@param e is the element to be appended to this Array List.
-		'/
-		function AbstractList_##list_type.add(byref e as ##list_type) as Boolean
-			print "AbstractList_##list_type.add() not yet implemented!"
-			return false
-		end function
-		
-		/'
-			Removes the element at the specified position in this list.
-			Shifts any subsequent elements to the left (subtracts one from their
-			indices).
-			
-			@param index is the index of the element to be removed
-		'/
-		function AbstractList_##list_type.remove(byval index as UInteger) as ##list_type
-			print "AbstractList_##list_type.remove() not yet implemented!"
-			return fElements(0)
-		end function
+/'
+	Initializes a new Abstract List Object
+'/
+constructor AbstractList()
+	fCount = 0
+end constructor
 
-		/'
-			Returns the element at the specified position in this list.
-			
-			@param index is the index of the element to return.
-		'/
-		function AbstractList_##list_type.get(byval index as UInteger) as ##list_type
-			print "AbstractList_##list_type.get() not yet implemented!"
-			return this.fElements(index)
-		end function
-		
-		/'
-			Replaces the element at the specified position in this list with
-			the specified element and returns the element previously 
-			at the specified position.
-			
-			@param index is the index of the element to replace.
-			@param element is the element to be stored at the specified position
-		'/
-		function AbstractList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
-			print "AbstractList_##list_type.set() not yet implemented!"
-			return fElements(0)
-		end function
-		
-		/'
-			Returns the number of elements in this AbstractList.
-		'/
-		function AbstractList_##list_type.size() as UInteger
-			print "AbstractList_##list_type.size() not yet implemented!"
-			return 0
-		end function
-		
-		/'
-			Returns true if this AbstractList contains no elements.
-		'/
-		function AbstractList_##list_type.isEmpty() as Boolean
-			print "AbstractList_##list_type.isEmpty() not yet implemented!"
-			return false
-		end function
-		
-		/'
-			Sorts the list
-		'/
-		'sub AbstractList_##list_type.sort(c as Comparator_##list_type)
-		
-		'end sub
-		
-		/'
-			Removes all of the elements from this AbstractList. The AbstractList will
-			be empty after this call returns.
-		'/
-		sub AbstractList_##list_type.clean() 
-			print "AbstractList_##list_type.clean() not yet implemented!"
-		end sub
-		
-		/'
-			AbstractList.ResizeList is used internally whenever elements 
-			are added or removed.
-		'/
-		sub AbstractList_##list_type.ResizeList(itemsToAdd as Integer)
-			this.fCount += itemsToAdd
-			redim preserve this.fElements(fCount)
-		End Sub
+/'
+	Returns the number of elements in this AbstractList.
+'/
+function AbstractList.size() as UInteger
+	return fCount
+end function
 
+/'
+	Returns true if this AbstractList contains no elements.
+'/
+function AbstractList.isEmpty() as Boolean
+	return fCount = 0
+end function
 
-	
-	#endif
-#endmacro
+/'
+	Removes all of the elements from this AbstractList. The AbstractList will
+	be empty after this call returns.
+'/
+sub AbstractList.clean() 
+	print "AbstractList_##list_type.clean() not yet implemented!"
+end sub
+

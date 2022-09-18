@@ -22,7 +22,7 @@
 	SOFTWARE.
 '/
 
-Type StringUtils extends object
+Type StringUtils extends Object
 	
 	public:
 		Declare Static Sub Split(byref stringToSplit as const String, byref delimeter as const String, result() as String)

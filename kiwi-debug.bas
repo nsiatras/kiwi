@@ -1,7 +1,5 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-
-
 ' Initialize a new ArrayList for String elements
 Dim myStringArrayList As ArrayList_String
 

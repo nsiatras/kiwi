@@ -31,32 +31,3 @@
 '/
 
 
-#macro MACRO_DefineComparator(comparatorType_type)
-	
-	' The following ifndef checks if a List for the given
-	' type (comparatorType_type) has already been defined
-	#ifndef KIWI_Comparator_TYPE_##comparatorType_type
-		
-		Type Comparator_##comparatorType_type extends Object
-			
-			protected:
-			
-							
-			public:
-				declare constructor()
-
-						
-		End Type
-
-		/'
-			Initializes a new Abstract List Object
-		'/
-		constructor Comparator_##comparatorType_type()
-		
-		end constructor
-		
-	
-		' define the KIWI_Comparator_TYPE_##comparatorType_type with the given list_type
-		#define KIWI_Comparator_TYPE_##comparatorType_type 
-	#endif
-#endmacro

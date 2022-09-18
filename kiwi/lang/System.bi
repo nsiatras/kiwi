@@ -24,9 +24,7 @@
 
 #include once "..\core\Core.bi"
 #include once "..\time\RealTimeClock.bi"
-
 #include once "crt\string.bi"
-#include once "vbcompat.bi"
 #include once "crt.bi" 
 
 #undef System
