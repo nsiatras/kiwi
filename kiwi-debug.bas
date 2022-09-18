@@ -1,14 +1,40 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi"
 
-' Declare a new file 
-Dim myDirectory as File = File("C:\Users\nsiat\Desktop\")
 
-Dim filesInDirectory() as File 				' This array holds the files included in the directory
-myDirectory.listFiles(filesInDirectory())	' List all files from the directory to filesInDirectory() array
 
-print "Files count: " & ubound(filesInDirectory) + 1
+' Initialize a new ArrayList for Double elements
+Dim myArrayList As ArrayList_Double
 
-for i as Integer = 0 to ubound(filesInDirectory)
-	print "File " & i & " " & filesInDirectory(i).getPath()
+' Add 10 Random double values to myArrayList
+for i as Integer = 0 to 999999
+	myArrayList.add(Math.random())
+next i 
+
+print "ArrayList Elements Before Sort:"
+for i as Integer = 0 to myArrayList.size()-1
+	'print "Element " & i &" = " & myArrayList.get(i)
+next
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Initialize a comparator in order to sort the array
+Type myComparator extends Comparator_Double
+	declare function compare(a as Double, b as Double) as Integer
+End Type
+
+function myComparator.compare(a as Double, b as Double) as Integer
+	return iif(a>=b, 1, -1) ' Ascending
+	'return iif(a<=b , 1, -1) 'Descending
+end function
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+' Sort the array using the comparator
+Dim t as Double = timer
+myArrayList.sort(myComparator)
+print timer - t
+
+' Print the Sorted Data of the ArrayList
+print ""
+print "ArrayList Elements After Sort:"
+for i as Integer = 0 to 5000
+	print "Element " & i &" = " & myArrayList.get(i)
 next
