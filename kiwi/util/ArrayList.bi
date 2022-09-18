@@ -48,7 +48,6 @@
 		
 		protected:
 			Dim fElements(any) as ##list_type
-		
 			declare sub ResizeList(items as Integer)
 							
 		public:
@@ -56,13 +55,11 @@
 							
 			declare function add(byref e as ##list_type) as Boolean
 			declare sub add(index as UInteger, byref e as ##list_type)
-			
 			declare function remove(byval index as UInteger) as ##list_type
 			declare function get(byval index as UInteger) as ##list_type
 			declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 			declare function size() as UInteger
 			declare function isEmpty() as Boolean
-			
 			declare sub sort(byref c as Comparator_##list_type) 	
 			declare sub clean() 				
 	End Type
@@ -238,14 +235,12 @@
 		Erase this.fElements
 		base.fCount = 0
 	end sub
-	
-	
+
+	' This is internally use to resize (redim) the fElements Array
 	sub ArrayList_##list_type.ResizeList(itemsToAdd as Integer)
 		base.fCount += itemsToAdd
 		redim preserve this.fElements(fCount)
-	End Sub
-
-		
+	end sub
 			
 	' define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
 	#define KIWI_ARRAYLIST_TYPE_##list_type 
