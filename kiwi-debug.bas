@@ -1,47 +1,58 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-' Initialize a new ArrayList for Double elements
-Dim myArrayList As ArrayList_Double
-
-' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 10000
-	myArrayList.add(Math.random())
-next i 
-
-
-
-'print "ArrayList Elements Before Sort:"
-'for i as Integer = 0 to myArrayList.size()-1
-'	print "Element " & i &" = " & myArrayList.get(i)
-'next
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Initialize a comparator in order to sort the array
-Type myComparator extends Comparator_Double
-	declare function compare(a as Double, b as Double) as Integer
+' In this example we will create an ArrayList that holds Students
+Type student
+	firstName as String
+	lastName As String
+	grade as Double
 End Type
 
-function myComparator.compare(a as Double, b as Double) as Integer
-	if a < b then
-		return -1
-	elseif a > b then
-		return 1
-	else 
-		return 0
-	end if
-	
-	'return iif(a < b , -1, 1) ' Ascending
+' Define a new ArrayList type that hold's student using the 
+' macro command "MACRO_DefineArrayList"
+MACRO_DefineArrayList(student)
+
+' Initialize a new ArrayList to hold students
+Dim studentsList As ArrayList_Student
+
+Dim student1 As student
+student1.firstName = "Nikos"
+student1.lastName = "Siatras"
+student1.grade = 9.5
+studentsList.Add(student1) ' Add student1 to students ArrayList
+
+Dim student2 As student
+student2.firstName = "Elon"
+student2.lastName = "Musk"
+student2.grade = 8.9
+studentsList.Add(student2) ' Add student2 to students ArrayList
+
+Dim student3 As student
+student3.firstName = "James"
+student3.lastName = "Gosling"
+student3.grade = 9.9
+studentsList.Add(student3) ' Add student3 to students ArrayList
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Initialize a Comparator_Student in order to sort 'student' type
+MACRO_DefineComparator(student)
+
+Type studentComparator extends Comparator_Student
+	declare function compare(a as student, b as student) as Integer
+End Type
+
+function studentComparator.compare(a as student, b as student) as Integer	
+	'return iif(a.grade >= b.grade , 1, -1) ' Ascending
+	return iif(a.grade <= b.grade , 1, -1) ' Descending
 end function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-print "Sorting..."
+' Sort the students list !
+studentsList.sort(studentComparator)
 
-' Sort the array using the comparator
-Dim t as Double
-t = timer
-myArrayList.sort(myComparator)
-print timer - t
+print "Students ArrayList contains " & studentsList.size() & " elements"
+print ""
 
-for i as Integer = 0 to myArrayList.size()-1
-	'print "Element " & i &" = " & myArrayList.get(i)
-next
+print "Students by grade (Descending): "
+for i as Integer = 0 to studentsList.size()-1
+	print "Student " & i & " = " & studentsList.get(i).firstName &" " & studentsList.get(i).lastName & " grade " & studentsList.get(i).grade
+next i
