@@ -1,8 +1,22 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi"
 
-' Declare a new file
-Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
 
-' Print the size of the File
-print "File size (bytes): " & myFile.getSize()
+
+' Initialize a new ArrayList for String elements
+Dim myStringArrayList As ArrayList_String
+
+' Add Data To myStringArrayList
+myStringArrayList.add("FreeBasic")
+myStringArrayList.add("Array")
+myStringArrayList.add("List")
+
+print "ArrayList contains " & myStringArrayList.size() & " elements"
+print ""
+
+print "Array List Data:"
+for i as Integer = 0 to myStringArrayList.size()-1
+	print "Element " & i &" = " & myStringArrayList.get(i)
+next
+
+
+

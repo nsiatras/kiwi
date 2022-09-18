@@ -23,28 +23,40 @@
 '/
 
 /'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
+	Description: A comparison function, which imposes a total ordering on
+	some collection of objects.  Comparators can be passed to a sort
+	method such as Collections.sort, Arrays.sort(Object[],Comparator) etc.
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-' Real Time Clock uses stdio.bi which defines a Type with name File
-' The kiwi/io/File.bi undefs that type in order to define the File
 
+#macro MACRO_DefineComparator(comparatorType_type)
+	
+	' The following ifndef checks if a List for the given
+	' type (comparatorType_type) has already been defined
+	#ifndef KIWI_Comparator_TYPE_##comparatorType_type
+		
+		Type Comparator_##comparatorType_type extends Object
+			
+			protected:
+			
+							
+			public:
+				declare constructor()
 
-#include once "time\RealTimeClock.bi"
+						
+		End Type
 
-#include once "core\Core.bi"
-
-#include once "nio\Charset.bi"
-
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-#include once "lang\StringUtils.bi"
-
-#include once "util\Comparator.bi"
-#include once "util\ArrayList.bi"
-
-
+		/'
+			Initializes a new Abstract List Object
+		'/
+		constructor Comparator_##comparatorType_type()
+		
+		end constructor
+		
+	
+		' define the KIWI_Comparator_TYPE_##comparatorType_type with the given list_type
+		#define KIWI_Comparator_TYPE_##comparatorType_type 
+	#endif
+#endmacro

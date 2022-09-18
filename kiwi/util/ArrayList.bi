@@ -33,13 +33,19 @@
 #include once "..\core\Core.bi"
 #include once "..\lang\Math.bi"
 #include once "AbstractList.bi"
+#include once "Comparator.bi"
 #include once "vbcompat.bi"
 
 
 #macro MACRO_DefineArrayList(list_type)
 	
+	' Define a comparator List type of that type
+	'MACRO_DefineComparator(listType)
+	
+	' Define an abstract List type of that type
 	MACRO_INTERNAL_DefineAbstractList(list_type)
 	
+		
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type

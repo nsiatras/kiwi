@@ -31,6 +31,7 @@
 '/
 
 #include once "..\core\Core.bi"
+#include once "Comparator.bi"
 #include once "vbcompat.bi"
 
 #macro MACRO_INTERNAL_DefineAbstractList(list_type)
@@ -55,8 +56,11 @@
 				declare virtual function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare virtual function size() as UInteger
 				declare virtual function isEmpty() as Boolean
+				
+				'declare virtual sub sort(c as Comparator_##list_type)
+				
 				declare virtual sub clean() 				
-		end Type
+		End Type
 
 		/'
 			Initializes a new Abstract List Object
@@ -125,6 +129,13 @@
 			print "AbstractList_##list_type.isEmpty() not yet implemented!"
 			return false
 		end function
+		
+		/'
+			Sorts the list
+		'/
+		'sub AbstractList_##list_type.sort(c as Comparator_##list_type)
+		
+		'end sub
 		
 		/'
 			Removes all of the elements from this AbstractList. The AbstractList will
