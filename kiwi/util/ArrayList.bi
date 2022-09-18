@@ -63,7 +63,7 @@
 			declare function size() as UInteger
 			declare function isEmpty() as Boolean
 			
-			declare sub sort(c as Comparator_##list_type) 	
+			declare sub sort(byref c as Comparator_##list_type) 	
 			declare sub clean() 				
 	End Type
 	
@@ -211,7 +211,7 @@
 		specified Comparator. The sort is stable: this method must 
 		not reorder equal elements.
 	'/
-	sub ArrayList_##list_type.sort(c as Comparator_##list_type) 
+	sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
 		Dim i as UInteger
 		Dim j as UInteger
 		Dim tmp as ##list_type
