@@ -212,7 +212,19 @@
 		not reorder equal elements.
 	'/
 	sub ArrayList_##list_type.sort(c as Comparator_##list_type) 
-	
+		Dim i as UInteger
+		Dim j as UInteger
+		Dim tmp as ##list_type
+		
+		for i = 1 to base.fCount-1
+			for j = 0 to base.fCount-1
+				if c.compare(this.fElements(i),this.fElements(j))<0 then
+					tmp = this.fElements(j)
+					this.fElements(j) = this.fElements(i)
+					this.fElements(i) = tmp
+				end if
+			next j
+		next i 	
 	end sub
 	
 	/'

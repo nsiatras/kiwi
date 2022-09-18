@@ -1,43 +1,37 @@
 ﻿#include once "kiwi\kiwi.bi"
 
 ' Initialize a new ArrayList for String elements
-Dim myStringArrayList As ArrayList_String
+Dim myStringArrayList As ArrayList_Double
 
-' Add Data To myStringArrayList
-myStringArrayList.add("FreeBasic")
-myStringArrayList.add("Array")
-myStringArrayList.add("List")
+' Add 10 Random double values to myStringArrayList
+for i as Integer = 0 to 9
+	myStringArrayList.add(Math.random())
+next i 
 
-print "ArrayList contains " & myStringArrayList.size() & " elements"
-print ""
 
-print "Array List Data:"
+print "ArrayList Elements Before Sort:"
 for i as Integer = 0 to myStringArrayList.size()-1
 	print "Element " & i &" = " & myStringArrayList.get(i)
 next
 
-' Initialize a comparator
-Type myComparator extends Comparator_String
-	declare function compare(a as String, b as String) as Integer
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Initialize a comparator in order to sort the array
+Type myComparator extends Comparator_Double
+	declare function compare(a as Double, b as Double) as Integer
 End Type
 
-function myComparator.compare(a as String, b as String) as Integer
-	if a < b then
-		return -1
-	elseif a>b then
-		return 1
-	else 
-		return 0
-	end if
+function myComparator.compare(a as Double, b as Double) as Integer
+	return iif(a < b , -1, 1) ' Ascending
+	'return iif(a > b , -1, 1) ' Descending
 end function
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-
+' Sort the array using the comparator
 myStringArrayList.sort(myComparator)
 
-print "Array Sorted Data:"
+' Print the Sorted Data of the ArrayList
+print ""
+print "ArrayList Elements After Sort:"
 for i as Integer = 0 to myStringArrayList.size()-1
 	print "Element " & i &" = " & myStringArrayList.get(i)
 next
-
-
-
