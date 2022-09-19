@@ -32,8 +32,8 @@
 
 #include once "..\core\Core.bi"
 #include once "..\lang\Math.bi"
-#include once "List.bi"
-#include once "AbstractList.bi"
+'#include once "List.bi"
+'#include once "AbstractList.bi"
 #include once "Comparator.bi"
 
 ' The following Define allows the user to easy define ArrayLists
@@ -42,7 +42,6 @@
 
 #macro MACRO_DefineArrayList(list_type)
 	
-	' Interfaces are not yet implemented 
 	' Define a List Type for the given List_Type 
 	'MACRO_DefineList(list_type) 
 	
@@ -53,11 +52,12 @@
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
 		
-	Type ArrayList_##list_type extends AbstractList ' implements List_##list_type
+	Type ArrayList_##list_type extends Object ' implements List_##list_type
 		
 		protected:
 			Dim fElements(any) as ##list_type
 			declare sub ResizeList(items as Integer)
+			Dim fCount as UInteger = 0 
 						
 		public:
 			declare constructor()
@@ -81,8 +81,7 @@
 	constructor ArrayList_##list_type()
 		fCount = 0
 	end constructor
-
-		
+	
 	/'
 		Appends the specified element to the end of this list.
 		
@@ -113,7 +112,7 @@
 			this.fElements(fCount - 1) = this.fElements(fCount - 2)
 			this.fElements(fCount - 2) = e
 		else
-			' Make a new spot to the array
+			' Make a new spot to the array holding the ArrayList data
 			this.ResizeList(+1)
 			
 			' Calculate the number of elements we have to move
@@ -222,7 +221,6 @@
 		fCount = 0
 	end sub
 
-	
 	/'
 		Returns the number of elements in this ArrayList.
 	'/
@@ -246,8 +244,6 @@
 			
 	' define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
 	#define KIWI_ARRAYLIST_TYPE_##list_type 
-	
-	
 	
 #endif
 #endmacro

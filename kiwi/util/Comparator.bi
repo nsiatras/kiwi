@@ -35,70 +35,71 @@
 #Define Comparator(object_type) Comparator_##object_type
 
 #macro MACRO_DefineComparator(object_type)
+
 	' The following ifndef checks if a Comparator for the given
 	' type (object_type) has already been defined
 	#ifndef KIWI_COMPARATOR_TYPE_##object_type
 	
-	Type Comparator_##object_type extends Object
+		Type Comparator_##object_type extends Object
 
-		public:
-			declare constructor()
-			declare virtual function compare(a as ##object_type, b as ##object_type) as Integer
-			
-			declare sub quickSort(items() as ##object_type, startIndex As UInteger, endIndex As UInteger)
-	End Type
+			public:
+				declare constructor()
+				declare virtual function compare(a as ##object_type, b as ##object_type) as Integer
+				
+				declare sub quickSort(items() as ##object_type, startIndex As UInteger, endIndex As UInteger)
+		End Type
 
-	constructor Comparator_##object_type()
+		constructor Comparator_##object_type()
+				
+		end constructor
+		
+		function Comparator_##object_type.compare(a as ##object_type, b as ##object_type) as Integer
+			return 0
+		end function
+		
+		/'
+			Uses the Quick Sort algorithm to sort the given array.
 			
-	end constructor
-	
-	function Comparator_##object_type.compare(a as ##object_type, b as ##object_type) as Integer
-		return 0
-	end function
-	
-	/'
-		Uses the Quick Sort algorithm to sort the given array.
-		
-		@param items is the Array to sort
-		@param startIndex is the start Index of the Array to sort
-		@param startIndex is the end index of the Array to sort
-	'/
-	sub Comparator_##object_type.quickSort(items() as ##object_type, startIndex As UInteger, endIndex As UInteger)
-		
-		Dim As UInteger sortSize = endIndex - startIndex + 1
-		Dim i as UInteger = startIndex
-		Dim j as UInteger = endIndex
-		
-		if sortSize < 2 then 
-			exit sub
-		end if
-		
-		Dim pivot as ##object_type = items(startIndex + sortSize \ 2)
-
-		Do
-			while this.compare(items(i), pivot) < 0
-				i += 1
-			wend
+			@param items is the Array to sort
+			@param startIndex is the start Index of the Array to sort
+			@param startIndex is the end index of the Array to sort
+		'/
+		sub Comparator_##object_type.quickSort(items() as ##object_type, startIndex As UInteger, endIndex As UInteger)
 			
-			while this.compare(pivot , items(j)) < 0
-				j -= 1
-			wend
+			Dim As UInteger sortSize = endIndex - startIndex + 1
+			Dim i as UInteger = startIndex
+			Dim j as UInteger = endIndex
 			
-			if i <= j then
-				Swap items(i), items(j)
-				i += 1
-				j -= 1
+			if sortSize < 2 then 
+				exit sub
 			end if
 			
-		Loop Until i > j
+			Dim pivot as ##object_type = items(startIndex + sortSize \ 2)
+
+			Do
+				while this.compare(items(i), pivot) < 0
+					i += 1
+				wend
+				
+				while this.compare(pivot , items(j)) < 0
+					j -= 1
+				wend
+				
+				if i <= j then
+					Swap items(i), items(j)
+					i += 1
+					j -= 1
+				end if
+				
+			Loop Until i > j
+			
+
+			if startIndex < j then this.quickSort(items(), startIndex, j)
+			if i < endIndex then this.quickSort(items(), i, endIndex)
 		
-
-		if startIndex < j then this.quickSort(items(), startIndex, j)
-		if i < endIndex then this.quickSort(items(), i, endIndex)
-	
-	end sub
+		end sub
 
 
-	#define KIWI_COMPARATOR_TYPE_##object_type
-#endif
+		#define KIWI_COMPARATOR_TYPE_##object_type
+	#endif
 #endmacro 
