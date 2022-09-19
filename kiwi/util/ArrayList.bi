@@ -38,7 +38,7 @@
 
 ' The following Define allows the user to easy define ArrayLists
 ' for example Dim myList as ArrayList(String)
-#Define ArrayList(list_type) ArrayList_##list_type 
+#define ArrayList(list_type) ArrayList_##list_type 
 
 #macro MACRO_DefineArrayList(list_type)
 	
