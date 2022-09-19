@@ -37,10 +37,8 @@ Type AbstractList extends Object
 			
 	public:
 		declare constructor()
-
-		declare virtual function size() as UInteger
-		declare virtual function isEmpty() as Boolean	
-		declare virtual sub clean() 				
+		
+		
 End Type
 
 /'
@@ -50,25 +48,4 @@ constructor AbstractList()
 	fCount = 0
 end constructor
 
-/'
-	Returns the number of elements in this AbstractList.
-'/
-function AbstractList.size() as UInteger
-	return fCount
-end function
-
-/'
-	Returns true if this AbstractList contains no elements.
-'/
-function AbstractList.isEmpty() as Boolean
-	return fCount = 0
-end function
-
-/'
-	Removes all of the elements from this AbstractList. The AbstractList will
-	be empty after this call returns.
-'/
-sub AbstractList.clean() 
-	print "AbstractList_##list_type.clean() not yet implemented!"
-end sub
 

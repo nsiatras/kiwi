@@ -30,6 +30,10 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
+' The following Define allows the user to easy define ArrayLists
+' for example Dim myList as ArrayList(String)
+#Define Comparator(object_type) Comparator_##object_type
+
 #macro MACRO_DefineComparator(object_type)
 	' The following ifndef checks if a Comparator for the given
 	' type (object_type) has already been defined

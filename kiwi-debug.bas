@@ -1,23 +1,22 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-
-
-' Initialize a new ArrayList for Double elements
-Dim myArrayList As ArrayList_Double
+' Initialize a new Array for Double Values
+Dim values(0 to 9) as Double
 
 ' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 999999
-	myArrayList.add(Math.random())
+for i as Integer = 0 to 9
+	values(i) = Math.random()
 next i 
 
-print "ArrayList Elements Before Sort:"
-for i as Integer = 0 to myArrayList.size()-1
-	'print "Element " & i &" = " & myArrayList.get(i)
+print "Array Elements Before Sort:"
+for i as Integer = 0 to ubound(values)
+	print "Element " & i &" = " & values(i)
 next
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Initialize a comparator in order to sort the array
-Type myComparator extends Comparator_Double
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Define a comparator Type
+MACRO_DefineComparator(Double)
+Type myComparator extends Comparator(Double)
 	declare function compare(a as Double, b as Double) as Integer
 End Type
 
@@ -25,16 +24,16 @@ function myComparator.compare(a as Double, b as Double) as Integer
 	return iif(a>=b, 1, -1) ' Ascending
 	'return iif(a<=b , 1, -1) 'Descending
 end function
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-' Sort the array using the comparator
-Dim t as Double = timer
-myArrayList.sort(myComparator)
-print timer - t
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Initialize a comparator and use it to sort the array
+Dim c as myComparator
+c.quickSort(values(),0, ubound(values))
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-' Print the Sorted Data of the ArrayList
 print ""
-print "ArrayList Elements After Sort:"
-for i as Integer = 0 to 5000
-	print "Element " & i &" = " & myArrayList.get(i)
+print "Array Elements After Sort:"
+for i as Integer = 0 to ubound(values)
+	print "Element " & i &" = " & values(i)
 next
