@@ -35,7 +35,6 @@
 ' The kiwi/io/File.bi undefs that type in order to define the File
 #include once "time\RealTimeClock.bi"
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
 #include once "core\Core.bi"
 
 #include once "nio\Charset.bi"
@@ -48,6 +47,7 @@
 '#include once "util\AbstractList.bi"
 #include once "util\Comparator.bi"
 #include once "util\ArrayList.bi"
+#include once "util\Queue.bi"
 #include once "util\HashMap.bi"
 
 
