@@ -1,29 +1,15 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-' In this example we will create an ArrayList that holds Students
-Type Student
-	firstName as String
-	lastName as String
-End Type
+Dim src(10) As String 
+Dim dest(10) As String
+Dim i as Integer
 
-' Tells FreeBasic, that you want to use a Queue with "Student" variables
-MACRO_DefineQueue(student)
+for i = 0 to 9
+    src(i) = "String #" & str(i)
+next
 
-' Initialize a new Queue to hold Students
-Dim studentsQueue as Queue(student)
+System.arraycopy(src(), 0, dest(), 0 , 10)
 
-Dim student1 as student
-student1.firstName = "Nikos"
-student1.lastName = "Siatras"
-studentsQueue.Add(student1) ' Add student1 to students ArrayList
-
-Dim student2 As student
-student2.firstName = "Elon"
-student2.lastName = "Musk"
-studentsQueue.Add(student2) ' Add student2 to students ArrayList
-
-
-while studentsQueue.isEmpty() = false
-	Dim tmp as Student = studentsQueue.poll()
-	print "Student " & tmp.firstName &" " & tmp.lastName &" was in the Queue"
-wend
+For i As Integer = 0 To Ubound(dest)-1
+    Print dest(i)
+Next i

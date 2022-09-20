@@ -158,7 +158,7 @@
 #endmacro
 
 ' Define lists for all Standard Data Types
-#ifndef KIWI_QueueS_FOR_ALL_STANDARD_DATA_TYPES
+#ifndef KIWI_Queues_FOR_ALL_STANDARD_DATA_TYPES
 	MACRO_DefineQueue(Boolean)
 	MACRO_DefineQueue(Byte)
 	MACRO_DefineQueue(UByte)
@@ -175,5 +175,5 @@
 	MACRO_DefineQueue(String)
 	MACRO_DefineQueue(Object)
 	
-	#define KIWI_QueueS_FOR_ALL_STANDARD_DATA_TYPES
+	#define KIWI_Queues_FOR_ALL_STANDARD_DATA_TYPES
 #endif
