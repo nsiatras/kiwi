@@ -61,7 +61,7 @@
 				' abstract methods found inside AbstractList (AbstractList.bi)
 				declare function add(byref e as ##list_type) as Boolean
 				declare sub add(index as UInteger, byref e as ##list_type)
-				declare function addAll(c as Collection_##list_type) as Boolean
+				declare function addAll(byref c as Collection_##list_type) as Boolean
 				declare function get(byval index as UInteger) as ##list_type
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function remove(byval index as UInteger) as ##list_type
@@ -139,7 +139,7 @@
 			@param c collection containing elements to be added to this collection
 			@return true if this collection changed as a result of the call
 		'/
-		function ArrayList_##list_type.addAll(c as Collection_##list_type) as Boolean
+		function ArrayList_##list_type.addAll(byref c as Collection_##list_type) as Boolean
 			for i as Integer = 0 to c.size() - 1
 				this.add(c.get(i))
 			next i

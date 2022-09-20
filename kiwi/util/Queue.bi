@@ -55,6 +55,7 @@
 				declare constructor()
 								
 				declare function add(byref e as ##list_type) as Boolean
+				declare function addAll(byref c as Collection_##list_type) as Boolean
 				declare function poll() as ##list_type
 				declare function peekFirst() as ##list_type
 				declare function peekLast() as ##list_type
@@ -82,6 +83,22 @@
 		function Queue_##list_type.add(byref e as ##list_type) as Boolean
 			return fMyArrayList.add(e)
 		end function
+		
+		/'
+			Adds all of the elements of the give collection to this collection.  
+			The behavior of this operation is undefined if the specified 
+			collection is modified while the operation is in progress.
+			
+			@param c collection containing elements to be added to this collection
+			@return true if this collection changed as a result of the call
+		'/
+		function Queue_##list_type.addAll(byref c as Collection_##list_type) as Boolean
+			for i as Integer = 0 to c.size() - 1
+				this.add(c.get(i))
+			next i
+			return true
+		end function
+		
 		
 		/'
 			Retrieves and removes the head of this queue.
