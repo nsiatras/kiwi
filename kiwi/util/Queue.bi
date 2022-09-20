@@ -23,9 +23,9 @@
 '/
 
 /'
-	Description: Resizable-array implementation of the List interface. 
-	Implements all optional list operations,  permits all element types 
-	and maintains insertion order.
+	Description: A collection designed for holding elements prior to processing.
+	Besides basic {@link Collection} operations, queues provide
+	additional insertion, extraction, and inspection operations.
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
