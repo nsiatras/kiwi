@@ -30,7 +30,7 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 #include once "..\core\Core.bi"
-#include once "AbstractList.bi"
+#include once "Collection.bi"
 #include once "ArrayList.bi"
 
 ' The following Define allows the user to easy define Queues

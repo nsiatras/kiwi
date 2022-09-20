@@ -32,7 +32,7 @@
 
 #include once "..\core\Core.bi"
 #include once "..\lang\Math.bi"
-#include once "AbstractList.bi"
+#include once "Collection.bi"
 
 
 ' The following Define allows the user to easy define ArrayLists
@@ -47,12 +47,12 @@
 	
 		' Define an AbstractList Type for the given List_Type 
 		' ArrayList inherits from the Abstract List
-		MACRO_DefineAbstractList(list_type)
+		MACRO_DefineCollection(list_type)
 		
 		' Define a Comparator Type for the given List_Type
 		MACRO_DefineComparator(list_type)
 			
-		Type ArrayList_##list_type extends AbstractList_##list_type
+		Type ArrayList_##list_type extends Collection_##list_type
 							
 			public:
 				declare constructor()
@@ -61,6 +61,7 @@
 				' abstract methods found inside AbstractList (AbstractList.bi)
 				declare function add(byref e as ##list_type) as Boolean
 				declare sub add(index as UInteger, byref e as ##list_type)
+				declare function addAll(c as Collection_##list_type) as Boolean
 				declare function get(byval index as UInteger) as ##list_type
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function remove(byval index as UInteger) as ##list_type
@@ -129,6 +130,14 @@
 			end if
 			
 		end sub
+		
+		function ArrayList_##list_type.addAll(c as Collection_##list_type) as Boolean
+			
+			for i as Integer =0 to c.size()-1
+				this.add(c.get(i))
+			next i
+			return true
+		end function
 		
 		/'
 			Returns the element at the specified position in this list.
