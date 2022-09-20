@@ -34,37 +34,50 @@ Type KObject extends Object
 		Dim fHashCode as Integer
 
 	public:
-		declare constructor()
-		declare destructor()
+		declare constructor()					' Constructor
+		declare constructor(o as KObject) 		' Copy Constructor
+		declare destructor()					' Destructor
+		
+		declare operator Let(value as KObject)	' Assignment Operator
 		
 		declare virtual function toString() as String
-		declare virtual function getHashCode() as Integer
-		declare operator let(value as KObject)	
-				
+		declare function getHashCode() as Integer
+		
 End Type
 
-Dim KObject.Hash_Code_Counter as UInteger = 10000
+Dim KObject.Hash_Code_Counter as UInteger = 0
 
 constructor KObject()
 	' Assign a HashCode to the KObject
-	KObject.Hash_Code_Counter += 1
+	KObject.Hash_Code_Counter = KObject.Hash_Code_Counter + 1
 	this.fHashCode = KObject.Hash_Code_Counter
+	print "KObject " & str(this.fHashCode) & " Initialized"
+end constructor
+
+constructor KObject(o as KObject)
+	print "Copy Constructor"
 end constructor
 
 destructor KObject()
 	'print "KObject " & str(this.fHashCode) & " destroyed"
 end destructor
 
-' Operator to compare KObjects
-operator = (a as KObject, b as KObject) as Integer
-    return a.getHashCode() = b.getHashCode()
-end operator
-
-' Let Operator is the Assignment Operator [=>]
-operator KObject.let(value as KObject)
+/'
+	Assignment Operator [=>]
+'/
+operator KObject.Let(value as KObject)
+	print "Object " & value.getHashCode() &" assigned to " & this.getHashCode()
 	if this.fHashCode <> value.getHashCode() then
 		this.fHashCode = value.getHashCode()
 	endif
+end operator
+
+/'
+	Equal Operator
+	Checks whether two objects are from the same reference
+'/
+operator = (a as KObject, b as KObject) as Integer
+    return a.getHashCode() = b.getHashCode()
 end operator
 
 function KObject.toString() as String
@@ -74,12 +87,5 @@ end function
 function KObject.getHashCode() as Integer
 	return this.fHashCode
 end function
-
-
-
-
-
-
-
 
 
