@@ -1,32 +1,35 @@
-﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Type Student
+﻿#include once "kiwi\kiwi.bi"
+
+' In this example we will create an ArrayList that holds Students
+Type student extends KObject
 	firstName as String
 	lastName as String
 End Type
 
-Dim student1 As Student
-student1.firstName = "Elon"
-student1.lastName = "Musk"
 
-Dim byref student2 As Student = student1
-'student2 = *Cast(Student ptr, @student1)
+' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
+MACRO_DefineArrayList(student)
 
-print @student1
-print @student2
+' Initialize a new ArrayList to hold students
+Dim students as ArrayList(student)
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'Type Student
-'	firstName as String
-'	lastName as String
-'End Type
+Dim student1 as student
+student1.firstName = "Nikos"
+student1.lastName = "Siatras"
+students.Add(student1) ' Add student1 to students ArrayList
 
-'Dim student1 As Student Ptr = new Student()
-'student1->firstName = "Elon"
-'student1->lastName = "Musk"
+Dim student2 As student
+student2.firstName = "Elon"
+student2.lastName = "Musk"
+students.Add(student2) ' Add student2 to students ArrayList
 
+print "Student 1:" & student1.getHashCode()
+print "Student 2:" & student2.getHashCode()
 
-'Dim byref student2 As Student Ptr  = student1
+student2.firstName = "AAAA"
 
-'print @student1
-'print @student2
-
+print ""
+print "Students From Array List: "
+for i as Integer = 0 to students.size()-1
+	print "Student " & i & " = " & students.get(i).firstName
+next i

@@ -22,6 +22,8 @@
 	SOFTWARE.
 '/
 
+#include once "KObject.bi"
+
 #ifndef KIWI_CORE_INITIALIZED
   
 	' Fast Array Copy

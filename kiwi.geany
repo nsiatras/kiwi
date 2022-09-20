@@ -29,7 +29,8 @@ long_line_column=72
 
 [files]
 current_page=0
-FILE_NAME_0=224;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi-debug.bas;0;4
+FILE_NAME_0=407;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi-debug.bas;0;4
+FILE_NAME_1=1517;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi%5Ccore%5CKObject.bi;0;4
 
 [build-menu]
 FreeBasicFT_00_LB=_Compile
