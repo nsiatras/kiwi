@@ -1,15 +1,10 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-Dim src(10) As String 
-Dim dest(10) As String
-Dim i as Integer
+' Tells FreeBasic, that you want to use HashMaps
+' accepting Integer as Value and Double as Key
+MACRO_DefineHashMap(Integer, Double)
 
-for i = 0 to 9
-    src(i) = "String #" & str(i)
-next
+' Initialize a new ArrayList for Double elements
+Dim myHashmap as HashMap(Integer, Double)
 
-System.arraycopy(src(), 0, dest(), 0 , 10)
 
-For i As Integer = 0 To Ubound(dest)-1
-    Print dest(i)
-Next i

@@ -99,7 +99,6 @@
 			return true
 		end function
 		
-		
 		/'
 			Retrieves and removes the head of this queue.
 		
@@ -120,7 +119,6 @@
 			return fMyArrayList.get(0)
 		end function	
 		
-			
 		/'
 			Retrieves, but does not remove, the last element of this queue, 
 			or returns null if this queue is empty.
