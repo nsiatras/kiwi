@@ -16,5 +16,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 * [System](https://github.com/nsiatras/kiwi/wiki/System)
 
 ### Kiwi.Util
-* [ArrayList](https://github.com/nsiatras/kiwi/wiki/Collections#arraylist)
-* [Comparator](https://github.com/nsiatras/kiwi/wiki/Collections#how-to-sort-an-array-using-a-comparator)
+* [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
+* [Comparator](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Comparator)
+* [Queue](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Queue)
+
