@@ -131,9 +131,16 @@
 			
 		end sub
 		
-		function ArrayList_##list_type.addAll(c as Collection_##list_type) as Boolean
+		/'
+			Adds all of the elements of the give collection to this collection.  
+			The behavior of this operation is undefined if the specified 
+			collection is modified while the operation is in progress.
 			
-			for i as Integer =0 to c.size()-1
+			@param c collection containing elements to be added to this collection
+			@return true if this collection changed as a result of the call
+		'/
+		function ArrayList_##list_type.addAll(c as Collection_##list_type) as Boolean
+			for i as Integer = 0 to c.size() - 1
 				this.add(c.get(i))
 			next i
 			return true
