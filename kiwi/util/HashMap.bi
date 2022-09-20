@@ -41,6 +41,8 @@
 			public:
 				declare constructor()
 				
+				declare function put(key as ##keyType, value as ##valueType) as ##valueType
+				
 		End Type
 		
 		
@@ -48,9 +50,16 @@
 			
 		end constructor
 		
-
-		#define KIWI_HashMap_##keyType_##valueType
+		/'
+			Associates the specified value with the specified key in this map.
+			If the map previously contained a mapping for the key, the old
+			value is replaced.
+		'/
+		function HashMap_##keyType_##valueType.put(key as ##keyType, value as ##valueType) as ##valueType
+			return value
+		end function
 		
+		
+		#define KIWI_HashMap_##keyType_##valueType	
 	#endif
-	
 #endmacro

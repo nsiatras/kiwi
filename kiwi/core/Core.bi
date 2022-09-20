@@ -22,8 +22,6 @@
 	SOFTWARE.
 '/
 
-#include once "NULL.bi"
-
 #ifndef KIWI_CORE_INITIALIZED
   
 	' Fast Array Copy

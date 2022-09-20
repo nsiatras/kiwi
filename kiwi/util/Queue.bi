@@ -171,7 +171,6 @@
 	MACRO_DefineQueue(Single)
 	MACRO_DefineQueue(Double)
 	MACRO_DefineQueue(String)
-	MACRO_DefineQueue(Object)
 	
 	#define KIWI_Queues_FOR_ALL_STANDARD_DATA_TYPES
 #endif

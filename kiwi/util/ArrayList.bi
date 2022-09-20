@@ -44,7 +44,7 @@
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
-	
+		
 		' Define an AbstractList Type for the given List_Type 
 		' ArrayList inherits from the Abstract List
 		MACRO_DefineCollection(list_type)
@@ -269,7 +269,6 @@
 	MACRO_DefineArrayList(Single)
 	MACRO_DefineArrayList(Double)
 	MACRO_DefineArrayList(String)
-	MACRO_DefineArrayList(Object)
 	
 	#define KIWI_ARRAYLISTS_FOR_ALL_STANDARD_DATA_TYPES
 #endif
