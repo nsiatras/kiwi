@@ -44,7 +44,7 @@
 #include once "lang\StringUtils.bi"
 
 '#include once "util\List.bi"
-'#include once "util\AbstractList.bi"
+#include once "util\AbstractList.bi"
 #include once "util\Comparator.bi"
 #include once "util\ArrayList.bi"
 #include once "util\Queue.bi"

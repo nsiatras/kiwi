@@ -29,23 +29,54 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
+#include once "Comparator.bi"
 
-Type AbstractList extends Object
-	
-	protected:
-		Dim fCount as UInteger = 0 
+#macro MACRO_DefineAbstractList(list_type)
+	#ifndef KIWI_ABSTRACTLIST_TYPE_##list_type
+		
+		' Define a Comparator Type for the given List_Type
+		MACRO_DefineComparator(list_type)
+
+		Type AbstractList_##list_type extends Object
 			
-	public:
-		declare constructor()
-		
-		
-End Type
+			protected:
+				declare sub ResizeList(items as Integer)
+				
+				Dim fElements(any) as ##list_type
+				Dim fCount as UInteger = 0 
+					
+			public:
+				declare constructor()
+				
+				declare abstract function add(byref e as ##list_type) as Boolean
+				declare abstract sub add(index as UInteger, byref e as ##list_type)
+				declare abstract function get(byval index as UInteger) as ##list_type
+				declare abstract function set(byval index as UInteger, byref element as ##list_type) as ##list_type
+				declare abstract function remove(byval index as UInteger) as ##list_type
+				declare abstract sub sort(byref c as Comparator_##list_type) 
+				declare abstract sub clean() 	
+				declare abstract function size() as UInteger
+				declare abstract function isEmpty() as Boolean			
+	
+		End Type
 
-/'
-	Initializes a new Abstract List Object
-'/
-constructor AbstractList()
-	fCount = 0
-end constructor
+		/'
+			Initializes a new Abstract List Object
+		'/
+		constructor AbstractList_##list_type()
+			fCount = 0
+		end constructor
+		
+		
+		' This is internally use to resize (redim) the fElements Array
+		sub AbstractList_##list_type.ResizeList(itemsToAdd as Integer)
+			fCount += itemsToAdd
+			redim preserve this.fElements(fCount)
+		end sub
+		
+		#define KIWI_ABSTRACTLIST_TYPE_##list_type
+		
+	#endif
+#endmacro
 
 

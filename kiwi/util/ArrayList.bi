@@ -32,220 +32,209 @@
 
 #include once "..\core\Core.bi"
 #include once "..\lang\Math.bi"
-'#include once "List.bi"
-'#include once "AbstractList.bi"
-#include once "Comparator.bi"
+#include once "AbstractList.bi"
+
 
 ' The following Define allows the user to easy define ArrayLists
 ' for example Dim myList as ArrayList(String)
 #define ArrayList(list_type) ArrayList_##list_type 
 
 #macro MACRO_DefineArrayList(list_type)
-	
-	' Define a List Type for the given List_Type 
-	'MACRO_DefineList(list_type) 
-	
-	' Define a Comparator Type for the given List_Type
-	MACRO_DefineComparator(list_type)
 		
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
+	
+		' Define an AbstractList Type for the given List_Type 
+		' ArrayList inherits from the Abstract List
+		MACRO_DefineAbstractList(list_type)
 		
-	Type ArrayList_##list_type extends Object ' implements List_##list_type
-		
-		protected:
-			Dim fElements(any) as ##list_type
-			declare sub ResizeList(items as Integer)
-			Dim fCount as UInteger = 0 
-						
-		public:
-			declare constructor()
+		' Define a Comparator Type for the given List_Type
+		MACRO_DefineComparator(list_type)
+			
+		Type ArrayList_##list_type extends AbstractList_##list_type
 							
-			declare function add(byref e as ##list_type) as Boolean
-			declare sub add(index as UInteger, byref e as ##list_type)
-			declare function get(byval index as UInteger) as ##list_type
-			declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
-			
-			declare function remove(byval index as UInteger) as ##list_type
-			declare sub sort(byref c as Comparator_##list_type) 
-			declare sub clean() 	
-
-			declare function size() as UInteger
-			declare function isEmpty() as Boolean			
-	End Type
-	
-	/'
-		Initializes a new ArrayList Object
-	'/
-	constructor ArrayList_##list_type()
-		fCount = 0
-	end constructor
-	
-	/'
-		Appends the specified element to the end of this list.
+			public:
+				declare constructor()
+								
+				' The following methods are declarations of the 
+				' abstract methods found inside AbstractList (AbstractList.bi)
+				declare function add(byref e as ##list_type) as Boolean
+				declare sub add(index as UInteger, byref e as ##list_type)
+				declare function get(byval index as UInteger) as ##list_type
+				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
+				declare function remove(byval index as UInteger) as ##list_type
+				declare sub sort(byref c as Comparator_##list_type) 
+				declare sub clean() 	
+				declare function size() as UInteger
+				declare function isEmpty() as Boolean			
+		End Type
 		
-		@param e is the element to be appended to this ArrayList.
-	'/
-	function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
-		ResizeList(1)
-		this.fElements(fCount - 1) = e
-		return true
-	end function
-	
-	/'
-		Inserts the specified element at the specified position in this list.
-		Shifts the element currently at that position (if any) and any
-		subsequent elements to the right (adds one to their indices).
+		/'
+			Initializes a new ArrayList Object
+		'/
+		constructor ArrayList_##list_type()
+			base.fCount = 0
+		end constructor
 		
-		@param index is the index at which the specified element is to be inserted
-		@param e is the element to be inserted
-	'/
-	sub ArrayList_##list_type.add(index as UInteger, byref e as ##list_type)
-					
-		' Check for insertion out of bounds !
-		index = Math.min(CUnsg(fCount), CUnsg(Math.max(CUnsg(0), CUnsg(index))))
+		/'
+			Appends the specified element to the end of this list.
+			
+			@param e is the element to be appended to this ArrayList.
+		'/
+		function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
+			base.ResizeList(1)
+			base.fElements(base.fCount - 1) = e
+			return true
+		end function
+		
+		/'
+			Inserts the specified element at the specified position in this list.
+			Shifts the element currently at that position (if any) and any
+			subsequent elements to the right (adds one to their indices).
+			
+			@param index is the index at which the specified element is to be inserted
+			@param e is the element to be inserted
+		'/
+		sub ArrayList_##list_type.add(index as UInteger, byref e as ##list_type)
+						
+			' Check for insertion out of bounds !
+			index = Math.min(CUnsg(base.fCount), CUnsg(Math.max(CUnsg(0), CUnsg(index))))
 
-		' trivial case, inserting at the end of the list
-		if(index = fCount-1) then
-			this.ResizeList(+1)
-			this.fElements(fCount - 1) = this.fElements(fCount - 2)
-			this.fElements(fCount - 2) = e
-		else
-			' Make a new spot to the array holding the ArrayList data
-			this.ResizeList(+1)
+			' trivial case, inserting at the end of the list
+			if(index = base.fCount-1) then
+				base.ResizeList(+1)
+				base.fElements(base.fCount - 1) = this.fElements(fCount - 2)
+				base.fElements(base.fCount - 2) = e
+			else
+				' Make a new spot to the array holding the ArrayList data
+				base.ResizeList(+1)
+				
+				' Calculate the number of elements we have to move
+				Dim elementsToMove as const uinteger = base.fCount - 1 - index
+				
+				'Move the elements to be moved...
+				#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
+					' CAUTION: Use memcpy only for standard/known length variables
+					memcpy(@base.fElements(index + 1), @base.fElements(index), elementsToMove * sizeOf(##list_type) )
+				#else
+					' We use a simple for loop to move array elements
+					' that are Strings or UDT
+					for i as Integer = ubound(base.fElements) to index step -1
+						base.fElements(i) = base.fElements(i-1)
+					next i
+				#endif
+
+				base.fElements(index) = e	
+			end if
 			
-			' Calculate the number of elements we have to move
-			Dim elementsToMove as const uinteger = fCount - 1 - index
+		end sub
+		
+		/'
+			Returns the element at the specified position in this list.
 			
-			'Move the elements to be moved...
+			@param index is the index of the element to return.
+		'/
+		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
+			return base.fElements(index)
+		end function
+		
+		/'
+			Replaces the element at the specified position in this list with
+			the specified element and returns the element previously 
+			at the specified position.
+			
+			@param index is the index of the element to replace.
+			@param element is the element to be stored at the specified position
+		'/
+		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
+			Dim previousElement as ##list_type
+			previousElement = this.fElements(index) 
+			base.fElements(index) = element
+			return previousElement
+		end function
+		
+		/'
+			Removes the element at the specified position in this list.
+			Shifts any subsequent elements to the left (subtracts one from their
+			indices).
+			
+			@param index is the index of the element to be removed
+		'/
+		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
+			dim elementToRemove as ##list_type
+			elementToRemove = base.fElements(index)
+			
+			' Removal of the last item of the list
+			if index = (base.fCount-1) then
+				base.ResizeList(-1)
+				return elementToRemove ' Return the removed element
+			endif
+			
+			' The list has only 2 elements and we have to remove the first
+			if (index = 0) and (base.fCount < 3) then
+				base.fElements(0) = this.fElements(1)
+				base.ResizeList(-1)
+				return elementToRemove ' Return the removed element
+			endif
+			
+			' The rest of the code applies for 3 or more elements.
+			' Move the elements to be moved...
+			Dim elementsToMove as const uinteger = base.fCount - 1 - index
 			#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
 				' CAUTION: Use memcpy only for standard/known length variables
-				memcpy(@this.fElements(index + 1), @this.fElements(index), elementsToMove * sizeOf(##list_type) )
+				memcpy(@base.fElements(index), @base.fElements(index + 1), elementsToMove * sizeOf(##list_type) )
 			#else
-				' We use a simple for loop to move array elements
-				' that are Strings or UDT
-				for i as Integer = ubound(this.fElements) to index step -1
-					this.fElements(i) = this.fElements(i-1)
+				for i as Integer = index + 1 to ubound(base.fElements)
+					base.fElements(i-1) = base.fElements(i)
 				next i
 			#endif
-
-			this.fElements(index) = e	
-		end if
-		
-	end sub
-	
-	/'
-		Returns the element at the specified position in this list.
-		
-		@param index is the index of the element to return.
-	'/
-	function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
-		return this.fElements(index)
-	end function
-	
-	/'
-		Replaces the element at the specified position in this list with
-		the specified element and returns the element previously 
-		at the specified position.
-		
-		@param index is the index of the element to replace.
-		@param element is the element to be stored at the specified position
-	'/
-	function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
-		Dim previousElement as ##list_type
-		previousElement = this.fElements(index) 
-		this.fElements(index) = element
-		return previousElement
-	end function
-	
-	/'
-		Removes the element at the specified position in this list.
-		Shifts any subsequent elements to the left (subtracts one from their
-		indices).
-		
-		@param index is the index of the element to be removed
-	'/
-	function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
-		dim elementToRemove as ##list_type
-		elementToRemove = this.fElements(index)
-		
-		' Removal of the last item of the list
-		if index = (fCount-1) then
-			this.ResizeList(-1)
-			return elementToRemove ' Return the removed element
-		endif
-		
-		' The list has only 2 elements and we have to remove the first
-		if (index = 0) and (fCount < 3) then
-			this.fElements(0) = this.fElements(1)
-			this.ResizeList(-1)
-			return elementToRemove ' Return the removed element
-		endif
-		
-		' The rest of the code applies for 3 or more elements.
-		' Move the elements to be moved...
-		Dim elementsToMove as const uinteger = fCount - 1 - index
-		#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
-			' CAUTION: Use memcpy only for standard/known length variables
-			memcpy(@this.fElements(index), @this.fElements(index + 1), elementsToMove * sizeOf(##list_type) )
-		#else
-			for i as Integer = index + 1 to ubound(this.fElements)
-				this.fElements(i-1) = this.fElements(i)
-			next i
-		#endif
-		
-		this.ResizeList(-1)
-		
-		return elementToRemove ' Return the removed element
-	end function
-	
-	/'
-		Sorts this ArrayList according to the order induced by the 
-		specified Comparator. The sort is stable: this method must 
-		not reorder equal elements.
-		
-		@param c is the Comparator to use for the ArrayList sorting
-	'/
-	sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
-		' Ask the comparator to perform a Quick Sort
-		c.quicksort(this.fElements(), 0, ubound(this.fElements)-1)			
-	end sub
-	
-	/'
-		Removes all of the elements from this ArrayList. The ArrayList will
-		be empty after this call returns.
-	'/
-	sub ArrayList_##list_type.clean() 
-		Erase this.fElements
-		fCount = 0
-	end sub
-
-	/'
-		Returns the number of elements in this ArrayList.
-	'/
-	function ArrayList_##list_type.size() as UInteger
-		return fCount
-	end function
-	
-	/'
-		Returns true if this ArrayList contains no elements.
-	'/
-	function ArrayList_##list_type.isEmpty() as Boolean
-		return fCount = 0
-	end function
-		
-
-	' This is internally use to resize (redim) the fElements Array
-	sub ArrayList_##list_type.ResizeList(itemsToAdd as Integer)
-		fCount += itemsToAdd
-		redim preserve this.fElements(fCount)
-	end sub
 			
-	' define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
-	#define KIWI_ARRAYLIST_TYPE_##list_type 
+			base.ResizeList(-1)
+			
+			return elementToRemove ' Return the removed element
+		end function
+		
+		/'
+			Sorts this ArrayList according to the order induced by the 
+			specified Comparator. The sort is stable: this method must 
+			not reorder equal elements.
+			
+			@param c is the Comparator to use for the ArrayList sorting
+		'/
+		sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
+			' Ask the comparator to perform a Quick Sort
+			c.quicksort(base.fElements(), 0, ubound(base.fElements)-1)			
+		end sub
+		
+		/'
+			Removes all of the elements from this ArrayList. The ArrayList will
+			be empty after this call returns.
+		'/
+		sub ArrayList_##list_type.clean() 
+			Erase base.fElements
+			base.fCount = 0
+		end sub
+
+		/'
+			Returns the number of elements in this ArrayList.
+		'/
+		function ArrayList_##list_type.size() as UInteger
+			return base.fCount
+		end function
+		
+		/'
+			Returns true if this ArrayList contains no elements.
+		'/
+		function ArrayList_##list_type.isEmpty() as Boolean
+			return base.fCount = 0
+		end function
+			
+		
+		' define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
+		#define KIWI_ARRAYLIST_TYPE_##list_type 
 	
-#endif
+	#endif
 #endmacro
 
 ' Define lists for all Standard Data Types
