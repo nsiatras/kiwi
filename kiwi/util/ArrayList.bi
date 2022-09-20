@@ -34,7 +34,6 @@
 #include once "..\lang\Math.bi"
 #include once "Collection.bi"
 
-
 ' The following Define allows the user to easy define ArrayLists
 ' for example Dim myList as ArrayList(String)
 #define ArrayList(list_type) ArrayList_##list_type 
@@ -85,7 +84,7 @@
 		'/
 		function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
 			base.ResizeList(1)
-			base.fElements(base.fCount - 1) = e
+			base.fElements(base.fCount - 1) =  e
 			return true
 		end function
 		

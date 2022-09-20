@@ -1,22 +1,32 @@
-﻿#include once "kiwi\kiwi.bi"
-
-' In this example we will create an ArrayList that holds Students
-Type student
+﻿'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Type Student
 	firstName as String
 	lastName as String
-	
 End Type
 
-' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
-MACRO_DefineArrayList(student)
+Dim student1 As Student
+student1.firstName = "Elon"
+student1.lastName = "Musk"
 
-' Initialize a new ArrayList to hold students
-Dim students as ArrayList(student)
+Dim byref student2 As Student = student1
+'student2 = *Cast(Student ptr, @student1)
 
-Dim student1 as student
-student1.firstName = "Nikos"
-student1.lastName = "Siatras"
+print @student1
+print @student2
 
-students.add(student1)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'Type Student
+'	firstName as String
+'	lastName as String
+'End Type
 
+'Dim student1 As Student Ptr = new Student()
+'student1->firstName = "Elon"
+'student1->lastName = "Musk"
+
+
+'Dim byref student2 As Student Ptr  = student1
+
+'print @student1
+'print @student2
 
