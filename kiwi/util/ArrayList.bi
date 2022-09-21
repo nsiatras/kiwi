@@ -66,12 +66,13 @@
 				declare function addAll(byref c as Collection_##list_type) as Boolean
 				#ifdef TYPE_IS_OBJECT
 				declare function get(byval index as UInteger) byref as ##list_type
+				declare function set(byval index as UInteger, byref element as ##list_type) byref as ##list_type
 				declare function remove(byval index as UInteger) byref as ##list_type
 				#else
 				declare function get(byval index as UInteger) as ##list_type
+				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function remove(byval index as UInteger) as ##list_type
 				#endif
-				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				
 				declare sub sort(byref c as Comparator_##list_type) 
 				declare sub clean() 	
@@ -175,9 +176,12 @@
 			@param index is the index of the element to replace.
 			@param element is the element to be stored at the specified position
 		'/
+		#ifdef TYPE_IS_OBJECT
+		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) byref as ##list_type
+		#else
 		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
-			Dim previousElement as ##list_type
-			previousElement = this.fElements(index) 
+		#endif
+			Dim byref previousElement as ##list_type = this.fElements(index) 
 			base.fElements(index) = element
 			return previousElement
 		end function
@@ -194,7 +198,7 @@
 		#else
 		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
 		#endif
-			dim byref elementToRemove as ##list_type = base.fElements(index)
+			Dim byref elementToRemove as ##list_type = base.fElements(index)
 			
 			' Removal of the last item of the list
 			if index = (base.fCount-1) then
