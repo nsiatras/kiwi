@@ -43,6 +43,9 @@
 	' type (list_type) has already been defined
 	#ifndef KIWI_Queue_TYPE_##list_type
 	
+		' Check if the given type is an object
+		MACRO_CheckIfTypeIsAnObject(list_type)
+	
 		' Define an ArrayList for the given list_type
 		' Queue Type holds data into an array list
 		MACRO_DefineArrayList(list_type)
@@ -56,9 +59,11 @@
 								
 				declare function add(byref e as ##list_type) as Boolean
 				declare function addAll(byref c as Collection_##list_type) as Boolean
+			
 				declare function poll() as ##list_type
 				declare function peekFirst() as ##list_type
 				declare function peekLast() as ##list_type
+				
 				declare sub clean() 	
 
 				declare function size() as UInteger
