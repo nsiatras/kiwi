@@ -49,17 +49,12 @@ Type File extends Object
 		
 		declare function isFile() as Boolean
 		declare function isDirectory() as Boolean
-		
 		declare function exists() as Boolean
-		
 		declare function canRead() as Boolean
 		declare function canWrite() as Boolean
-		
 		declare function createNewFile() as Boolean
 		declare function deleteFile() as Boolean
-		
-		declare sub listFiles(files() as File)
-				
+		declare sub listFiles(files() as File)		
 		declare sub setPathName(ByVal pathname as String)
 		declare function getPath() as String
 		declare function getSize() as LongInt

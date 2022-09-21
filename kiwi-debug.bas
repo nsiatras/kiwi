@@ -25,5 +25,5 @@ studentsQueue.Add(student2) ' Add student2 to studentsQueue
 Dim tmp as Student
 while studentsQueue.isEmpty() = false
 	tmp = studentsQueue.poll()
-	print "Student " & tmp.firstName &" " & tmp.lastName &" was in the Queue"
+	print "Student " & tmp.firstName & " " & tmp.lastName & " was in the Queue"
 wend
