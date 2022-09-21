@@ -38,7 +38,8 @@ end destructor
 	Assignment Operator [=>]
 '/
 operator KObject.Let(value as KObject)
-	print "Object " & value.getUniqueID() & " assigned to " & this.getUniqueID()
+	'print "Object " & value.getUniqueID() & " assigned to " & this.getUniqueID()
+	
 	if this.fID <> value.getUniqueID() then
 		this.fID = value.getUniqueID()
 	endif
