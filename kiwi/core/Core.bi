@@ -22,12 +22,8 @@
 	SOFTWARE.
 '/
 
-#include once "crt.bi" 	' Needs for memcpy
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Real Time Clock uses stdio.bi which defines a Type with name File
-' The kiwi/io/File.bi undefs that type in order to define the File
+#include once "crt.bi" 					' Needs for memcpy
 #include once "RealTimeClock.bi"
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 #include once "KObject.bi"
 
 #ifndef KIWI_CORE_INITIALIZED

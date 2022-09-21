@@ -29,8 +29,9 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "crt.bi"	
-
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'#include once "crt.bi"	--> crt.bi has already been included in Core.bi
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 extern "C"
 	type RealTimeClock_TimeContainer
 		as long timeValue_Seconds
