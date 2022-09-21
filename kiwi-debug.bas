@@ -1,7 +1,7 @@
 ﻿#include once "kiwi\kiwi.bi"
 
 ' In this example we will create an ArrayList that holds Students
-Type Student
+Type Student extends Object
 	firstName as String
 	lastName as String
 End Type
@@ -12,7 +12,7 @@ MACRO_DefineArrayList(Student)
 ' Initialize a new ArrayList to hold students
 Dim students as ArrayList(Student)
 
-Dim student1 as Student
+Dim student1 as Student = Student
 student1.firstName = "Nikos"
 student1.lastName = "Siatras"
 students.Add(student1) ' Add student1 to students ArrayList
@@ -21,6 +21,8 @@ Dim student2 As Student
 student2.firstName = "Elon"
 student2.lastName = "Musk"
 students.Add(student2) ' Add student2 to students ArrayList
+
+
 
 print "Students ArrayList contains " & students.size() & " elements"
 print ""

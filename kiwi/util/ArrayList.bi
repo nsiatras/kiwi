@@ -216,7 +216,7 @@
 			' The rest of the code applies for 3 or more elements.
 			' Move the elements to be moved...
 			Dim elementsToMove as const uinteger = base.fCount - 1 - index
-			#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
+			#ifdef TYPE_IS_OBJECT
 				' CAUTION: Use memcpy only for standard/known length variables
 				memcpy(@base.fElements(index), @base.fElements(index + 1), elementsToMove * sizeOf(##list_type) )
 			#else
