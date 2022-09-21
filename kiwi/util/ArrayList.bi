@@ -66,11 +66,13 @@
 				declare function addAll(byref c as Collection_##list_type) as Boolean
 				#ifdef TYPE_IS_OBJECT
 				declare function get(byval index as UInteger) byref as ##list_type
+				declare function remove(byval index as UInteger) byref as ##list_type
 				#else
 				declare function get(byval index as UInteger) as ##list_type
+				declare function remove(byval index as UInteger) as ##list_type
 				#endif
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
-				declare function remove(byval index as UInteger) as ##list_type
+				
 				declare sub sort(byref c as Comparator_##list_type) 
 				declare sub clean() 	
 				declare function size() as UInteger
@@ -187,9 +189,12 @@
 			
 			@param index is the index of the element to be removed
 		'/
+		#ifdef TYPE_IS_OBJECT
+		function ArrayList_##list_type.remove(byval index as UInteger) byref as ##list_type
+		#else
 		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
-			dim elementToRemove as ##list_type
-			elementToRemove = base.fElements(index)
+		#endif
+			dim byref elementToRemove as ##list_type = base.fElements(index)
 			
 			' Removal of the last item of the list
 			if index = (base.fCount-1) then
