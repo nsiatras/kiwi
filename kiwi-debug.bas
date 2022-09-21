@@ -2,37 +2,27 @@
 
 ' In this example we will create an ArrayList that holds Students
 Type Student
-	fName as String
+	firstName as String
+	lastName as String
 End Type
 
-' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
-MACRO_DefineArrayList(student)
+' Tells FreeBasic, that you want to use a Queue with "Student" variables
+MACRO_DefineQueue(Student)
 
-' Initialize a new ArrayList to hold students
-Dim students as ArrayList(student)
+' Initialize a new Queue to hold Students
+Dim studentsQueue as Queue(student)
 
-Dim student1 as student
-student1.fName = "Nikos"
-students.Add(student1) ' Add student1 to students ArrayList
+Dim student1 as Student
+student1.firstName = "Nikos"
+student1.lastName = "Siatras"
+studentsQueue.Add(student1) ' Add student1 to studentsQueue
 
-Dim student2 As student
-student2.fName = "Elon"
-students.Add(student2) ' Add student2 to students ArrayList
+Dim student2 As Student
+student2.firstName = "Elon"
+student2.lastName = "Musk"
+studentsQueue.Add(student2) ' Add student2 to studentsQueue
 
-
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' This will NOT change the fName of student1
-'students.get(0).fName = "Test"
-'print student1.fName
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-
-
-print "Students ArrayList contains " & students.size() & " elements"
-print ""
-
-print "Students: "
-for i as Integer = 0 to students.size()-1
-	print "Student " & i & " = " & students.get(i).fName
-next i
+while studentsQueue.isEmpty() = false
+	Dim tmp as Student = studentsQueue.poll()
+	print "Student " & tmp.firstName &" " & tmp.lastName &" was in the Queue"
+wend

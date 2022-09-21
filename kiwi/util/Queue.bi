@@ -59,11 +59,16 @@
 								
 				declare function add(byref e as ##list_type) as Boolean
 				declare function addAll(byref c as Collection_##list_type) as Boolean
-			
+				#ifdef TYPE_IS_OBJECT
+				declare function poll() byref as ##list_type
+				declare function peekFirst() byref as ##list_type
+				declare function peekLast() byref as ##list_type
+				#else
 				declare function poll() as ##list_type
 				declare function peekFirst() as ##list_type
 				declare function peekLast() as ##list_type
-				
+				#endif
+
 				declare sub clean() 	
 
 				declare function size() as UInteger
@@ -109,9 +114,13 @@
 		
 			@return the head of this queue
 		'/
-		function Queue_##list_type.poll() as ##list_type				
-			Dim elementToPoll as ##list_type
-			elementToPoll = fMyArrayList.get(0)
+		#ifdef TYPE_IS_OBJECT
+		function Queue_##list_type.poll() byref as ##list_type
+			Dim byref elementToPoll as ##list_type = fMyArrayList.get(0)	
+		#else
+		function Queue_##list_type.poll() as ##list_type
+			Dim elementToPoll as ##list_type = fMyArrayList.get(0)
+		#endif		
 			fMyArrayList.remove(0)
 			return elementToPoll ' Return the removed element				 
 		end function
@@ -120,7 +129,11 @@
 			Retrieves, but does not remove, the head of this queue, 
 			or returns null if this queue is empty.
 		'/
-		function Queue_##list_type.peekFirst() as ##list_type	
+		#ifdef TYPE_IS_OBJECT
+		function Queue_##list_type.peekFirst() byref as ##list_type
+		#else
+		function Queue_##list_type.peekFirst() as ##list_type
+		#endif 	
 			return fMyArrayList.get(0)
 		end function	
 		
@@ -128,7 +141,11 @@
 			Retrieves, but does not remove, the last element of this queue, 
 			or returns null if this queue is empty.
 		'/
+		#ifdef TYPE_IS_OBJECT
+		function Queue_##list_type.peekLast() byref as ##list_type	
+		#else
 		function Queue_##list_type.peekLast() as ##list_type	
+		#endif 	
 			return fMyArrayList.get(fMyArrayList.size()-1)
 		end function	
 		
