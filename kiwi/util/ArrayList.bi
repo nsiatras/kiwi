@@ -61,19 +61,12 @@
 								
 				' The following methods are declarations of the 
 				' abstract methods found inside AbstractList (AbstractList.bi)
-				declare function add(e as ##list_type) as Boolean
+				declare function add(byref e as ##list_type) as Boolean
 				declare sub add(index as UInteger, byref e as ##list_type)
 				declare function addAll(byref c as Collection_##list_type) as Boolean
-				#ifdef TYPE_IS_OBJECT
-				declare function get(byval index as UInteger) byref as ##list_type
-				declare function set(byval index as UInteger, byref element as ##list_type) byref as ##list_type
-				declare function remove(byval index as UInteger) byref as ##list_type
-				#else
 				declare function get(byval index as UInteger) as ##list_type
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function remove(byval index as UInteger) as ##list_type
-				#endif
-				
 				declare sub sort(byref c as Comparator_##list_type) 
 				declare sub clean() 	
 				declare function size() as UInteger
@@ -92,7 +85,7 @@
 			
 			@param e is the element to be appended to this ArrayList.
 		'/
-		function ArrayList_##list_type.add(e as ##list_type) as Boolean
+		function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
 			base.ResizeList(1)
 			base.fElements(base.fCount - 1) =  e
 			return true
@@ -160,11 +153,8 @@
 			
 			@param index is the index of the element to return.
 		'/
-		#ifdef TYPE_IS_OBJECT
-		function ArrayList_##list_type.get(byval index as UInteger) byref as ##list_type
-		#else
+		
 		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
-		#endif
 			return base.fElements(index)
 		end function
 		
@@ -176,12 +166,9 @@
 			@param index is the index of the element to replace.
 			@param element is the element to be stored at the specified position
 		'/
-		#ifdef TYPE_IS_OBJECT
-		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) byref as ##list_type
-		#else
+		
 		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
-		#endif
-			Dim byref previousElement as ##list_type = this.fElements(index) 
+			Dim  previousElement as ##list_type = this.fElements(index) 
 			base.fElements(index) = element
 			return previousElement
 		end function
@@ -193,13 +180,10 @@
 			
 			@param index is the index of the element to be removed
 		'/
-		#ifdef TYPE_IS_OBJECT
-		function ArrayList_##list_type.remove(byval index as UInteger) byref as ##list_type
-		#else
+		
 		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
-		#endif
-			Dim byref elementToRemove as ##list_type = base.fElements(index)
-			
+			Dim elementToRemove as ##list_type = base.fElements(index)
+				
 			' Removal of the last item of the list
 			if index = (base.fCount-1) then
 				base.ResizeList(-1)
@@ -217,12 +201,12 @@
 			' Move the elements to be moved...
 			Dim elementsToMove as const uinteger = base.fCount - 1 - index
 			#ifdef TYPE_IS_OBJECT
-				' CAUTION: Use memcpy only for standard/known length variables
-				memcpy(@base.fElements(index), @base.fElements(index + 1), elementsToMove * sizeOf(##list_type) )
-			#else
 				for i as Integer = index + 1 to ubound(base.fElements)
 					base.fElements(i-1) = base.fElements(i)
 				next i
+			#else
+				' CAUTION: Use memcpy only for standard/known length variables
+				memcpy(@base.fElements(index), @base.fElements(index + 1), elementsToMove * sizeOf(##list_type) )
 			#endif
 			
 			base.ResizeList(-1)
