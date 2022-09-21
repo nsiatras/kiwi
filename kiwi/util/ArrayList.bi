@@ -153,7 +153,6 @@
 			
 			@param index is the index of the element to return.
 		'/
-		
 		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
 			return base.fElements(index)
 		end function
@@ -166,7 +165,6 @@
 			@param index is the index of the element to replace.
 			@param element is the element to be stored at the specified position
 		'/
-		
 		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
 			Dim  previousElement as ##list_type = this.fElements(index) 
 			base.fElements(index) = element
@@ -180,7 +178,6 @@
 			
 			@param index is the index of the element to be removed
 		'/
-		
 		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
 			Dim elementToRemove as ##list_type = base.fElements(index)
 				
@@ -249,8 +246,7 @@
 			return base.fCount = 0
 		end function
 			
-		
-		' define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
+		' Define the KIWI_ARRAYLIST_TYPE_##list_type with the given list_type
 		#define KIWI_ARRAYLIST_TYPE_##list_type 
 	
 	#endif
