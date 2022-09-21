@@ -55,8 +55,7 @@
 				dim fMyArrayList as ArrayList_##list_type
 										
 			public:
-				declare constructor()
-								
+				declare constructor()			
 				declare function add(byref e as ##list_type) as Boolean
 				declare function addAll(byref c as Collection_##list_type) as Boolean
 				declare function poll() as ##list_type
