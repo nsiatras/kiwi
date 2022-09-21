@@ -61,7 +61,7 @@
 								
 				' The following methods are declarations of the 
 				' abstract methods found inside AbstractList (AbstractList.bi)
-				declare function add(byref e as ##list_type) as Boolean
+				declare function add(e as ##list_type) as Boolean
 				declare sub add(index as UInteger, byref e as ##list_type)
 				declare function addAll(byref c as Collection_##list_type) as Boolean
 				#ifdef TYPE_IS_OBJECT
@@ -92,7 +92,7 @@
 			
 			@param e is the element to be appended to this ArrayList.
 		'/
-		function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
+		function ArrayList_##list_type.add(e as ##list_type) as Boolean
 			base.ResizeList(1)
 			base.fElements(base.fCount - 1) =  e
 			return true

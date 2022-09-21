@@ -3,6 +3,7 @@ Type KObject extends Object
 	protected:
 		Static Hash_Code_Counter as UInteger
 		Dim fID as Integer
+		Dim fMyPointer as KObject Ptr
 
 	public:
 		declare constructor()					' Constructor
@@ -22,12 +23,15 @@ constructor KObject()
 	' Assign a HashCode to the KObject
 	KObject.Hash_Code_Counter = KObject.Hash_Code_Counter + 1
 	this.fID = KObject.Hash_Code_Counter
+	this.fMyPointer = @this
+	
+	print this.fMyPointer
 	
 	'print "KObject " & str(this.fID) & " Initialized"
 end constructor
 
-constructor KObject(o as KObject)
-	'print "Copy Constructor"
+constructor KObject(byref o as KObject)
+	print "Copy Constructor"
 end constructor
 
 destructor KObject()

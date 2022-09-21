@@ -1,9 +1,8 @@
 ﻿#include once "kiwi\kiwi.bi"
 
 ' In this example we will create an ArrayList that holds Students
-Type student
-	firstName as String
-	lastName as String
+Type Student
+	fName as String
 End Type
 
 ' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
@@ -13,28 +12,27 @@ MACRO_DefineArrayList(student)
 Dim students as ArrayList(student)
 
 Dim student1 as student
-student1.firstName = "Nikos"
-student1.lastName = "Siatras"
+student1.fName = "Nikos"
 students.Add(student1) ' Add student1 to students ArrayList
 
 Dim student2 As student
-student2.firstName = "Elon"
-student2.lastName = "Musk"
+student2.fName = "Elon"
 students.Add(student2) ' Add student2 to students ArrayList
+
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' This will NOT change the fName of student1
+'students.get(0).fName = "Test"
+'print student1.fName
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
 
 print "Students ArrayList contains " & students.size() & " elements"
 print ""
 
 print "Students: "
 for i as Integer = 0 to students.size()-1
-	print "Student " & i & " = " & students.get(i).firstName &" " & students.get(i).lastName 
+	print "Student " & i & " = " & students.get(i).fName
 next i
-
-students.remove(0)
-
-
-print "Students: "
-for i as Integer = 0 to students.size()-1
-	print "Student " & i & " = " & students.get(i).firstName &" " & students.get(i).lastName 
-next i
-
