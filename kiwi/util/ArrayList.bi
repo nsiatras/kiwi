@@ -64,7 +64,11 @@
 				declare function add(byref e as ##list_type) as Boolean
 				declare sub add(index as UInteger, byref e as ##list_type)
 				declare function addAll(byref c as Collection_##list_type) as Boolean
+				#ifdef TYPE_IS_OBJECT
+				declare function get(byval index as UInteger) byref as ##list_type
+				#else
 				declare function get(byval index as UInteger) as ##list_type
+				#endif
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function remove(byval index as UInteger) as ##list_type
 				declare sub sort(byref c as Comparator_##list_type) 
@@ -153,7 +157,11 @@
 			
 			@param index is the index of the element to return.
 		'/
+		#ifdef TYPE_IS_OBJECT
+		function ArrayList_##list_type.get(byval index as UInteger) byref as ##list_type
+		#else
 		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
+		#endif
 			return base.fElements(index)
 		end function
 		

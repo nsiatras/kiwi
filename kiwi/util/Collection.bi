@@ -54,7 +54,11 @@
 				declare abstract function add(byref e as ##list_type) as Boolean
 				declare abstract sub add(index as UInteger, byref e as ##list_type)
 				declare abstract function addAll(byref c as Collection_##list_type) as Boolean
+				#ifdef TYPE_IS_OBJECT
+				declare abstract function get(byval index as UInteger) byref as ##list_type
+				#else
 				declare abstract function get(byval index as UInteger) as ##list_type
+				#endif
 				declare abstract function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare abstract function remove(byval index as UInteger) as ##list_type
 				declare abstract sub sort(byref c as Comparator_##list_type) 
