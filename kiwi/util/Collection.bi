@@ -33,6 +33,9 @@
 
 #macro MACRO_DefineCollection(list_type)
 	#ifndef KIWI_Collection_TYPE_##list_type
+	
+		' Check if the given type is an object
+		MACRO_CheckIfTypeIsAnObject(list_type)
 		
 		' Define a Comparator Type for the given List_Type
 		MACRO_DefineComparator(list_type)

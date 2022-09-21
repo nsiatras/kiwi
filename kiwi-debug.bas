@@ -1,40 +1,31 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi"
 
 ' In this example we will create an ArrayList that holds Students
-Type Student extends KObject
+Type Student
 	firstName as String
 	lastName as String
 End Type
 
-' Initialize a new ArrayList to hold students
+' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
 MACRO_DefineArrayList(Student)
+
+' Initialize a new ArrayList to hold students
 Dim students as ArrayList(Student)
 
-Dim student1 as student
+Dim student1 as Student
 student1.firstName = "Nikos"
 student1.lastName = "Siatras"
-'print student1.getHashCode() ' This prints 10001
-students.Add(student1) 
+students.Add(student1) ' Add student1 to students ArrayList
 
-'Dim student2 As student
-'student2.firstName = "Elon"
-'student2.lastName = "Musk"
-'print student2.getHashCode() ' This prints 10004
-'students.Add(student2) 
+Dim student2 As Student
+student2.firstName = "Elon"
+student2.lastName = "Musk"
+students.Add(student2) ' Add student2 to students ArrayList
 
-'student2 = student1
-'print student2.getHashCode() 	' This prints 10001
+print "Students ArrayList contains " & students.size() & " elements"
+print ""
 
-'students.Add(student1) 
-
-'if student1 = student2 then
-'	print "Same!"
-'end if
-
-
-'print students.get(0).getHashCode() ' This prints 10001
-'print students.get(1).getHashCode() ' This prints 10004 but needs to print 10001
-
-
-
+print "Students: "
+for i as Integer = 0 to students.size()-1
+	print "Student " & i & " = " & students.get(i).firstName &" " & students.get(i).lastName 
+next i

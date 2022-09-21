@@ -24,13 +24,23 @@
 
 #include once "crt.bi" 					' Needs for memcpy
 #include once "RealTimeClock.bi"
-#include once "KObject.bi"
 
 #ifndef KIWI_CORE_INITIALIZED
   
 	' Fast Array Copy
 	#Define KIWI_FastArrayCopy(src, dest) memcpy(@dest(LBound(dest)), @src(LBound(dest)), SizeOf(dest) * (UBound(dest) - LBound(dest) + 1))
 
-	
 	#define KIWI_CORE_INITIALIZED
 #endif
+
+/'
+	Checks if a Type is an Object.
+'/
+#macro MACRO_CheckIfTypeIsAnObject(type_to_check)
+	#undef TYPE_IS_OBJECT
+	#if typeof(type_to_check) = TypeOf(Boolean) OR typeof(type_to_check) = TypeOf(Byte) OR typeof(type_to_check) = TypeOf(UByte) OR typeof(type_to_check) = TypeOf(Short) OR typeof(type_to_check) = TypeOf(UShort) OR typeof(type_to_check) = TypeOf(Integer) OR typeof(type_to_check) = TypeOf(UInteger) OR typeof(type_to_check) = TypeOf(Long) OR typeof(type_to_check) = TypeOf(ULong) OR typeof(type_to_check) = TypeOf(LongInt) OR typeof(type_to_check) = TypeOf(ULongInt) OR typeof(type_to_check) = TypeOf(Single) OR typeof(type_to_check) = TypeOf(Double)
+		#undef TYPE_IS_OBJECT
+	#else
+		#define TYPE_IS_OBJECT
+	#endif
+#endmacro

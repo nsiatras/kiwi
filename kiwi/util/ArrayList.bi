@@ -43,6 +43,9 @@
 	' The following ifndef checks if a List for the given
 	' type (list_type) has already been defined
 	#ifndef KIWI_ARRAYLIST_TYPE_##list_type
+	
+		' Check if the given type is an object
+		MACRO_CheckIfTypeIsAnObject(list_type)
 		
 		' Define an AbstractList Type for the given List_Type 
 		' ArrayList inherits from the Abstract List
@@ -114,15 +117,15 @@
 				Dim elementsToMove as const uinteger = base.fCount - 1 - index
 				
 				'Move the elements to be moved...
-				#if typeof(##list_type) = TypeOf(Byte) OR typeof(##list_type) = TypeOf(UByte) OR typeof(##list_type) = TypeOf(Short) OR typeof(##list_type) = TypeOf(UShort) OR typeof(##list_type) = TypeOf(Integer) OR typeof(##list_type) = TypeOf(UInteger) OR typeof(##list_type) = TypeOf(Long) OR typeof(##list_type) = TypeOf(ULong) OR typeof(##list_type) = TypeOf(LongInt) OR typeof(##list_type) = TypeOf(ULongInt) OR typeof(##list_type) = TypeOf(Single) OR typeof(##list_type) = TypeOf(Double) OR typeof(##list_type) = TypeOf(Double)
-					' CAUTION: Use memcpy only for standard/known length variables
-					memcpy(@base.fElements(index + 1), @base.fElements(index), elementsToMove * sizeOf(##list_type) )
-				#else
+				#ifdef TYPE_IS_OBJECT
 					' We use a simple for loop to move array elements
 					' that are Strings or UDT
 					for i as Integer = ubound(base.fElements) to index step -1
 						base.fElements(i) = base.fElements(i-1)
-					next i
+					next i	
+				#else
+					' CAUTION: Use memcpy only for standard/known length variables
+					memcpy(@base.fElements(index + 1), @base.fElements(index), elementsToMove * sizeOf(##list_type) )	
 				#endif
 
 				base.fElements(index) = e	
