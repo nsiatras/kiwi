@@ -30,7 +30,6 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "..\core\Core.bi"
 #include once "..\nio\Charset.bi"
 #include once "File.bi"
 

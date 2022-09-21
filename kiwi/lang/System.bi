@@ -22,13 +22,7 @@
 	SOFTWARE.
 '/
 
-#include once "..\core\Core.bi"
-#include once "..\time\RealTimeClock.bi"
-#include once "crt\string.bi"
-#include once "crt.bi" 
-
 #undef System
-
 Type System extends object
 	
 	public:
@@ -106,7 +100,6 @@ End Function
 	MACRO_DefineSystemArrayCopy(Short)
 	MACRO_DefineSystemArrayCopy(Integer)
 	MACRO_DefineSystemArrayCopy(Long)
-
 	MACRO_DefineSystemArrayCopy(Double)
 	MACRO_DefineSystemArrayCopy(String)
 	MACRO_DefineSystemArrayCopy(Object)

@@ -28,10 +28,8 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "..\core\Core.bi"
-#include once "crt\string.bi"
-#include once "vbcompat.bi"
 
+#include "dir.bi"
 
 ' stdio.bi Defines a Type with name File
 ' The following undef undefines that type
@@ -115,17 +113,7 @@ end function
 	pathname exists and is a directory, otherwise return false
 '/
 function File.isDirectory() as Boolean
-
-	const InAttr = fbReadOnly or fbHidden or fbSystem or fbDirectory or fbArchive
-	Dim AttrTester as Integer
-	Dim DirString as String = Dir(fPathName, InAttr, AttrTester)
-	
-	if (AttrTester and fbDirectory) Then
-		return true
-	end If
-	
-	return false
-    
+	return Not this.isFile()
 end function
 
 /'
@@ -134,7 +122,7 @@ end function
     by this abstract pathname exists.
 '/
 function File.exists() as Boolean
-	return fileexists(this.fPathName)
+	return this.canRead()
 end function
 
 /'
@@ -146,21 +134,13 @@ end function
      returns false
 '/
 function File.canRead() as Boolean
-	
-	if this.exists() = false then
-		return false
-	end if
-	
 	dim f as Integer = freeFile
-	
 	dim e as integer = open(this.fPathName For Input as #f)
 	if e <> 0 then
 		return false
 	end if
-	
 	close #f
 	return true
-	
 end function
 
 /'
@@ -228,7 +208,7 @@ end function
 function File.deleteFile() as Boolean
 
 	' Return false if file doesn't exist
-	if fileexists(fPathName) = false then
+	if this.exists() = false then
 		return false
 	end if
 	
@@ -239,7 +219,7 @@ function File.deleteFile() as Boolean
 	end if
 	
 	' Return false if file exists
-	if fileexists(fPathName) then
+	if this.exists() then
 		return false
 	end if
 	
@@ -298,15 +278,12 @@ end sub
 	Sets the pathname of this File instance
 '/
 sub File.setPathName(ByVal pathname as String)
-	
 	' Trim the pathName
 	pathName = trim(pathname)
-		
 	' Remove the last \ if any...
 	if mid(pathname, len(pathname), len(pathname)) = "\" then
 		pathName = mid(pathname,1,len(pathname)-1)
 	endif 
-	
 	fPathName = pathName
 end sub
 
@@ -323,5 +300,9 @@ end function
     files, or other reasons.
 '/
 function File.getSize() as LongInt
-	return FileLen(this.fPathName)
+	'return FileLen(this.fPathName)
+	dim filehandle as integer = freefile()
+	open this.fPathName for input as #filehandle
+	function = lof(filehandle)
+	close #filehandle
 end function
