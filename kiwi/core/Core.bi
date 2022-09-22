@@ -22,7 +22,7 @@
 	SOFTWARE.
 '/
 
-#include once "crt.bi" 					' Needs for memcpy
+#include once "crt.bi" ' Needs for memcpy and RealTimeClock
 #include once "RealTimeClock.bi"
 
 #ifndef KIWI_CORE_INITIALIZED

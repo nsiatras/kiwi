@@ -25,7 +25,8 @@
 Type StringUtils extends Object
 	
 	public:
-		Declare Static Sub Split(byref stringToSplit as const String, byref delimeter as const String, result() as String)
+		Declare Static Sub Split(byref stringToSplit as const String, byref delimiter as const String, result() as String)
+		Declare Static function Join(stringArray() As const String, byref delimiter As string) As String
 		
 End Type
 
@@ -36,12 +37,12 @@ End Type
 	Author: Nikos Siatras (https://github.com/nsiatras)
 	
 	@stringToSplit is the string to split
-	@delimeter is the delimeter to use
+	@delimeter is the delimiter to use
 	@result is an array of strings, each of which is a substring of string formed by splitting it on boundaries formed by the string delimeter.	
 '/
-Sub StringUtils.Split(byref stringToSplit as const String, byref delimeter as const String, result() as String)
+Sub StringUtils.Split(byref stringToSplit as const String, byref delimiter as const String, result() as String)
 	
-    Dim lengthOfDelimeter as Integer = len(delimeter)
+    Dim lengthOfDelimeter as Integer = len(delimiter)
     Dim indexOfDelimeter as Integer = 1
     Dim delimeterCount as Integer = 0
     Dim offset as Integer
@@ -49,7 +50,7 @@ Sub StringUtils.Split(byref stringToSplit as const String, byref delimeter as co
     
     ' Find how many times the delimeter exists in the stringToSplit
     Do
-		indexOfDelimeter = InStr(indexOfDelimeter, stringToSplit, delimeter)
+		indexOfDelimeter = InStr(indexOfDelimeter, stringToSplit, delimiter)
 		if indexOfDelimeter >0 then
 			delimeterCount += 1
 			indexOfDelimeter = indexOfDelimeter + lengthOfDelimeter
@@ -74,7 +75,7 @@ Sub StringUtils.Split(byref stringToSplit as const String, byref delimeter as co
     offset = 1
     indexOfDelimeter = 1 
     Do
-		indexOfDelimeter = InStr(offset, stringToSplit, delimeter)
+		indexOfDelimeter = InStr(offset, stringToSplit, delimiter)
 		if indexOfDelimeter > 0 then
 			result(delimeterCount) = Mid(stringToSplit, offset, indexOfDelimeter - offset)
 		else
@@ -91,3 +92,20 @@ Sub StringUtils.Split(byref stringToSplit as const String, byref delimeter as co
     Loop
     
 End Sub
+
+/'
+	 Returns a new String composed of copies of the stringArray() elements
+	 joined together with a copy of the specified delimiter.
+	 
+	 @returns a new String that is composed of the separated by the delimiter
+'/
+Function StringUtils.Join(stringArray() As Const String, Byref delimiter As String) As String
+    Dim As String result
+    if Ubound(stringArray) >= Lbound(stringArray) then
+        For i As Integer = Lbound(stringArray) To Ubound(stringArray) - 1
+            result &= stringArray(i) & delimiter
+        Next i
+        result &= stringArray(Ubound(stringArray))
+    end if
+    return result
+End Function

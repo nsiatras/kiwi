@@ -1,17 +1,15 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-Dim filePath as String = "C:\Users\nsiat\Desktop\Test.txt"
+Dim fStringToSplit as String = "Welcome###to###Free###Basic###!"
+Dim fSplitParts () as String
 
-' Create a FileReader in order to read out file
-Dim reader as FileReader = FileReader(filePath)
+' Splits  fStringToSplit using "###" as a delimeter
+StringUtils.Split(fStringToSplit,"###",fSplitParts())
 
-' Read each char of the File and print it on screen
-reader.OpenFile()
-Dim c as Integer = reader.read()
-while (c <> -1)
-	print WChr(c);
-	c = reader.read()
-wend
-reader.CloseFile()
+' Print the fSplitParts
+for i as Integer = 0 to ubound(fSplitParts)
+    print "Part no." & i & " = " & fSplitParts(i)
+next
 
+
+print StringUtils.Join(fSplitParts(),",")

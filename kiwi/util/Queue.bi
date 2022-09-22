@@ -52,7 +52,7 @@
 		
 		Type Queue_##list_type extends KObject
 			protected:
-				dim fMyArrayList as ArrayList_##list_type
+				Dim fMyArrayList as ArrayList_##list_type
 										
 			public:
 				declare constructor()			
@@ -170,6 +170,5 @@
 	MACRO_DefineQueue(Single)
 	MACRO_DefineQueue(Double)
 	MACRO_DefineQueue(String)
-	
 	#define KIWI_Queues_FOR_ALL_STANDARD_DATA_TYPES
 #endif
