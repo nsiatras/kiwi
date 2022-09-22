@@ -14,19 +14,14 @@ Dim reader as FileReader = FileReader(myFile, charsetToUse)
 Dim bReader as BufferedReader = BufferedReader(reader)
 
 if bReader.OpenStream() = true then
-
 	Dim lineStr as String = bReader.readLine()
 	while lineStr <> ""
-		print lineStr;	' Print each line !
+		print lineStr	' Print each line !
 		lineStr = bReader.readLine()
-    wend
+	wend
 
 	bReader.CloseStream() ' Close the Stream
 else
 	print "Unable to open the file! Check if file is saved as 'UTF-8-BOM'"
 end if
-
-
-
-
 

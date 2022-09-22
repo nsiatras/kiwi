@@ -38,7 +38,6 @@ Type InputStreamReader extends KObject
 		
 	public:
 		declare constructor()
-		
 		declare virtual function OpenStream() as Boolean
 		declare virtual sub CloseStream() 
 		declare virtual function read() as Integer

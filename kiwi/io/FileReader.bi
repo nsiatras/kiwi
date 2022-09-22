@@ -95,7 +95,7 @@ end constructor
 	Creates a new FileReader instance with preselected Charset
 '/
 constructor FileReader(fileName as String, ch as Charset)
-
+	base()
 	Dim f as File = File(fileName)
 	this.fMyFile = f
 	this.fFileIsOpened = false

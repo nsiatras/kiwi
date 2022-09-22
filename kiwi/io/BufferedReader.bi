@@ -57,11 +57,19 @@ constructor BufferedReader(reader as FileReader)
 	this.fMyInputStreamReader = reader
 end constructor
 
+/'
+	Opens a file Input Stream
+	
+	@return true if file exists and can be read
+'/
 function BufferedReader.OpenStream() as Boolean
 	this.fTmpString = ""
 	return this.fMyInputStreamReader.OpenStream()
 end function
 		
+/'
+	Closes the file Input Stream
+'/		
 sub BufferedReader.CloseStream()
 	this.fMyInputStreamReader.CloseStream()
 	this.fTmpString = ""
@@ -74,14 +82,25 @@ end sub
     (EOF).
 '/
 function BufferedReader.readLine() as String
+	
 	Dim c as Integer = this.fMyInputStreamReader.read()
+	
     while (c <> -1)
-		fTmpString = fTmpString & Chr(c)
-		if c = 13 then
+    
+		' CHR(10) = "\n" and CHR(13) = "\r"
+		if c = 10 then
+			c = this.fMyInputStreamReader.read()
 			exit while
+		elseif c = 13 then
+			c = this.fMyInputStreamReader.read()
+			exit while
+		else
+			fTmpString = fTmpString & Chr(c)
 		end if
+		
         c = this.fMyInputStreamReader.read()
     wend
+    
 	function = fTmpString
 	fTmpString = ""
 end function
