@@ -46,6 +46,7 @@ Type BufferedReader extends KObject
 		declare function OpenStream() as Boolean
 		declare sub CloseStream()
 		
+		declare function hasNextLine() as Boolean
 		declare function readLine() as String
 		
 End Type
@@ -74,19 +75,17 @@ sub BufferedReader.CloseStream()
 	this.fMyInputStreamReader.CloseStream()
 	this.fTmpString = ""
 end sub
-		
+
 /'
-	Reads a line of text.  A line is considered to be terminated by any one
-    of a line feed ('\n'), a carriage return ('\r'), a carriage return
-    followed immediately by a line feed, or by reaching the end-of-file
-    (EOF).
+	Returns true if this BufferedReader has a next line...
 '/
-function BufferedReader.readLine() as String
-	
+function BufferedReader.hasNextLine() as Boolean
+
+	Dim result as Boolean = false
 	Dim c as Integer = this.fMyInputStreamReader.read()
 	
     while (c <> -1)
-    
+		result = true
 		' CHR(10) = "\n" and CHR(13) = "\r"
 		if c = 10 then
 			c = this.fMyInputStreamReader.read()
@@ -101,7 +100,18 @@ function BufferedReader.readLine() as String
         c = this.fMyInputStreamReader.read()
     wend
     
-	function = fTmpString
-	fTmpString = ""
+    return result
+end function
+		
+		
+/'
+	Reads a line of text.  A line is considered to be terminated by any one
+    of a line feed ('\n'), a carriage return ('\r'), a carriage return
+    followed immediately by a line feed, or by reaching the end-of-file
+    (EOF).
+'/
+function BufferedReader.readLine() as String
+	function = this.fTmpString
+	this.fTmpString = ""
 end function
 
