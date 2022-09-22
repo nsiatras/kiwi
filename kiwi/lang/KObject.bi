@@ -22,6 +22,14 @@
 	SOFTWARE.
 '/
 
+/'
+	Description: KObject is the building block of Kiwi. 
+	Every User Defined Type (UDT) must inherit KObject in order to work
+	properly with collections and other Kiwi's features.
+	
+	Author: Nikos Siatras (https://github.com/nsiatras)
+'/
+
 Type KObject extends Object
 
 	protected:
