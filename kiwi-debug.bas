@@ -3,6 +3,17 @@
 
 ' Initialize a File and a FileReader
 Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
+
+Dim myWriter as FileWriter = FileWriter(myFile, Charset.forName("utf-8"))
+
+
+myWriter.Write("Hello!" & System.lineSeparator)
+myWriter.append("This is simple Text file" & System.lineSeparator)
+myWriter.append("created by Kiwi Framework" & System.lineSeparator)
+myWriter.append("for FreeBasic :)" & System.lineSeparator)
+
+
+
 Dim myReader as FileReader = FileReader(myFile, Charset.forName("utf-8"))
 
 ' Initialize a BufferedReader. The BufferedReader will be used to

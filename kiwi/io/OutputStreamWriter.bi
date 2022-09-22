@@ -23,34 +23,28 @@
 '/
 
 /'
-	Description:  An InputStreamReader is a bridge from byte streams to 
-	character streams: It reads bytes and decodes them into characters 
-	using a specified kiwi.nio.Charset charset.  
-	The charset that it uses may be specified by name or may be given 
-	explicitly, or the platform's default charset may be accepted.
+	Description: Reads text from character files using a default buffer size. 
+	Decoding from bytes to characters uses either a specified 
+	charset or the platform's default charset.
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-Type InputStreamReader extends KObject
 
+Type OutputStreamWriter extends KObject
 	protected:
 		Dim fMyCharset as Charset
 		
 	public:
 		declare constructor()
 		
-		declare virtual function OpenStream() as Boolean
-		declare virtual sub CloseStream() 
-		declare virtual function read() as Integer
-		declare virtual Sub reset()
-		
 		declare function getEncoding() as String
+
 End Type
 
 /'
-	Initialized a new InputStreamReader
+	Initialized a new OutputStreamWriter
 '/
-constructor InputStreamReader()
+constructor OutputStreamWriter()
 
 end constructor
 
@@ -59,32 +53,7 @@ end constructor
 	
 	@return The name of this encoding
 '/
-function InputStreamReader.getEncoding() as String
+function OutputStreamWriter.getEncoding() as String
 	return fMyCharset.getCharsetName()
 end function
 
-function InputStreamReader.OpenStream() as Boolean
-	print "InputStreamReader.OpenStream() is empty!"
-	return false
-end function
-
-sub InputStreamReader.CloseStream() 
-	print "InputStreamReader.CloseStream() is empty!"
-end sub
-
-/'
-	Reads a single character.
-	
-	@return The character read, or -1 if the end of the stream has been reached
-'/
-function InputStreamReader.read() as Integer
-	print "InputStreamReader.read() is empty!"
-	return -1
-end function
-
-/'
-	Resets the stream and the file can be readed again.
-'/
-Sub InputStreamReader.reset()
-	
-end sub

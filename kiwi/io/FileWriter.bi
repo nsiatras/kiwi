@@ -23,123 +23,91 @@
 '/
 
 /'
-	Description: Reads text from character files using a default buffer size. 
-	Decoding from bytes to characters uses either a specified 
+	Description: Writes text to character files using a default buffer 
+	size. Encoding from characters to bytes uses either a specified 
 	charset or the platform's default charset.
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "..\nio\Charset.bi"
-#include once "File.bi"
-#include once "InputStreamReader.bi"
+#include "OutputStreamWriter.bi"
 
-Type FileReader extends InputStreamReader
+Type FileWriter extends OutputStreamWriter
 	
-	private:
+	protected:
 		Dim fMyFile as File
-		Dim fFileIsOpened as Boolean = false
-		Dim fFileStream as Integer
+		Dim fFileIsOpenedForAppend as Boolean = false
+		'Dim fFileStream as Integer
+		
+		declare function OpenStream_ForWrite() as Boolean
+		declare function OpenStream_ForAppend() as Boolean
 					
 	public:
 		declare constructor()
+		
 		declare constructor(f as File)
 		declare constructor(f as File, ch as Charset)
 		declare constructor(fileName as String)
 		declare constructor(fileName as String, ch as Charset)
-		
-		declare function OpenStream() as Boolean
-		declare Sub CloseStream()
-		declare function read() as Integer
-		declare Sub reset()
+				
+		declare sub write(s as String)
+		declare sub append(s as String)
 		
 End Type
 
-constructor FileReader()
-	base()
+/'
+	Creates a new FileWriter instance
+'/
+constructor FileWriter(f as File)
+	this.fMyFile = f
+	base.fMyCharset = Charset.forName("ascii")
+	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
-	Creates a new FileReader instance
+	Creates a new FileWriter instance with preselected Charset
 '/
-constructor FileReader(f as File)
-	base()
+constructor FileWriter(f as File, ch as Charset)
 	this.fMyFile = f
+	base.fMyCharset = ch
+	this.fFileIsOpenedForAppend = false
+end constructor
+
+/'
+	Creates a new FileWriter instance
+'/
+constructor FileWriter(fileName as String)
+	this.fMyFile = File(fileName)
 	base.fMyCharset = Charset.forName("ascii")
-	this.fFileIsOpened = false
+	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
 	Creates a new FileReader instance with preselected Charset
 '/
-constructor FileReader(f as File, ch as Charset)
-	base()
-	this.fMyFile = f
-	this.fFileIsOpened = false
-	base.fMyCharset = ch
-end constructor
-
-/'
-	Creates a new FileReader instance
-'/
-constructor FileReader(fileName as String)
-	base()
+constructor FileWriter(fileName as String, ch as Charset)
 	this.fMyFile = File(fileName)
-	base.fMyCharset = Charset.forName("ascii")
-	this.fFileIsOpened = false
-end constructor
-
-/'
-	Creates a new FileReader instance with preselected Charset
-'/
-constructor FileReader(fileName as String, ch as Charset)
-	base()
-	this.fMyFile = File(fileName)
-	this.fFileIsOpened = false
 	base.fMyCharset = ch
+	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
-	Reads a single character.
-	
-	@return The character read, or -1 if the end of the stream has been reached
+	Writes a string.
 '/
-function FileReader.read() as Integer 
-	if EOF(fFileStream) = true then
-		this.CloseStream() ' Close the file
-		return -1
-	end if
-
-	return Asc(WInput(1, fFileStream))
-end function
-
-/'
-	Opens a file Input Stream
-	
-	@return true if file exists and can be read
-'/
-function FileReader.OpenStream() as Boolean
-	
-	' Get a free file number
-	fFileStream = freefile 
-	
-	' Open the file for Input (Read) with the given Encoding
-	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() lock Read As #fFileStream
-	return iif(err(), false,true)
-end function
-
-/'
-	Closes the file Input Stream
-'/
-sub FileReader.CloseStream()
-	Close #fFileStream
+sub FileWriter.write(st as String)
+	Dim fileStream as Integer = freefile
+	Open fMyFile.getPath() For Output encoding fMyCharset.getCharsetName() Lock Write As #fileStream
+	print #fileStream, st; ' The ";" will print the text without any new line chars at the end
+	close #fileStream
 end sub
 
 /'
-	Resets the stream and the file can be readed again.
+	Appends a string to the file
 '/
-sub FileReader.reset()
-	this.CloseStream()
-	this.OpenStream()
+sub FileWriter.append(st as String)
+	Dim fileStream as Integer = freefile
+	Open fMyFile.getPath() For Append Lock Write  As #fileStream
+	print #fileStream, st; ' The ";" will print the text without any new line chars at the end
+	close #fileStream
 end sub
 

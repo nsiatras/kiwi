@@ -34,3 +34,4 @@
 #include once "io\File.bi"
 #include once "io\FileReader.bi"
 #include once "io\BufferedReader.bi"
+#include once "io\FileWriter.bi"
