@@ -1,11 +1,9 @@
 # Kiwi - FreeBasic Framework
 Kiwi is a Rapid Application framework for FreeBasic <br>
-Goal of Kiwi is to bring fast and easy to use features from Java to FreeBasic.
+Goal of Kiwi is to bring fast and easy to use features of Java to FreeBasic.
 
 FreeBasic on Discord:<br>
 [![](https://dcbadge.vercel.app/api/server/286rSdK)](https://discord.gg/286rSdK)
-
-
 
 ## Features Implemented
 Kiwi is under heavy development and new Features are been added on daily basis. In case you want to get involved fill free to do a Push Request.
