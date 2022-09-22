@@ -12,7 +12,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 * [BufferedReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.BufferedReader)
 * [File](https://github.com/nsiatras/kiwi/wiki/kiwi.io.File)
 * [FileReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileReader)
-* FileWriter - Coming Soon
+* [FileWriter](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileWriter)
 
 ### Kiwi.lang
 * [KObject](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.KObject)
