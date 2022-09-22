@@ -1,30 +1,17 @@
 ﻿#include once "kiwi\kiwi.bi"
+#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' In this example we will create an ArrayList that holds Students
-Type Student extends KObject
-	firstName as String
-	lastName as String
-End Type
+Dim filePath as String = "C:\Users\nsiat\Desktop\Test.txt"
 
-' Tells FreeBasic, that you want to use a Queue with "Student" variables
-MACRO_DefineQueue(Student)
+' Create a FileReader in order to read out file
+Dim reader as FileReader = FileReader(filePath)
 
-' Initialize a new Queue to hold Students
-Dim studentsQueue as Queue(student)
-
-Dim student1 as student
-student1.firstName = "Nikos"
-student1.lastName = "Siatras"
-studentsQueue.Add(student1) ' Add student1 to studentsQueue
-
-Dim student2 As student
-student2.firstName = "Elon"
-student2.lastName = "Musk"
-studentsQueue.Add(student2) ' Add student2 to studentsQueue
-
-while studentsQueue.isEmpty() = false
-	Dim tmp as Student = studentsQueue.poll()
-	print "Student " & tmp.firstName &" " & tmp.lastName &" was in the Queue"
+' Read each char of the File and print it on screen
+reader.OpenFile()
+Dim c as Integer = reader.read()
+while (c <> -1)
+	print WChr(c);
+	c = reader.read()
 wend
+reader.CloseFile()
 
-print student1.toString()

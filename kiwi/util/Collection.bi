@@ -40,7 +40,7 @@
 		' Define a Comparator Type for the given List_Type
 		MACRO_DefineComparator(list_type)
 
-		Type Collection_##list_type extends Object
+		Type Collection_##list_type extends KObject
 			
 			protected:
 				declare sub ResizeList(items as Integer)

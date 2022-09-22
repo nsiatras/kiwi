@@ -38,7 +38,7 @@
 	#undef File
 #endif
 
-Type File extends Object
+Type File extends KObject
 	
 	protected:
 		Dim fPathName as String

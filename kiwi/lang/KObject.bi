@@ -46,8 +46,8 @@ End Type
 Dim KObject.Hash_Code_Counter as UInteger = 0
 
 constructor KObject()
-	' Assign a HashCode to the KObject
-	KObject.Hash_Code_Counter = KObject.Hash_Code_Counter + 1
+	' Assign a Unique ID to this KObject
+	KObject.Hash_Code_Counter += 1
 	this.fID = KObject.Hash_Code_Counter	
 	
 	'print "KObject " & str(this.fID) & " Initialized"

@@ -33,7 +33,7 @@
 #include once "..\nio\Charset.bi"
 #include once "File.bi"
 
-Type FileReader extends Object
+Type FileReader extends KObject
 	
 	protected:
 		Dim fMyFile as File

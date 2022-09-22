@@ -40,7 +40,7 @@
 	' type (object_type) has already been defined
 	#ifndef KIWI_COMPARATOR_TYPE_##object_type
 	
-		Type Comparator_##object_type extends Object
+		Type Comparator_##object_type extends KObject
 
 			public:
 				declare constructor()

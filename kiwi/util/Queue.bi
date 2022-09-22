@@ -50,7 +50,7 @@
 		' Queue Type holds data into an array list
 		MACRO_DefineArrayList(list_type)
 		
-		Type Queue_##list_type extends Object
+		Type Queue_##list_type extends KObject
 			protected:
 				dim fMyArrayList as ArrayList_##list_type
 										

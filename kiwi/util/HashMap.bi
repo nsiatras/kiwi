@@ -36,7 +36,7 @@
 	
 	#ifndef KIWI_HashMap_##keyType_##valueType
 
-		Type HashMap_##keyType_##valueType extends Object
+		Type HashMap_##keyType_##valueType extends KObject
 				
 			public:
 				declare constructor()
