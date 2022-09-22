@@ -77,7 +77,7 @@ sub BufferedReader.CloseStream()
 end sub
 
 /'
-	Returns true if this BufferedReader has a next line...
+	Returns true if this BufferedReader has a next line.
 '/
 function BufferedReader.hasNextLine() as Boolean
 

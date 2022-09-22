@@ -1,17 +1,13 @@
 ﻿#include once "kiwi\kiwi.bi"
 #include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' Create an instance of a new File
+' Initialize a File and a FileReader
 Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
+Dim myReader as FileReader = FileReader(myFile, Charset.forName("utf-8"))
 
-' Initialize the charset to use during file read
-Dim charsetToUse as Charset = Charset.forName("utf-8") 
-
-' Create a FileReader
-Dim reader as FileReader = FileReader(myFile, charsetToUse)
-
-' Create a BufferedReader
-Dim bReader as BufferedReader = BufferedReader(reader)
+' Initialize a BufferedReader. The BufferedReader will be used to
+' read the text file line-by-line
+Dim bReader as BufferedReader = BufferedReader(myReader)
 
 if bReader.OpenStream() = true then
 	while bReader.hasNextLine()
@@ -21,5 +17,3 @@ if bReader.OpenStream() = true then
 else
 	print "Unable to open the file! Check if file is saved as 'UTF-8-BOM'"
 end if
-
-

@@ -134,7 +134,7 @@ function File.canRead() as Boolean
 	if e <> 0 then
 		return false
 	end if
-	close #f
+	Close #f
 	return true
 end function
 
@@ -160,7 +160,7 @@ function File.canWrite() as Boolean
 		return false
 	end if
 	
-	close #f
+	Close #f
 	return true
 	
 end function

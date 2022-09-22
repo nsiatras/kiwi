@@ -39,7 +39,7 @@ Type FileReader extends InputStreamReader
 	private:
 		Dim fMyFile as File
 		Dim fFileIsOpened as Boolean = false
-		Dim fFreeFileNumber as Integer
+		Dim fFileStream as Integer
 					
 	public:
 		declare constructor()
@@ -108,12 +108,12 @@ end constructor
 	@return The character read, or -1 if the end of the stream has been reached
 '/
 function FileReader.read() as Integer 
-	if EOF(fFreeFileNumber) = true then
+	if EOF(fFileStream) = true then
 		this.CloseStream() ' Close the file
 		return -1
 	end if
 
-	return Asc(WInput(1, fFreeFileNumber))
+	return Asc(WInput(1, fFileStream))
 end function
 
 /'
@@ -124,24 +124,18 @@ end function
 function FileReader.OpenStream() as Boolean
 	
 	' Get a free file number
-	fFreeFileNumber = freefile 
+	fFileStream = freefile 
 	
 	' Open the file for Input (Read) with the given Encoding
-	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() As #fFreeFileNumber
-	
-	if err() then
-		return false
-	else
-		return true
-	end if
-	
+	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() As #fFileStream
+	return iif(err(), false,true)
 end function
 
 /'
 	Closes the file Input Stream
 '/
 sub FileReader.CloseStream()
-	Close #fFreeFileNumber
+	Close #fFileStream
 end sub
 
 /'
