@@ -6,5 +6,4 @@ stringArray(1) = "to"
 stringArray(2) = "FreeBasic !"
 
 ' Join the array and print it on screen
-print StringUtils.Join(stringArray(),",")
-
+print StringUtils.Join(stringArray() , ",")
