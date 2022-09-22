@@ -102,8 +102,7 @@ function BufferedReader.hasNextLine() as Boolean
     
     return result
 end function
-		
-		
+			
 /'
 	Reads a line of text.  A line is considered to be terminated by any one
     of a line feed ('\n'), a carriage return ('\r'), a carriage return
@@ -114,4 +113,3 @@ function BufferedReader.readLine() as String
 	function = this.fTmpString
 	this.fTmpString = ""
 end function
-
