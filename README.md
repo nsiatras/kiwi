@@ -15,6 +15,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 * [FileReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileReader)
 
 ### Kiwi.lang
+* [KObject](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.KObject)
 * [Math](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.Math)
 * [StringUtils](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.StringUtils)
 * [System](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.System)
