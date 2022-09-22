@@ -38,8 +38,16 @@ Type Charset extends Object
 	public:
 		Declare constructor()
 		declare static function forName(charsetName as String) as Charset
-		declare function getCharsetName() as String			
+		declare function getCharsetName() as String	
+		
+		' Static Encodings
+		Static ASCII as Charset	
+		Static UTF8 as Charset
 End Type
+
+' https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
+Dim Charset.ASCII as Charset = Charset.forName("ascii")
+Dim Charset.UTF8 as Charset = Charset.forName("65001")
 
 constructor Charset()
 	fCharsetName = "ascii" ' Ascii is the default charset

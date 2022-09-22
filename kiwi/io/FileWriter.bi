@@ -25,7 +25,7 @@
 /'
 	Description: Writes text to character files using a default buffer 
 	size. Encoding from characters to bytes uses either a specified 
-	charset or the platform's default charset.
+	charset or the FreeBasic's default charset (Ascii).
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
@@ -94,7 +94,7 @@ sub FileWriter.write(st as String)
 end sub
 
 /'
-	Appends a string to the file
+	Appends a string to the file.
 '/
 sub FileWriter.append(st as String)
 	Dim fileStream as Integer = freefile
