@@ -57,6 +57,6 @@ end function
 '/
 function Charset.forName(charsetName as String) as Charset
 	Dim ch as Charset
-	ch.fCharsetName = charsetName
+	ch.fCharsetName = trim(charsetName)
 	return ch
 end function

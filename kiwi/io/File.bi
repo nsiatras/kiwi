@@ -35,6 +35,7 @@
 ' The following undef undefines that type
 ' and makes the File "keyword" available for Kiwi's File Type
 #ifdef File
+	'#define FILEFB FILE
 	#undef File
 #endif
 

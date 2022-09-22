@@ -30,17 +30,13 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include "OutputStreamWriter.bi"
+#include once "OutputStreamWriter.bi"
+#include once "crt/stdio.bi"
 
 Type FileWriter extends OutputStreamWriter
 	
 	protected:
 		Dim fMyFile as File
-		Dim fFileIsOpenedForAppend as Boolean = false
-		'Dim fFileStream as Integer
-		
-		declare function OpenStream_ForWrite() as Boolean
-		declare function OpenStream_ForAppend() as Boolean
 					
 	public:
 		declare constructor()
@@ -61,7 +57,6 @@ End Type
 constructor FileWriter(f as File)
 	this.fMyFile = f
 	base.fMyCharset = Charset.forName("ascii")
-	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
@@ -70,7 +65,6 @@ end constructor
 constructor FileWriter(f as File, ch as Charset)
 	this.fMyFile = f
 	base.fMyCharset = ch
-	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
@@ -79,7 +73,6 @@ end constructor
 constructor FileWriter(fileName as String)
 	this.fMyFile = File(fileName)
 	base.fMyCharset = Charset.forName("ascii")
-	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
@@ -88,7 +81,6 @@ end constructor
 constructor FileWriter(fileName as String, ch as Charset)
 	this.fMyFile = File(fileName)
 	base.fMyCharset = ch
-	this.fFileIsOpenedForAppend = false
 end constructor
 
 /'
@@ -106,7 +98,7 @@ end sub
 '/
 sub FileWriter.append(st as String)
 	Dim fileStream as Integer = freefile
-	Open fMyFile.getPath() For Append Lock Write  As #fileStream
+	Open fMyFile.getPath() For Append encoding fMyCharset.getCharsetName() Lock Write As #fileStream
 	print #fileStream, st; ' The ";" will print the text without any new line chars at the end
 	close #fileStream
 end sub

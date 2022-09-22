@@ -84,21 +84,21 @@ function BufferedReader.hasNextLine() as Boolean
 	Dim result as Boolean = false
 	Dim c as Integer = this.fMyInputStreamReader.read()
 	
-    while (c <> -1)
-		result = true
-		' CHR(10) = "\n" and CHR(13) = "\r"
-		if c = 10 then
-			c = this.fMyInputStreamReader.read()
-			exit while
-		elseif c = 13 then
-			c = this.fMyInputStreamReader.read()
-			exit while
-		else
+	if lcase(this.fMyInputStreamReader.getEncoding()) = "ascii" then
+		' ASCII
+		while (c <> -1 AND c <> 10 AND c <> 13)
+			result = true
 			fTmpString = fTmpString & Chr(c)
-		end if
-		
-        c = this.fMyInputStreamReader.read()
-    wend
+			c = this.fMyInputStreamReader.read()
+		wend
+	else
+		' NON ASCII
+		while (c <> -1 AND c <> 10 )
+			result = true
+			fTmpString = fTmpString & Chr(c)
+			c = this.fMyInputStreamReader.read()
+		wend
+	endif
     
     return result
 end function
