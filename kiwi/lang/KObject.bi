@@ -33,14 +33,14 @@ Type KObject extends Object
 
 	protected:
 		Static Hash_Code_Counter as UInteger
-		Dim fID as Integer
+		Dim fID as UInteger
 
 	public:
 		declare constructor()					' Constructor
 		declare destructor()					' Destructor
 		
 		declare virtual function toString() as String
-		declare function getUniqueID() as Integer
+		declare function getUniqueID() as UInteger
 End Type
 
 Dim KObject.Hash_Code_Counter as UInteger = 0
@@ -73,8 +73,8 @@ function KObject.toString() as String
 end function
 
 /'
-	Returns a unique Integer ID of this KObject
+	Returns a unique UInteger ID of this KObject
 '/
-function KObject.getUniqueID() as Integer
+function KObject.getUniqueID() as UInteger
 	return this.fID
 end function
