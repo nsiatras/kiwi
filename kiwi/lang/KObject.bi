@@ -22,27 +22,46 @@
 	SOFTWARE.
 '/
 
-/'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
+Type KObject extends Object
+
+	protected:
+		Static Hash_Code_Counter as UInteger
+		Dim fID as Integer
+
+	public:
+		declare constructor()					' Constructor
+		declare destructor()					' Destructor
+		
+		declare virtual function toString() as String
+		declare function getUniqueID() as Integer
+End Type
+
+Dim KObject.Hash_Code_Counter as UInteger = 0
+
+constructor KObject()
+	' Assign a HashCode to the KObject
+	KObject.Hash_Code_Counter = KObject.Hash_Code_Counter + 1
+	this.fID = KObject.Hash_Code_Counter	
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
+	'print "KObject " & str(this.fID) & " Initialized"
+end constructor
+
+destructor KObject()
+	
+end destructor
+
+/'
+	Equal Operator
+	Checks whether two objects are from the same reference
 '/
+operator = (a as KObject, b as KObject) as Integer
+    return a.getUniqueID() = b.getUniqueID()
+end operator
 
-#include once "core\Core.bi"
+function KObject.toString() as String
+	return "Obj" & str(this.fID)
+end function
 
-#include once "nio\Charset.bi"
-
-#include once "lang\KObject.bi"
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-#include once "lang\StringUtils.bi"
-
-#include once "util\Collection.bi"
-#include once "util\Comparator.bi"
-#include once "util\ArrayList.bi"
-#include once "util\Queue.bi"
-#include once "util\HashMap.bi"
-
-
+function KObject.getUniqueID() as Integer
+	return this.fID
+end function

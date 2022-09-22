@@ -222,11 +222,13 @@
 			@return the index of the element or -1 if not found
 		'/
 		function ArrayList_##list_type.indexOf(byref e as ##list_type) as Integer
+			
 			for i as Integer = 0 to ubound(base.fElements)
 				if base.fElements(i) = e then
 					return i
 				end if
 			next i
+			
 			return -1
 		end function
 		
@@ -237,12 +239,7 @@
 			@return true if this list contains the specified element
 		'/
 		function  ArrayList_##list_type.contains(byref e as ##list_type) as Boolean
-			for i as Integer = 0 to ubound(base.fElements)
-				if base.fElements(i) = e then
-					return true
-				end if
-			next i
-			return false
+			return this.indexOf(e)>-1
 		end function
 		
 		/'
