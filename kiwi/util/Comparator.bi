@@ -65,38 +65,28 @@
 			@param startIndex is the end index of the Array to sort
 		'/
 		sub Comparator_##object_type.quickSort(items() as ##object_type, startIndex As UInteger, endIndex As UInteger)
-			
 			Dim As UInteger sortSize = endIndex - startIndex + 1
 			Dim i as UInteger = startIndex
 			Dim j as UInteger = endIndex
-			
 			if sortSize < 2 then 
 				exit sub
 			end if
-			
 			Dim pivot as ##object_type = items(startIndex + sortSize \ 2)
-
 			Do
 				while this.compare(items(i), pivot) < 0
 					i += 1
 				wend
-				
 				while this.compare(pivot , items(j)) < 0
 					j -= 1
 				wend
-				
 				if i <= j then
 					Swap items(i), items(j)
 					i += 1
 					j -= 1
 				end if
-				
 			Loop Until i > j
-			
-
 			if startIndex < j then this.quickSort(items(), startIndex, j)
 			if i < endIndex then this.quickSort(items(), i, endIndex)
-		
 		end sub
 
 

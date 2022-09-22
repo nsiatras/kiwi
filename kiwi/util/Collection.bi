@@ -56,6 +56,8 @@
 				declare abstract function get(byval index as UInteger) as ##list_type
 				declare abstract function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare abstract function remove(byval index as UInteger) as ##list_type
+				declare abstract function indexOf(byref e as ##list_type) as Integer
+				declare abstract function contains(byref e as ##list_type) as Boolean
 				declare abstract sub sort(byref c as Comparator_##list_type) 
 				declare abstract sub clean() 	
 				declare abstract function size() as UInteger
@@ -68,7 +70,6 @@
 		constructor Collection_##list_type()
 			fCount = 0
 		end constructor
-		
 		
 		' This is internally use to resize (redim) the fElements Array
 		sub Collection_##list_type.ResizeList(itemsToAdd as Integer)

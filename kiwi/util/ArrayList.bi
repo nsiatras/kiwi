@@ -67,6 +67,8 @@
 				declare function get(byval index as UInteger) as ##list_type
 				declare function set(byval index as UInteger, byref element as ##list_type) as ##list_type
 				declare function remove(byval index as UInteger) as ##list_type
+				declare function indexOf(byref e as ##list_type) as Integer
+				declare function contains(byref e as ##list_type) as Boolean
 				declare sub sort(byref c as Comparator_##list_type) 
 				declare sub clean() 	
 				declare function size() as UInteger
@@ -209,6 +211,38 @@
 			base.ResizeList(-1)
 			
 			return elementToRemove ' Return the removed element
+		end function
+		
+		/'
+			Returns the index of the first occurrence of the specified 
+			element in this list, or -1 if this list does not contain 
+			the element.
+			
+			@param e is the element to check if existsin in the list
+			@return the index of the element or -1 if not found
+		'/
+		function ArrayList_##list_type.indexOf(byref e as ##list_type) as Integer
+			for i as Integer = 0 to ubound(base.fElements)
+				if base.fElements(i) = e then
+					return i
+				end if
+			next i
+			return -1
+		end function
+		
+		/'
+			Returns true if this list contains the specified element.
+
+			@param e element whose presence in this list is to be tested
+			@return true if this list contains the specified element
+		'/
+		function  ArrayList_##list_type.contains(byref e as ##list_type) as Boolean
+			for i as Integer = 0 to ubound(base.fElements)
+				if base.fElements(i) = e then
+					return true
+				end if
+			next i
+			return false
 		end function
 		
 		/'

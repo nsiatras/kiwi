@@ -6,24 +6,32 @@ Type Student
 	lastName as String
 End Type
 
-' Tells FreeBasic, that you want to use a Queue with "Student" variables
-MACRO_DefineQueue(student)
+operator = (a as student, b as student) as Integer
+    return a.firstName = b.firstName AND a.lastName = b.LastName
+end operator
 
-' Initialize a new Queue to hold Students
-Dim studentsQueue as Queue(student)
+' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
+MACRO_DefineArrayList(Student)
+
+' Initialize a new ArrayList to hold students
+Dim students as ArrayList(Student)
 
 Dim student1 as student
 student1.firstName = "Nikos"
 student1.lastName = "Siatras"
-studentsQueue.Add(student1) ' Add student1 to studentsQueue
+students.Add(student1) ' Add student1 to students ArrayList
 
 Dim student2 As student
 student2.firstName = "Elon"
 student2.lastName = "Musk"
-studentsQueue.Add(student2) ' Add student2 to studentsQueue
+students.Add(student2) ' Add student2 to students ArrayList
 
-Dim tmp as Student
-while studentsQueue.isEmpty() = false
-	tmp = studentsQueue.poll()
-	print "Student " & tmp.firstName & " " & tmp.lastName & " was in the Queue"
-wend
+print "Students ArrayList contains " & students.size() & " elements"
+print ""
+
+print "Students: "
+for i as Integer = 0 to students.size() - 1
+	print "Student " & i & " = " & students.get(i).firstName & " " & students.get(i).lastName 
+next i
+
+
