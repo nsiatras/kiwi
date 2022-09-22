@@ -1,15 +1,10 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-Dim fStringToSplit as String = "Welcome###to###Free###Basic###!"
-Dim fSplitParts () as String
+Dim stringArray(0 to 2) as String
+stringArray(0) = "Welcome"
+stringArray(1) = "to"
+stringArray(2) = "FreeBasic !"
 
-' Splits  fStringToSplit using "###" as a delimeter
-StringUtils.Split(fStringToSplit,"###",fSplitParts())
+' Join the array and print it on screen
+print StringUtils.Join(stringArray(),",")
 
-' Print the fSplitParts
-for i as Integer = 0 to ubound(fSplitParts)
-    print "Part no." & i & " = " & fSplitParts(i)
-next
-
-
-print StringUtils.Join(fSplitParts(),",")
