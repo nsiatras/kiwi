@@ -32,55 +32,62 @@
 
 #include once "..\nio\Charset.bi"
 #include once "File.bi"
+#include once "InputStreamReader.bi"
 
-Type FileReader extends KObject
+Type FileReader extends InputStreamReader
 	
-	protected:
+	private:
 		Dim fMyFile as File
-		Dim fMyCharset as Charset
 		Dim fFileIsOpened as Boolean = false
 		Dim fFreeFileNumber as Integer
 					
 	public:
+		declare constructor()
 		declare constructor(f as File)
 		declare constructor(f as File, ch as Charset)
 		declare constructor(fileName as String)
 		declare constructor(fileName as String, ch as Charset)
 		
-		declare function OpenFile() as Boolean
-		declare Sub CloseFile()
+		declare function OpenStream() as Boolean
+		declare Sub CloseStream()
 		declare function read() as Integer
 		declare Sub reset()
 		
-		declare function getEncoding() as String
-		
 End Type
+
+constructor FileReader()
+	base()
+end constructor
 
 /'
 	Creates a new FileReader instance
 '/
 constructor FileReader(f as File)
+	base()
 	this.fMyFile = f
-	fMyCharset = Charset.forName("ascii")
+	base.fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
+	
 end constructor
 
 /'
 	Creates a new FileReader instance with preselected Charset
 '/
 constructor FileReader(f as File, ch as Charset)
+	base()
 	this.fMyFile = f
 	this.fFileIsOpened = false
-	fMyCharset = ch
+	base.fMyCharset = ch
 end constructor
 
 /'
 	Creates a new FileReader instance
 '/
 constructor FileReader(fileName as String)
+	base()
 	Dim f as File = File(fileName)
 	this.fMyFile = f
-	fMyCharset = Charset.forName("ascii")
+	base.fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
 end constructor
 
@@ -88,10 +95,11 @@ end constructor
 	Creates a new FileReader instance with preselected Charset
 '/
 constructor FileReader(fileName as String, ch as Charset)
+
 	Dim f as File = File(fileName)
 	this.fMyFile = f
 	this.fFileIsOpened = false
-	fMyCharset = ch
+	base.fMyCharset = ch
 end constructor
 
 /'
@@ -99,10 +107,9 @@ end constructor
 	
 	@return The character read, or -1 if the end of the stream has been reached
 '/
-function FileReader.read() as Integer
-
+function FileReader.read() as Integer 
 	if EOF(fFreeFileNumber) = true then
-		this.CloseFile() ' Close the file
+		this.CloseStream() ' Close the file
 		return -1
 	end if
 
@@ -114,7 +121,7 @@ end function
 	
 	@return true if file exists and can be read
 '/
-function FileReader.OpenFile() as Boolean
+function FileReader.OpenStream() as Boolean
 	
 	' Get a free file number
 	fFreeFileNumber = freefile 
@@ -133,7 +140,7 @@ end function
 /'
 	Closes the file Input Stream
 '/
-sub FileReader.CloseFile()
+sub FileReader.CloseStream()
 	Close #fFreeFileNumber
 end sub
 
@@ -141,15 +148,7 @@ end sub
 	Resets the stream and the file can be readed again.
 '/
 sub FileReader.reset()
-	this.CloseFile()
-	this.OpenFile()
+	this.CloseStream()
+	this.OpenStream()
 end sub
 
-/'
-	Returns the name of the character encoding being used by this stream.
-	
-	@return The name of this encoding
-'/
-function FileReader.getEncoding() as String
-	return fMyCharset.getCharsetName()
-end function
