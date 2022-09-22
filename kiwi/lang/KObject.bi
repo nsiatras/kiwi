@@ -29,7 +29,6 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-
 Type KObject extends Object
 
 	protected:
@@ -66,10 +65,16 @@ operator = (a as KObject, b as KObject) as Integer
     return a.getUniqueID() = b.getUniqueID()
 end operator
 
+/'
+	Returns a string representation of this KObject.
+'/
 function KObject.toString() as String
-	return "Obj" & str(this.fID)
+	return "KObj" & str(this.fID)
 end function
 
+/'
+	Returns a unique Integer ID of this KObject
+'/
 function KObject.getUniqueID() as Integer
 	return this.fID
 end function
