@@ -11,6 +11,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 ### Kiwi.IO
 * [File](https://github.com/nsiatras/kiwi/wiki/kiwi.io.File)
 * [FileReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileReader)
+* FileWriter - Coming Soon
 
 ### Kiwi.lang
 * [KObject](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.KObject)
@@ -21,5 +22,5 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 ### Kiwi.Util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
 * [Comparator](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Comparator)
+* HashMap - Coming Soon
 * [Queue](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Queue)
-
