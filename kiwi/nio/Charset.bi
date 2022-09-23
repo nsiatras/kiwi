@@ -48,7 +48,7 @@ End Type
 ' https://www.freebasic.net/forum/viewtopic.php?p=257836
 ' https://learn.microsoft.com/en-us/windows/win32/intl/code-page-identifiers
 Dim Charset.ASCII as Charset = Charset.forName("ascii")
-Dim Charset.UTF8 as Charset = Charset.forName("65001")
+Dim Charset.UTF8 as Charset = Charset.forName("utf8")
 
 constructor Charset()
 	fCharsetName = "ascii" ' Ascii is the default charset
