@@ -50,10 +50,8 @@
 		' Queue Type holds data into an array list
 		MACRO_DefineArrayList(list_type)
 		
-		Type Queue_##list_type extends KObject
-			protected:
-				Dim fMyArrayList as ArrayList_##list_type
-										
+		Type Queue_##list_type extends ArrayList_##list_type
+												
 			public:
 				declare constructor()			
 				declare function add(byref e as ##list_type) as Boolean
@@ -63,14 +61,15 @@
 				declare function peekLast() as ##list_type
 				declare sub clean() 
 				declare function size() as UInteger
-				declare function isEmpty() as Boolean			
+				declare function isEmpty() as Boolean	
+						
 		End Type
 		
 		/'
 			Initializes a new Queue Object
 		'/
 		constructor Queue_##list_type()
-			fMyArrayList.clean()
+			base.clean()
 		end constructor
 		
 		/'
@@ -82,7 +81,7 @@
 			@return true
 		'/
 		function Queue_##list_type.add(byref e as ##list_type) as Boolean
-			return fMyArrayList.add(e)
+			return base.add(e)
 		end function
 		
 		/'
@@ -94,10 +93,7 @@
 			@return true if this collection changed as a result of the call
 		'/
 		function Queue_##list_type.addAll(byref c as Collection_##list_type) as Boolean
-			for i as Integer = 0 to c.size() - 1
-				this.add(c.get(i))
-			next i
-			return true
+			return base.addAll(c)
 		end function
 		
 		/'
@@ -106,8 +102,7 @@
 			@return the head of this queue
 		'/
 		function Queue_##list_type.poll() as ##list_type	
-			Dim result as ##list_type = this.fMyArrayList.remove(0)	
-			return result ' Return the removed element			 
+			return base.remove(0)
 		end function
 		
 		/'
@@ -115,7 +110,7 @@
 			or returns null if this queue is empty.
 		'/
 		function Queue_##list_type.peekFirst() as ##list_type
-			return this.fMyArrayList.get(0)
+			return base.get(0)
 		end function	
 		
 		/'
@@ -123,7 +118,7 @@
 			or returns null if this queue is empty.
 		'/
 		function Queue_##list_type.peekLast() as ##list_type	
-			return fMyArrayList.get(fMyArrayList.size()-1)
+			return base.get(base.size() - 1)
 		end function	
 		
 		/'
@@ -131,21 +126,21 @@
 			be empty after this call returns.
 		'/
 		sub Queue_##list_type.clean() 
-			fMyArrayList.clean()
+			base.clean()
 		end sub
 
 		/'
 			Returns the number of elements in this Queue.
 		'/
 		function Queue_##list_type.size() as UInteger
-			return fMyArrayList.size()
+			return base.size()
 		end function
 		
 		/'
 			Returns true if this Queue contains no elements.
 		'/
 		function Queue_##list_type.isEmpty() as Boolean
-			return fMyArrayList.isEmpty()
+			return base.isEmpty()
 		end function
 					
 		' define the KIWI_Queue_TYPE_##list_type with the given list_type

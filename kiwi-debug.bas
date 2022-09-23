@@ -1,22 +1,15 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' Initialize the file to read and a FileReader
-Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
-Dim reader as FileReader = FileReader(myFile, Charset.UTF8) ' Use UTF8 charset
+' Initialize a new Queue to hold Double variables
+Dim myQueue as Queue(Double)
 
-' Try to open the file
-if reader.OpenStream() = true then
+' Add 10 Random double values to myQueue
+for i as Integer = 0 to 9
+	myQueue.add(Math.random())
+next i 
 
-    ' Read each char of the File and print it on screen
-    Dim c as Integer = reader.read()
-    while (c <> -1)
-        print WChr(c);
-        c = reader.read()
-    wend
-
-    ' Close the File
-    reader.CloseStream()
-else
-    print "Unable to open the file! Check if file is saved as 'UTF-8-BOM'"
-end if  
+' De-Queue each element from the queue, until the queue is empty,
+' and print
+while myQueue.isEmpty() = false
+	print myQueue.poll()
+wend
