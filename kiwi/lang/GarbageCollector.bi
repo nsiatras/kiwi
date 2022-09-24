@@ -88,9 +88,8 @@ End Type
 			Dim p As KObject Pointer = @obj
 			for i as Integer = 0 to GarbageCollector.fObjectsCount - 1
 				if (*GarbageCollector.fLiveObjects(i)).getUniqueID = id AND @GarbageCollector.fLiveObjects(i) <> @except then
-					print " Object " & id &" is now "& obj.getUniqueID() 
+					'print " Object " & id &" is now "& obj.getUniqueID() 
 					GarbageCollector.fLiveObjects(i) = p
-					
 					print (*GarbageCollector.fLiveObjects(i)).getUniqueID &"-->"& obj.getUniqueID() 
 				endif
 			next 

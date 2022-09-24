@@ -42,7 +42,9 @@ Type KObject extends Object
 		declare constructor()					' Constructor
 		declare destructor()					' Destructor
 		
+		#ifdef USE_GARBAGE_COLLECTOR
 		declare operator let(value as KObject)
+		#endif
 				
 		declare virtual function toString() as String
 		declare function getUniqueID() as UInteger
@@ -63,16 +65,20 @@ constructor KObject()
 	KObject.Hash_Code_Counter += 1
 	this.fID = KObject.Hash_Code_Counter
 	
-	' Tell GC to Register the Object
-	GarbageCollector.RegisterObject(this)
+	#ifdef USE_GARBAGE_COLLECTOR
+		' Tell GC to Register the Object
+		GarbageCollector.RegisterObject(this)
+	#endif
 end constructor
 
 /'
 	KObject's Destructor
 '/
 destructor KObject()
-	' Tell GC to Delete the Object
-	GarbageCollector.DeleteObject(this)
+	#ifdef USE_GARBAGE_COLLECTOR
+		' Tell GC to Delete the Object
+		GarbageCollector.DeleteObject(this)
+	#endif
 end destructor
 
 /'
@@ -83,6 +89,7 @@ operator = (a as KObject, b as KObject) as Integer
 	return a.getUniqueID() = b.getUniqueID()
 end operator
 
+#ifdef USE_GARBAGE_COLLECTOR
 /'
 	Let Operator of KObject
 '/
@@ -95,6 +102,7 @@ operator KObject.let(value as KObject)
 		this = value
 	end if
 end operator
+#endif
 
 /'
 	Returns a string representation of this KObject.

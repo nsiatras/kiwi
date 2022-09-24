@@ -1,27 +1,14 @@
 ﻿#include once "kiwi\kiwi.bi"
+#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-Type Student extends KObject
-	fName as String
-End Type
+' Initialize a File and a FileWriter
+Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
+Dim myWriter as FileWriter = FileWriter(myFile, Charset.UTF8) ' Using UTF-8 Charset
 
-Dim s1 as Student
-s1.fName = "Nikos"
+' The fist line will be written to the text file
+myWriter.write("Hello!" & System.lineSeparator) 
 
-Dim s2 as Student
-s2.fName = "George"
-
-Dim s3 as Student
-
-s3 = s2 
-s1 = s3
-
-if(s3 = s1) then
-	print "Student 3 and 1 are equal"
-end if
-
-s3.fName = "John"
-
-
-print s1.fName & " " & s1.getUniqueID()
-print s2.fName & " " & s2.getUniqueID()
-print s3.fName & " " & s3.getUniqueID()
+' The next 3 lines will be appended
+myWriter.append("This is simple Text file" & System.lineSeparator) 
+myWriter.append("created by Kiwi Framework" & System.lineSeparator)
+myWriter.append("for FreeBasic :)" & System.lineSeparator)
