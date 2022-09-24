@@ -22,30 +22,83 @@
 	SOFTWARE.
 '/
 
-
-Type _KObject as Object
-
-
-#ifndef GARBAGE_COLLECTOR_DEFINED
-
-	Type GarbageCollector extends Object
-		
-		public:
-			Declare Static Sub RegisterObject(obj as _KObject)
-			Declare static Sub DeleteObject(obj as _KObject)
-
-	End Type
-
-	Sub GarbageCollector.RegisterObject(obj as _KObject)
-		'print "KObject " & obj.getUniqueID() & " registered"
-	End Sub
-
-	Sub GarbageCollector.DeleteObject(obj as _KObject)
-		'print "KObject " & obj.getUniqueID() & " deleted!"
-	End Sub
+/'
+	Description: Kiwi's garbage collector
 	
-	#define GARBAGE_COLLECTOR_DEFINED
-#endif
+	Author: Nikos Siatras (https://github.com/nsiatras)
+'/
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Declare an alias Type of KObject in order to make the cross reference
+' between GarbageCollector and KObject Possible.
+Type as KObject _KObject
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Type GarbageCollector extends Object
+        	
+    private:
+		Static fLiveObjects(any) as _KObject Pointer ' Holds the pointers of live KObjects
+		Static fObjectsCount as UInteger
+				
+    public:
+        Declare Static Sub RegisterObject(obj as _KObject)
+        Declare Static Sub DeleteObject(obj as _KObject)
+        Declare Static Sub UpdateKObjects(id as UInteger,obj as _KObject)
+End Type
 
 
+#macro MACRO_DefineGarbageCollectorMethods()
+	#ifndef GARBAGE_COLLECTOR_METHODS_DEFINED
+	
+		Dim GarbageCollector.fLiveObjects(any) as _KObject Pointer 
+		Dim GarbageCollector.fObjectsCount as UInteger = 0
+		
+		/'
+			Ask GarbageCollector to register a new KObject
+		'/
+		Sub GarbageCollector.RegisterObject(obj as KObject)
+			
+			' Get the pointer of obj
+			Dim p As KObject Pointer = @obj
+			
+			'Add the pointer to the GarbageCollector.fLiveObjects array
+			GarbageCollector.fObjectsCount += 1
+			redim preserve GarbageCollector.fLiveObjects(GarbageCollector.fObjectsCount)
+			GarbageCollector.fLiveObjects(GarbageCollector.fObjectsCount - 1) =  p
+			
+			'print "KObject " & obj.getUniqueID() & " registered"
+			
+		End Sub
+
+		/'
+			Ask GarbageCollector to remove a KObject 
+		'/
+		Sub GarbageCollector.DeleteObject(obj as KObject)
+			
+			for i as Integer = 0 to GarbageCollector.fObjectsCount - 1	
+				if (*GarbageCollector.fLiveObjects(i)).getUniqueID = obj.getUniqueID() then
+				
+				endif
+			next i
+			
+			'print "Object " & obj.getUniqueID() & " deleted"
+		End Sub
+		
+		/'
+			Finds all KObjects with KObject.getUniqueID() = id and
+			makes them equal to obj
+		'/
+		Sub GarbageCollector.UpdateKObjects(id as UInteger, obj as KObject)
+			
+			for i as Integer = 0 to GarbageCollector.fObjectsCount - 1	
+				if (*GarbageCollector.fLiveObjects(i)).getUniqueID = obj.getUniqueID() AND @(*GarbageCollector.fLiveObjects(i)) <> @obj  then
+					(*GarbageCollector.fLiveObjects(i)).setData(obj)
+				endif
+			next i
+			
+		End Sub
+		
+		#define GARBAGE_COLLECTOR_METHODS_DEFINED
+	#endif
+#endmacro
 

@@ -32,8 +32,6 @@
 
 #include once "GarbageCollector.bi"
 
-
-
 Type KObject extends Object
 
 	protected:
@@ -46,12 +44,22 @@ Type KObject extends Object
 		
 		declare operator let(value as KObject)
 		
+		declare sub setData(value as KObject)
+		
 		declare virtual function toString() as String
 		declare function getUniqueID() as UInteger
 End Type
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' CAUTION: Define/Declare Garbage Collector Methods here!
+MACRO_DefineGarbageCollectorMethods()
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 Dim KObject.Hash_Code_Counter as UInteger = 0
 
+/'
+	KObject's Constructor
+'/
 constructor KObject()
 	' Assign a Unique ID to this KObject
 	KObject.Hash_Code_Counter += 1
@@ -61,8 +69,12 @@ constructor KObject()
 	GarbageCollector.RegisterObject(this)
 end constructor
 
+/'
+	KObject's Destructor
+'/
 destructor KObject()
-	'GarbageCollector.DeleteObject(this)
+	' Tell GC to Delete the Object
+	GarbageCollector.DeleteObject(this)
 end destructor
 
 /'
@@ -73,10 +85,21 @@ operator = (a as KObject, b as KObject) as Integer
 	return a.getUniqueID() = b.getUniqueID()
 end operator
 
+/'
+	Let Operator of KObject
+'/
 operator KObject.let(value as KObject)
-	' At this point we need to find all KObjects with 
-	' fID = this.getUniqueID() and "let them be value"
+	' Tell GarbageCollector to update all KObjects, with the same
+	' Unique ID, to value.
+	GarbageCollector.UpdateKObjects(this.getUniqueID(), value)
+	this.fID = value.getUniqueID()
+	'print "Object " & this.fID & " = " & value.fID
 end operator
+
+Sub KObject.setData(value as KObject)
+	this = KObject
+	this.fID = value.getUniqueID()
+end Sub
 
 /'
 	Returns a string representation of this KObject.
@@ -91,4 +114,3 @@ end function
 function KObject.getUniqueID() as UInteger
 	return this.fID
 end function
-

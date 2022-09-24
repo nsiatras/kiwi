@@ -10,10 +10,19 @@ s1.fName = "Nikos"
 Dim s2 as Student
 s2.fName = "George"
 
-s1 = s2
+Dim s3 as Student = s1
 
-print s1.fName
+if(s3 = s1) then
+	print "Student 3 and 1 are equal"
+end if
 
-'GarbageCollector.RegisterObject(s1)
+s1.fName = "asdasd"
 
 
+
+
+
+
+print s1.fName & " " & s1.getUniqueID()
+print s2.fName & " " & s2.getUniqueID()
+print s3.fName & " " & s3.getUniqueID()
