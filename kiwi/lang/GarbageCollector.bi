@@ -22,27 +22,30 @@
 	SOFTWARE.
 '/
 
-/'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
+
+Type _KObject as Object
+
+
+#ifndef GARBAGE_COLLECTOR_DEFINED
+
+	Type GarbageCollector extends Object
+		
+		public:
+			Declare Static Sub RegisterObject(obj as _KObject)
+			Declare static Sub DeleteObject(obj as _KObject)
+
+	End Type
+
+	Sub GarbageCollector.RegisterObject(obj as _KObject)
+		'print "KObject " & obj.getUniqueID() & " registered"
+	End Sub
+
+	Sub GarbageCollector.DeleteObject(obj as _KObject)
+		'print "KObject " & obj.getUniqueID() & " deleted!"
+	End Sub
 	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
-'/
+	#define GARBAGE_COLLECTOR_DEFINED
+#endif
 
-#include once "core\Core.bi"
 
-#include once "nio\Charset.bi"
-
-#include once "lang\GarbageCollector.bi"
-#include once "lang\KObject.bi"
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-#include once "lang\StringUtils.bi"
-
-#include once "util\Collection.bi"
-#include once "util\Comparator.bi"
-#include once "util\ArrayList.bi"
-#include once "util\Queue.bi"
-#include once "util\HashMap.bi"
 

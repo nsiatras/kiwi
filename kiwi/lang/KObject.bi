@@ -29,52 +29,67 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-Type KObject extends Object
 
-	protected:
-		Static Hash_Code_Counter as UInteger
-		Dim fID as UInteger
+#include once "GarbageCollector.bi"
 
-	public:
-		declare constructor()					' Constructor
-		declare destructor()					' Destructor
-		
-		declare virtual function toString() as String
-		declare function getUniqueID() as UInteger
-End Type
+#ifndef KOBJECT_DEFINED
 
-Dim KObject.Hash_Code_Counter as UInteger = 0
+	Type KObject extends Object
 
-constructor KObject()
-	' Assign a Unique ID to this KObject
-	KObject.Hash_Code_Counter += 1
-	this.fID = KObject.Hash_Code_Counter	
-	
-	'print "KObject " & str(this.fID) & " Initialized"
-end constructor
+		protected:
+			Static Hash_Code_Counter as UInteger
+			Dim fID as UInteger
 
-destructor KObject()
-	
-end destructor
+		public:
+			declare constructor()					' Constructor
+			declare destructor()					' Destructor
+			
+			declare operator let(value as KObject)
+			
+			declare virtual function toString() as String
+			declare function getUniqueID() as UInteger
+	End Type
 
-/'
-	Equal Operator
-	Checks whether two objects are from the same reference
-'/
-operator = (a as KObject, b as KObject) as Integer
-    return a.getUniqueID() = b.getUniqueID()
-end operator
+	Dim KObject.Hash_Code_Counter as UInteger = 0
 
-/'
-	Returns a string representation of this KObject.
-'/
-function KObject.toString() as String
-	return "KObj" & str(this.fID)
-end function
+	constructor KObject()
+		' Assign a Unique ID to this KObject
+		KObject.Hash_Code_Counter += 1
+		this.fID = KObject.Hash_Code_Counter
+		GarbageCollector.RegisterObject(this)
+		'print "KObject " & str(this.fID) & " Initialized"
+	end constructor
 
-/'
-	Returns a unique UInteger ID of this KObject
-'/
-function KObject.getUniqueID() as UInteger
-	return this.fID
-end function
+	destructor KObject()
+		'GarbageCollector.DeleteObject(this)
+	end destructor
+
+	/'
+		Equal Operator
+		Checks whether two objects are from the same reference
+	'/
+	operator = (a as KObject, b as KObject) as Integer
+		return a.getUniqueID() = b.getUniqueID()
+	end operator
+
+	operator KObject.let(value as KObject)
+		' At this point we need to find all KObjects with 
+		' fID = this.getUniqueID() and "let them be value"
+	end operator
+
+	/'
+		Returns a string representation of this KObject.
+	'/
+	function KObject.toString() as String
+		return "KObj" & str(this.fID)
+	end function
+
+	/'
+		Returns a unique UInteger ID of this KObject
+	'/
+	function KObject.getUniqueID() as UInteger
+		return this.fID
+	end function
+
+	#define KOBJECT_DEFINED
+#endif
