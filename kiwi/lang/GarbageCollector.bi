@@ -43,7 +43,7 @@ Type GarbageCollector extends Object
     public:
         Declare Static Sub RegisterObject(obj as _KObject)
         Declare Static Sub DeleteObject(obj as _KObject)
-        Declare Static Sub UpdateKObjects(id as UInteger,obj as _KObject)
+        Declare Static Sub UpdateKObjects(id as UInteger, value as _KObject, except as _KObject)
 End Type
 
 
@@ -57,30 +57,26 @@ End Type
 			Ask GarbageCollector to register a new KObject
 		'/
 		Sub GarbageCollector.RegisterObject(obj as KObject)
-			
 			' Get the pointer of obj
-			Dim p As KObject Pointer = @obj
+			Dim objectPointer As KObject Pointer = @obj
 			
 			'Add the pointer to the GarbageCollector.fLiveObjects array
 			GarbageCollector.fObjectsCount += 1
 			redim preserve GarbageCollector.fLiveObjects(GarbageCollector.fObjectsCount)
-			GarbageCollector.fLiveObjects(GarbageCollector.fObjectsCount - 1) =  p
+			GarbageCollector.fLiveObjects(GarbageCollector.fObjectsCount - 1) =  objectPointer
 			
-			'print "KObject " & obj.getUniqueID() & " registered"
-			
+			'print "KObject " & (*GarbageCollector.fLiveObjects(GarbageCollector.fObjectsCount - 1)).getUniqueID() & " registered"
 		End Sub
 
 		/'
 			Ask GarbageCollector to remove a KObject 
 		'/
 		Sub GarbageCollector.DeleteObject(obj as KObject)
-			
 			for i as Integer = 0 to GarbageCollector.fObjectsCount - 1	
 				if (*GarbageCollector.fLiveObjects(i)).getUniqueID = obj.getUniqueID() then
 				
 				endif
-			next i
-			
+			next
 			'print "Object " & obj.getUniqueID() & " deleted"
 		End Sub
 		
@@ -88,17 +84,18 @@ End Type
 			Finds all KObjects with KObject.getUniqueID() = id and
 			makes them equal to obj
 		'/
-		Sub GarbageCollector.UpdateKObjects(id as UInteger, obj as KObject)
-			
-			for i as Integer = 0 to GarbageCollector.fObjectsCount - 1	
-				if (*GarbageCollector.fLiveObjects(i)).getUniqueID = obj.getUniqueID() AND @(*GarbageCollector.fLiveObjects(i)) <> @obj  then
-					(*GarbageCollector.fLiveObjects(i)).setData(obj)
+		Sub GarbageCollector.UpdateKObjects(id as UInteger, obj as KObject, except as KObject)
+			Dim p As KObject Pointer = @obj
+			for i as Integer = 0 to GarbageCollector.fObjectsCount - 1
+				if (*GarbageCollector.fLiveObjects(i)).getUniqueID = id AND @GarbageCollector.fLiveObjects(i) <> @except then
+					print " Object " & id &" is now "& obj.getUniqueID() 
+					GarbageCollector.fLiveObjects(i) = p
+					
+					print (*GarbageCollector.fLiveObjects(i)).getUniqueID &"-->"& obj.getUniqueID() 
 				endif
-			next i
-			
+			next 
 		End Sub
 		
 		#define GARBAGE_COLLECTOR_METHODS_DEFINED
 	#endif
 #endmacro
-

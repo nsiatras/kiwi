@@ -43,9 +43,7 @@ Type KObject extends Object
 		declare destructor()					' Destructor
 		
 		declare operator let(value as KObject)
-		
-		declare sub setData(value as KObject)
-		
+				
 		declare virtual function toString() as String
 		declare function getUniqueID() as UInteger
 End Type
@@ -89,17 +87,14 @@ end operator
 	Let Operator of KObject
 '/
 operator KObject.let(value as KObject)
-	' Tell GarbageCollector to update all KObjects, with the same
-	' Unique ID, to value.
-	GarbageCollector.UpdateKObjects(this.getUniqueID(), value)
-	this.fID = value.getUniqueID()
-	'print "Object " & this.fID & " = " & value.fID
+	if this.getUniqueID() <> value.getUniqueID() then
+		' Tell GarbageCollector to update all KObjects, with the same
+		' Unique ID, to value.
+		GarbageCollector.UpdateKObjects(this.getUniqueID(), value, this)
+		this.fID = value.getUniqueID()
+		this = value
+	end if
 end operator
-
-Sub KObject.setData(value as KObject)
-	this = KObject
-	this.fID = value.getUniqueID()
-end Sub
 
 /'
 	Returns a string representation of this KObject.
