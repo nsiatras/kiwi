@@ -31,21 +31,25 @@
 '/
 
 #include once "Runnable.bi"
+#include once "fbthread.bi"
 
 Type Thread extends KObject
 	
+	protected:
+		Declare Static Sub RunTheRunnable(r as Any PTR)
+		
 	private:
-		Dim fMyRunnable as Runnable
+		Dim fThreadID As Any Ptr
+		
+		Dim fMyRunnablePointer as Runnable Ptr
 		Dim fMyName as String
 		
-		Dim fThreadPTR As Any Ptr
-		
+
 	public:
 		declare constructor()
-		declare constructor(r as Runnable)
-		declare constructor(r as Runnable, threadName as String)
+		declare constructor(r as Runnable Ptr )
+		declare constructor(r as Runnable Ptr, threadName as String)
 		declare Sub Start()
-		
 		
 		
 		declare function getName() as String
@@ -56,18 +60,30 @@ constructor Thread()
 
 end constructor
 
-constructor Thread(r as Runnable)
-	fMyRunnable = r
+constructor Thread(r as Runnable Ptr)
+	fMyRunnablePointer = r
 end constructor
 
-constructor Thread(r as Runnable, threadName as String )
-	fMyRunnable = r
+constructor Thread(r as Runnable Ptr, threadName as String)
+	fMyRunnablePointer = r
 	fMyName = threadName
 end constructor
 
 Sub Thread.start()
+	'fThreadID = ThreadCall Thread.RunTheRunnable(fMyRunnablePointer)
+	'ThreadWait fThreadID
+	
+	fThreadID = ThreadCreate(@Thread.RunTheRunnable, fMyRunnablePointer)
+	ThreadDetach(fThreadID)
+	
+End Sub
+
+Sub Thread.RunTheRunnable(r as Any Ptr)
+	print "RUN"
+	Dim pp As Runnable Ptr
+	pp = Cast(Runnable ptr,r)
+	pp->run
 		
-	'ThreadWait fThreadPTR
 End Sub
 
 

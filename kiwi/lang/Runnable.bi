@@ -25,8 +25,8 @@
 Type Runnable extends KObject
 	
 	public:
-		declare constructor()
-		declare virtual Sub run()
+		Declare constructor()
+		Declare Virtual Sub run()
 
 End Type
 
@@ -35,5 +35,5 @@ constructor Runnable()
 end constructor
 
 Sub Runnable.run()
-
+	print "Runnable.run()"
 End Sub
