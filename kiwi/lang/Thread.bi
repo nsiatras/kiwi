@@ -36,12 +36,12 @@
 Type Thread extends KObject
 	
 	protected:
-		Declare Static Sub RunTheRunnable(r as Any PTR)
+		Declare Static Sub StartThreadWithRunnable(r as Any PTR)
 		Dim fThreadMutex As Any Ptr 
 		Dim fIsAlive as Boolean = false
 		
 	private:	
-		Dim fThreadID As Any Ptr
+		Dim fThreadHandle As Any Ptr
 		Dim fMyRunnablePointer as Runnable Ptr
 		Dim fMyName as String
 
@@ -49,10 +49,16 @@ Type Thread extends KObject
 		declare constructor()
 		declare constructor(r as Runnable Ptr )
 		declare constructor(r as Runnable Ptr, threadName as String)
-		declare Sub Start()
+		declare Sub start()
+		
+		declare Sub interrupt()
 		
 		declare function getName() as String
 		declare function isAlive() as Boolean
+		
+		' Statics
+		declare Static Sub Sleep(millis as Long)
+		
 End Type
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -77,6 +83,9 @@ constructor Thread(r as Runnable Ptr, threadName as String)
 	fMyName = threadName
 end constructor
 
+/'
+	Causes this thread to begin execution
+'/
 Sub Thread.start()
 	' Create a container that contains a pointer of the Thread
 	' and the pointer of the Runnable
@@ -86,11 +95,18 @@ Sub Thread.start()
 	
 	' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
 	' to the parameters
-	this.fThreadID = ThreadCreate(@Thread.RunTheRunnable, container )
-	ThreadDetach(fThreadID)
+	this.fThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
+	ThreadDetach(fThreadHandle)
 End Sub
 
-Sub Thread.RunTheRunnable(r as Any Ptr)
+/'
+	Interrupts the thread
+'/
+Sub Thread.interrupt()
+
+End Sub
+
+Sub Thread.StartThreadWithRunnable(r as Any Ptr)
 	'Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
 	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr,r)
 	
@@ -124,4 +140,14 @@ function Thread.isAlive() as Boolean
 	return this.fIsAlive
 end function
 
+/'
+	Causes the currently executing thread to sleep (temporarily cease
+    execution) for the specified number of milliseconds, subject to
+    the precision and accuracy of system timers and schedulers. The thread
+    does not lose ownership of any monitors.
+'/
+Sub Thread.sleep(millis as Long)
+	'print "Thread " & Threadself() & " sleeps"
+	'sleep(millis)
+End Sub
 
