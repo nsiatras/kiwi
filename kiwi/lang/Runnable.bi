@@ -27,7 +27,6 @@ Type Runnable extends KObject
 	public:
 		Declare constructor()
 		Declare Virtual Sub run()
-
 End Type
 
 constructor Runnable()

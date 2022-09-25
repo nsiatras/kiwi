@@ -37,13 +37,12 @@ Type Thread extends KObject
 	
 	protected:
 		Declare Static Sub RunTheRunnable(r as Any PTR)
+		Dim fThreadMutex As Any Ptr 
 		
-	private:
+	private:	
 		Dim fThreadID As Any Ptr
-		
 		Dim fMyRunnablePointer as Runnable Ptr
 		Dim fMyName as String
-		
 
 	public:
 		declare constructor()
@@ -51,9 +50,7 @@ Type Thread extends KObject
 		declare constructor(r as Runnable Ptr, threadName as String)
 		declare Sub Start()
 		
-		
 		declare function getName() as String
-
 End Type
 
 constructor Thread()
@@ -75,9 +72,12 @@ Sub Thread.start()
 End Sub
 
 Sub Thread.RunTheRunnable(r as Any Ptr)
+	Dim pmutex As Any Ptr = MutexCreate()
+	MutexLock(pmutex)
 	Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
 	(*pp).run() ' Run the Runnable
-	Delete pp	
+	Delete pp
+	MutexUnlock(pmutex)	
 End Sub
 
 /'
