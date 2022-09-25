@@ -30,8 +30,8 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-#include once "Runnable.bi"
 #include once "fbthread.bi"
+#include once "Runnable.bi"
 
 Type Thread extends KObject
 	
@@ -70,22 +70,15 @@ constructor Thread(r as Runnable Ptr, threadName as String)
 end constructor
 
 Sub Thread.start()
-	'fThreadID = ThreadCall Thread.RunTheRunnable(fMyRunnablePointer)
-	'ThreadWait fThreadID
-	
-	fThreadID = ThreadCreate(@Thread.RunTheRunnable, fMyRunnablePointer)
+	fThreadID = ThreadCreate(@Thread.RunTheRunnable, fMyRunnablePointer )
 	ThreadDetach(fThreadID)
-	
 End Sub
 
 Sub Thread.RunTheRunnable(r as Any Ptr)
-	print "RUN"
-	Dim pp As Runnable Ptr
-	pp = Cast(Runnable ptr,r)
-	pp->run
-		
+	Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
+	(*pp).run() ' Run the Runnable
+	Delete pp	
 End Sub
-
 
 /'
 	Return the Thread's name
