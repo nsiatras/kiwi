@@ -78,6 +78,7 @@ Sub Thread.RunTheRunnable(r as Any Ptr)
 	(*pp).run() ' Run the Runnable
 	Delete pp
 	MutexUnlock(pmutex)	
+	MutexDestroy(pmutex)
 End Sub
 
 /'
