@@ -1,15 +1,18 @@
 ﻿#include once "kiwi\kiwi.bi"
 #include once "kiwi\threading.bi" ' Include Kiwi's IO package
 
-
 Type runnable1 extends Runnable
+
 	public:
-		declare Sub Run()
+		declare static Sub run()
+
 End Type
 
-Sub runnable1.Run()
-
+Sub runnable1.run()
+	print "Hello !"
 End Sub
+
+Dim myRunnable as runnable1
 
 Dim thread1 as Thread = Thread(runnable1, "Thread #1")
 

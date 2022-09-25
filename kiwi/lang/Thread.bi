@@ -38,12 +38,14 @@ Type Thread extends KObject
 		Dim fMyRunnable as Runnable
 		Dim fMyName as String
 		
-		Dim fThreadPTR As Sub
+		Dim fThreadPTR As Any Ptr
+		
 	public:
 		declare constructor()
-		declare constructor(r as Sub)
+		declare constructor(r as Runnable)
 		declare constructor(r as Runnable, threadName as String)
 		declare Sub Start()
+		
 		
 		
 		declare function getName() as String
@@ -54,8 +56,8 @@ constructor Thread()
 
 end constructor
 
-constructor Thread(r as Sub)
-	'fMyRunnable = r
+constructor Thread(r as Runnable)
+	fMyRunnable = r
 end constructor
 
 constructor Thread(r as Runnable, threadName as String )
@@ -64,9 +66,10 @@ constructor Thread(r as Runnable, threadName as String )
 end constructor
 
 Sub Thread.start()
-	'fThreadPTR = ThreadCall fThreadPTR
-	ThreadWait fThreadPTR
+		
+	'ThreadWait fThreadPTR
 End Sub
+
 
 /'
 	Return the Thread's name
