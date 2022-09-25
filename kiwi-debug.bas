@@ -35,6 +35,11 @@ Dim thread2 as Thread = Thread(new runnable2(), "Thread #2")
 thread1.start()
 thread2.start()
 
+while(fKeepRunning)
+	print "Thread 1 is alive " & thread1.isAlive()
+	sleep(1000)
+wend
+
 ' Wait for user input
 Dim tmpStr as String
 input "",tmpStr

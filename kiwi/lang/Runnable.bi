@@ -34,5 +34,5 @@ constructor Runnable()
 end constructor
 
 Sub Runnable.run()
-	print "Runnable.run()"
+	
 End Sub

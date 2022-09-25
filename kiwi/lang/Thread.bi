@@ -23,7 +23,7 @@
 '/
 
 /'
-	Description: A thread is a thread of execution in a program. 
+	Description: A Thread is a thread of execution in a program. 
 	Kiwi allows an application to have multiple threads of execution 
 	running concurrently.
 	
@@ -38,6 +38,7 @@ Type Thread extends KObject
 	protected:
 		Declare Static Sub RunTheRunnable(r as Any PTR)
 		Dim fThreadMutex As Any Ptr 
+		Dim fIsAlive as Boolean = false
 		
 	private:	
 		Dim fThreadID As Any Ptr
@@ -51,7 +52,17 @@ Type Thread extends KObject
 		declare Sub Start()
 		
 		declare function getName() as String
+		declare function isAlive() as Boolean
 End Type
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' ThreadAndRunnableContainer holds a pointer of a Thread and a pointer
+' of a Runnable Instance
+Type ThreadAndRunnableContainer
+	fThread as Thread PTR
+	fRunnable as Runnable PTR
+End Type
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 constructor Thread()
 
@@ -67,25 +78,50 @@ constructor Thread(r as Runnable Ptr, threadName as String)
 end constructor
 
 Sub Thread.start()
-	fThreadID = ThreadCreate(@Thread.RunTheRunnable, fMyRunnablePointer )
+	' Create a container that contains a pointer of the Thread
+	' and the pointer of the Runnable
+	Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
+	container->fThread = @this
+	container->fRunnable = fMyRunnablePointer
+	
+	' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
+	' to the parameters
+	this.fThreadID = ThreadCreate(@Thread.RunTheRunnable, container )
 	ThreadDetach(fThreadID)
 End Sub
 
 Sub Thread.RunTheRunnable(r as Any Ptr)
-	Dim pmutex As Any Ptr = MutexCreate()
-	MutexLock(pmutex)
-	Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
-	(*pp).run() ' Run the Runnable
-	Delete pp
-	MutexUnlock(pmutex)	
-	MutexDestroy(pmutex)
+	'Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
+	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr,r)
+	
+	' Mark Thread as Alive
+	(*container).fThread->fIsAlive = true
+	
+	' Run the Runnable
+	(*container).fRunnable->run() 
+	
+	' Mark Thread as NOT Alive
+	(*container).fThread->fIsAlive = false
+	
+	' Delete the container 
+	Delete container
 End Sub
 
 /'
 	Return the Thread's name
 '/
 function Thread.getName() as String
-	return fMyName
+	return this.fMyName
+end function
+
+/'
+	Tests if this thread is alive. 
+	A thread is alive if it has been started and has not yet died.
+	
+	@return true if this thread is alive otherwise false.
+'/
+function Thread.isAlive() as Boolean
+	return this.fIsAlive
 end function
 
 
