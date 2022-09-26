@@ -1,42 +1,37 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\threading.bi" ' Include Kiwi's Threading package
+#include once "kiwi\threading.bi" 
 
+' Keep start timestamp
+Dim timeStampStart as LongInt = System.currentTimeMillis()
+
+' Initialize a new ArrayList
+Dim myList as ArrayList(String)
+myList.add("Welcome")
+myList.add("to")
+myList.add("Kiwi for Free Basic!")
+
+' Start a new Thread
 Dim Shared fKeepRunning as Boolean = true
-Dim tmpStr as String
 
-print "Press Enter to exit"
-print ""
-
-' Declare a new Runnable Object. A threads needs a Runnable
-' in order to start
 Type runnable1 extends Runnable 
 	Declare Sub run()
 End Type
 
 Sub runnable1.run()
 	while (fKeepRunning)
-		print DATE & " " & Time
+		print "Time is " & Time & " FreeBasic still rocks!"
 		sleep(1000)
 	wend
-	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
+	print "Thread 1 Finished" 
 End Sub
 
-' Initialize an new Thread passing the Runnable Object
 Dim thread1 as Thread = Thread(new runnable1())
 thread1.start() ' Start the thread
-sleep(100)
 
-print "Thread 1 is live: " & thread1.isAlive()
+' Wait for user to press any Key and exit
+print "Press Enter to exit"
+print ""
+sleep()
 
-' Wait for user input in order to terminate the program.
-' To terminate the program set fKeepRunning = false
-input "", tmpStr
-fKeepRunning = false
+print "Program ended after " & System.currentTimeMillis() - timeStampStart & " milliseconds"
 
-' Wait for thread 1 to exit
-print "Waiting for thread to finish..."
-while thread1.isAlive()
-	' Do nothing...
-wend
-
-print "Thread 1 is live: " & thread1.isAlive()
