@@ -54,6 +54,7 @@ Type Thread extends KObject
 		declare Sub run()
 		
 		declare function getName() as String
+		declare sub setName(newName as String)
 		declare function isAlive() as Boolean
 
 End Type
@@ -140,7 +141,7 @@ end function
 	@param newName is the new name for this thread.
 '/
 sub Thread.setName(newName as String) 
-	return this.fMyName = newname
+	this.fMyName = newname
 end sub
 
 

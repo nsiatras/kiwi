@@ -4,6 +4,9 @@
 Dim Shared fKeepRunning as Boolean = true
 Dim tmpStr as String
 
+print "Press Enter to exit"
+print ""
+
 ' Declare a new Runnable Object. A threads needs a Runnable
 ' in order to start
 Type runnable1 extends Runnable 
