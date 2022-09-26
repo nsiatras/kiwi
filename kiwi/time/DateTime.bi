@@ -37,6 +37,7 @@ Type DateTime extends KObject
 		
 	private:
 		declare function UnixTimeToDateSerial(byval dat as LongInt) as Double
+		declare function DateSerialToUnixTime(byval dat as double) as LongInt
 		
 	public:
 		declare constructor()
@@ -83,4 +84,11 @@ end function
 '/
 function DateTime.UnixTimeToDateSerial(byval dat as longint) as Double
 	return 25569# + (cdbl(dat) / 86400#)
+end function
+
+/'
+	Converts FreeBasics DateSerial to UnixTime
+'/
+function DateSerialToUnixTime(byval dat as double) as LongInt
+	return (dat - 25569#) * 86400#
 end function
