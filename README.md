@@ -19,6 +19,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 * [Math](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.Math)
 * [StringUtils](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.StringUtils)
 * [System](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.System)
+* [Thread](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.Thread)
 
 ### Kiwi.Util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
