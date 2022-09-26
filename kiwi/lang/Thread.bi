@@ -64,10 +64,10 @@ End Type
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ThreadAndRunnableContainer holds a pointer of a Thread and a pointer
 ' of a Runnable Instance
-Type ThreadAndRunnableContainer
+Union ThreadAndRunnableContainer
 	fThread as Thread PTR
 	fRunnable as Runnable PTR
-End Type
+End Union
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 constructor Thread()

@@ -29,7 +29,7 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-
+#include once "fbthread.bi"
 #include once "..\core\Core.bi"
 #include once "..\lang\Math.bi"
 #include once "Collection.bi"
@@ -55,10 +55,14 @@
 		MACRO_DefineComparator(list_type)
 			
 		Type ArrayList_##list_type extends Collection_##list_type
-							
+				
+			private:
+				Dim As Any Ptr fLock
+				
 			public:
 				declare constructor()
-								
+				declare destructor()
+							
 				' The following methods are declarations of the 
 				' abstract methods found inside AbstractList (AbstractList.bi)
 				declare function add(byref e as ##list_type) as Boolean
@@ -80,7 +84,12 @@
 		'/
 		constructor ArrayList_##list_type()
 			base.fCount = 0
+			this.fLock = MutexCreate()
 		end constructor
+		
+		destructor ArrayList_##list_type()
+			Mutexdestroy (this.fLock)
+		end destructor
 		
 		/'
 			Appends the specified element to the end of this list.
@@ -88,9 +97,11 @@
 			@param e is the element to be appended to this ArrayList.
 		'/
 		function ArrayList_##list_type.add(byref e as ##list_type) as Boolean
+			MutexLock (this.fLock)
 			base.ResizeList(1)
 			base.fElements(base.fCount - 1) =  e
-			return true
+			function = true
+			MutexUnlock (this.fLock)
 		end function
 		
 		/'
@@ -102,7 +113,8 @@
 			@param e is the element to be inserted
 		'/
 		sub ArrayList_##list_type.add(index as UInteger, byref e as ##list_type)
-						
+			MutexLock (this.fLock)				
+			
 			' Check for insertion out of bounds !
 			index = Math.min(CUnsg(base.fCount), CUnsg(Math.max(CUnsg(0), CUnsg(index))))
 
@@ -132,7 +144,7 @@
 
 				base.fElements(index) = e	
 			end if
-			
+			MutexUnLock(this.fLock)
 		end sub
 		
 		/'
@@ -144,10 +156,14 @@
 			@return true if this collection changed as a result of the call
 		'/
 		function ArrayList_##list_type.addAll(byref c as Collection_##list_type) as Boolean
+			
+			MutexLock (this.fLock)
 			for i as Integer = 0 to c.size() - 1
 				this.add(c.get(i))
 			next i
-			return true
+			function = true
+			MutexUnLock (this.fLock)
+			
 		end function
 		
 		/'
@@ -156,7 +172,9 @@
 			@param index is the index of the element to return.
 		'/
 		function ArrayList_##list_type.get(byval index as UInteger) as ##list_type
-			return base.fElements(index)
+			MutexLock (this.fLock)
+			function =  base.fElements(index)
+			MutexUnLock (this.fLock)
 		end function
 		
 		/'
@@ -168,9 +186,11 @@
 			@param element is the element to be stored at the specified position
 		'/
 		function ArrayList_##list_type.set(byval index as UInteger, byref element as ##list_type) as ##list_type
+			MutexLock (this.fLock)
 			Dim  previousElement as ##list_type = this.fElements(index) 
 			base.fElements(index) = element
-			return previousElement
+			function = previousElement
+			MutexUnLock (this.fLock)
 		end function
 		
 		/'
@@ -181,19 +201,26 @@
 			@param index is the index of the element to be removed
 		'/
 		function ArrayList_##list_type.remove(byval index as UInteger) as ##list_type
+		
+			MutexLock (this.fLock)
+			
 			Dim elementToRemove as ##list_type = base.fElements(index)
 				
 			' Removal of the last item of the list
 			if index = (base.fCount-1) then
 				base.ResizeList(-1)
-				return elementToRemove ' Return the removed element
+				function = elementToRemove ' Return the removed element
+				MutexUnLock (this.fLock)
+				exit function
 			endif
 			
 			' The list has only 2 elements and we have to remove the first
 			if (index = 0) and (base.fCount < 3) then
 				base.fElements(0) = this.fElements(1)
 				base.ResizeList(-1)
-				return elementToRemove ' Return the removed element
+				function =  elementToRemove ' Return the removed element
+				MutexUnLock (this.fLock)
+				exit function
 			endif
 			
 			' The rest of the code applies for 3 or more elements.
@@ -209,8 +236,9 @@
 			#endif
 			
 			base.ResizeList(-1)
+			function = elementToRemove ' Return the removed element
+			MutexUnLock (this.fLock)
 			
-			return elementToRemove ' Return the removed element
 		end function
 		
 		/'
@@ -223,13 +251,19 @@
 		'/
 		function ArrayList_##list_type.indexOf(byref e as ##list_type) as Integer
 			
+			MutexLock (this.fLock)
+			
 			for i as Integer = 0 to ubound(base.fElements)
 				if base.fElements(i) = e then
+					MutexUnLock (this.fLock)
 					return i
 				end if
 			next i
 			
-			return -1
+			function = -1
+			
+			MutexUnLock (this.fLock)
+			
 		end function
 		
 		/'
@@ -239,7 +273,9 @@
 			@return true if this list contains the specified element
 		'/
 		function  ArrayList_##list_type.contains(byref e as ##list_type) as Boolean
-			return this.indexOf(e)>-1
+			MutexLock (this.fLock)
+			function = this.indexOf(e) > -1
+			MutexUnLock (this.fLock)
 		end function
 		
 		/'
@@ -250,8 +286,10 @@
 			@param c is the Comparator to use for the ArrayList sorting
 		'/
 		sub ArrayList_##list_type.sort(byref c as Comparator_##list_type) 
+			MutexLock (this.fLock)
 			' Ask the comparator to perform a Quick Sort
-			c.quicksort(base.fElements(), 0, ubound(base.fElements)-1)			
+			c.quicksort(base.fElements(), 0, ubound(base.fElements)-1)	
+			MutexUnLock (this.fLock)		
 		end sub
 		
 		/'
@@ -259,8 +297,10 @@
 			be empty after this call returns.
 		'/
 		sub ArrayList_##list_type.clean() 
+			MutexLock (this.fLock)
 			Erase base.fElements
 			base.fCount = 0
+			MutexUnLock (this.fLock)
 		end sub
 
 		/'
