@@ -36,7 +36,7 @@ Type DateTime extends KObject
 		Dim fDateTimeInMillis as LongInt
 		
 	private:
-		declare function UnixTimeToDateSerial( byval dat as longint ) as double
+		declare function UnixTimeToDateSerial(byval dat as LongInt) as Double
 		
 	public:
 		declare constructor()
@@ -50,7 +50,7 @@ End Type
 	Constructs a new DateTime
 '/
 constructor DateTime()
-	fDateTimeInMillis = System.currentTimeMillis
+	fDateTimeInMillis = System.currentTimeMillis()
 end constructor
 
 /'
@@ -60,7 +60,7 @@ end constructor
 	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
 constructor DateTime(millis as LongInt)
-	fDateTimeInMillis = System.currentTimeMillis
+	fDateTimeInMillis = System.currentTimeMillis()
 end constructor
 
 /'
@@ -78,6 +78,9 @@ function DateTime.toString() as String
 	return Format(t, "dd-mmm-yyyy hh:nn:ss")
 end function
 
-function DateTime.UnixTimeToDateSerial( byval dat as longint ) as double
+/'
+	Converts UnixTime to FreeBasic's date serial
+'/
+function DateTime.UnixTimeToDateSerial(byval dat as longint) as Double
 	return 25569# + (cdbl(dat) / 86400#)
 end function
