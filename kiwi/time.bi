@@ -22,28 +22,6 @@
 	SOFTWARE.
 '/
 
-/'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
-	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
-'/
 
-#include once "core\Core.bi"
-
-#include once "nio\Charset.bi"
-
-#include once "lang\GarbageCollector.bi"
-#include once "lang\KObject.bi"
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-#include once "lang\StringUtils.bi"
-
-#include once "util\Collection.bi"
-#include once "util\Comparator.bi"
-#include once "util\ArrayList.bi"
-#include once "util\Queue.bi"
-#include once "util\HashMap.bi"
-
+#include once "time\DateTime.bi"
 
