@@ -33,13 +33,11 @@
 '#include once "crt.bi"	--> crt.bi has already been included in Core.bi
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 extern "C"
-
 	Type RealTimeClock_TimeContainer
 		as long timeValue_Seconds
 		as long timeValue_USeconds
 	End Type
   	declare function gettimeofday(as RealTimeClock_TimeContainer ptr, as any ptr) as long
-  	
 end extern
 
 /'

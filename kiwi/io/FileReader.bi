@@ -124,7 +124,7 @@ function FileReader.OpenStream() as Boolean
 	fFileStream = freefile 
 	
 	' Open the file for Input (Read) with the given Encoding
-	Open (fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() lock Read As #fFileStream)
+	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() lock Read As #fFileStream
 	return iif(err(), false,true)
 end function
 

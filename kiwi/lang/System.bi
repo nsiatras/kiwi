@@ -26,7 +26,7 @@
 Type System extends object
 	
 	public:
-		Declare Static Function currentTimeSeconds() As Long
+		Declare Static Function unixTime() As Long
 		Declare Static Function currentTimeMillis() As LongInt
 				
 		Declare Static Function lineSeparator() as String
@@ -47,7 +47,7 @@ End Type
 	January 1st, 1970, Coordinated Universal Time (UTC), 
 	according to the system clock.
 '/
-Function System.currentTimeSeconds() As Long
+Function System.unixTime() As Long
 	dim as time_t timerC
 	return time_(@timerC)
 End Function
