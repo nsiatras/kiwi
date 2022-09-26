@@ -22,10 +22,11 @@
 	SOFTWARE.
 '/
 
+/'	
+	Author: Nikos Siatras (https://github.com/nsiatras)
+'/
+
 Type ThreadsManager extends Object
-	
 
 
 End Type
-
-

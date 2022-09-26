@@ -42,7 +42,7 @@ Type Thread extends KObject
 		
 	private:	
 		Dim fThreadHandle As Any Ptr
-		Dim fMyRunnablePointer as Runnable Ptr
+		Dim fMyRunnablePointer as Runnable Ptr = 0
 		Dim fMyName as String
 
 	public:
@@ -51,23 +51,21 @@ Type Thread extends KObject
 		declare constructor(r as Runnable Ptr, threadName as String)
 		declare Sub start()
 		
-		declare Sub interrupt()
+		declare Sub run()
 		
 		declare function getName() as String
 		declare function isAlive() as Boolean
-		
-		' Statics
-		declare Static Sub Sleep(millis as Long)
-		
+
 End Type
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ThreadAndRunnableContainer holds a pointer of a Thread and a pointer
 ' of a Runnable Instance
-Union ThreadAndRunnableContainer
+' WARNING: NEVER USE UNION FOR THIS TYPE
+Type ThreadAndRunnableContainer
 	fThread as Thread PTR
 	fRunnable as Runnable PTR
-End Union
+End Type
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 constructor Thread()
@@ -92,21 +90,15 @@ Sub Thread.start()
 	Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
 	container->fThread = @this
 	container->fRunnable = fMyRunnablePointer
-	
+			
 	' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
 	' to the parameters
 	this.fThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
 	ThreadDetach(fThreadHandle)
 End Sub
 
-/'
-	Interrupts the thread
-'/
-Sub Thread.interrupt()
-
-End Sub
-
 Sub Thread.StartThreadWithRunnable(r as Any Ptr)
+	
 	'Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
 	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr,r)
 	
@@ -115,12 +107,24 @@ Sub Thread.StartThreadWithRunnable(r as Any Ptr)
 	
 	' Run the Runnable
 	(*container).fRunnable->run() 
-	
+
 	' Mark Thread as NOT Alive
 	(*container).fThread->fIsAlive = false
 	
 	' Delete the container 
 	Delete container
+	
+End Sub
+
+/'
+	If this thread was constructed using a separate Runnable run object, 
+	then that Runnable object's run method is called otherwise, 
+	this method does nothing and returns.
+'/
+Sub Thread.run()
+	if fMyRunnablePointer <> 0 then
+		(*fMyRunnablePointer).run()
+	end if
 End Sub
 
 /'
@@ -131,7 +135,17 @@ function Thread.getName() as String
 end function
 
 /'
-	Tests if this thread is alive. 
+	Changes the name of this thread to be equal to the argument "newName".
+	
+	@param newName is the new name for this thread.
+'/
+sub Thread.setName(newName as String) 
+	return this.fMyName = newname
+end sub
+
+
+/'
+	Returns true if this thread is alive otherwise false. 
 	A thread is alive if it has been started and has not yet died.
 	
 	@return true if this thread is alive otherwise false.
@@ -139,15 +153,3 @@ end function
 function Thread.isAlive() as Boolean
 	return this.fIsAlive
 end function
-
-/'
-	Causes the currently executing thread to sleep (temporarily cease
-    execution) for the specified number of milliseconds, subject to
-    the precision and accuracy of system timers and schedulers. The thread
-    does not lose ownership of any monitors.
-'/
-Sub Thread.sleep(millis as Long)
-	'print "Thread " & Threadself() & " sleeps"
-	'sleep(millis)
-End Sub
-

@@ -2,46 +2,38 @@
 #include once "kiwi\threading.bi" ' Include Kiwi's Threading package
 
 Dim Shared fKeepRunning as Boolean = true
+Dim tmpStr as String
 
-Type runnable1 extends Runnable
+' Declare a new Runnable Object. A threads needs a Runnable
+' in order to start
+Type runnable1 extends Runnable 
 	Declare Sub run()
 End Type
 
 Sub runnable1.run()
 	while (fKeepRunning)
-		print "Runnable 1"
-		Thread.sleep(1000)
-		sleep(100)
+		print DATE & " " & Time
+		sleep(1000)
 	wend
-	print "Thread 1 Finished"
+	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
 End Sub
 
-Type runnable2 extends Runnable
-	Declare Sub run()
-End Type
-
-Sub runnable2.run()
-	while (fKeepRunning)
-		print "Runnable 2"
-		Thread.sleep(5000)
-		sleep(500)
-	wend
-	print "Thread 2 Finished"
-End Sub
-
+' Initialize an new Thread passing the Runnable Object
+Dim thread1 as Thread = Thread(new runnable1())
+thread1.start() ' Start the thread
 sleep(100)
-Dim thread1 as Thread = Thread(new runnable1(), "Thread #1")
-Dim thread2 as Thread = Thread(new runnable2(), "Thread #2")
 
-thread1.start()
-thread2.start()
+print "Thread 1 is live: " & thread1.isAlive()
 
-' Wait for user input
-Dim tmpStr as String
-input "",tmpStr
+' Wait for user input in order to terminate the program.
+' To terminate the program set fKeepRunning = false
+input "", tmpStr
 fKeepRunning = false
 
-thread1.interrupt()
-thread2.interrupt()
+' Wait for thread 1 to exit
+print "Waiting for thread to finish..."
+while thread1.isAlive()
+	' Do nothing...
+wend
 
-Sleep()
+print "Thread 1 is live: " & thread1.isAlive()
