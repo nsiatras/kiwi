@@ -1,5 +1,5 @@
 # Kiwi - RAD Framework for FreeBasic Applications
-Kiwi is a Rapid Application framework for FreeBasic <br>
+Kiwi is a Rapid Application framework for [FreeBasic](https://github.com/freebasic/fbc). <br>
 Goal of Kiwi is to bring fast and easy to use features of Java to FreeBasic.
 
 FreeBasic on Discord:<br>
