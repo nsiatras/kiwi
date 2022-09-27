@@ -23,15 +23,21 @@
 '/
 
 /'
-	Description: This binary include (.bi) contains methods in 
-	order to get data from the System's clock 
+	Description: Kiwi's Real Time Clock
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'#include once "crt.bi"	--> crt.bi has already been included in Core.bi
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+#include once "crt.bi"
+#include once "crt\time.bi"
+Type RealTimeClock extends Object
+
+	public:
+		declare static function getUnixTimeInMilliseconds() as LongInt
+		declare static function getUTCTimeZone() as Double
+		declare static function getUTCTimeZoneTitle() as String
+		declare static function getUTCTimeZoneOffsetInMilliseconds() as LongInt
+End Type
 
 extern "C"
 	Type RealTimeClock_TimeContainer
@@ -42,36 +48,44 @@ extern "C"
 end extern
 
 /'
-	Returns the offset in milliseconds between the computer's timezone
-	and the Coordinated Universal Time (UTC +0)
-'/
-function REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS() As LongInt
-	Dim result As LongInt = 0
-	
-	#ifdef __FB_WIN32__
-		Dim tinfo As TIME_ZONE_INFORMATION 
-		GetTimeZoneInformation(@tinfo)
-		result = iif(tinfo.Bias > 720, tinfo.Bias - 720 , -tinfo.Bias)
-		result *= 60 	' Convert to seconds
-		result *= 1000 	' Convert to milliseconds
-	#else
-		return 0
-	#endif
-	
-	return result
-	
-End Function
-
-/'
 	Returns the number of milliseconds elapsed since midnight (00:00:00), 
 	January 1st, 1970, Coordinated Universal Time (UTC), 
 	according to the system clock. This method is intended to use with
 	System.CurrentTimeMillis() but it can also be used as standalone.
 '/
-function REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS() as longint
+function RealTimeClock.getUnixTimeInMilliseconds() as LongInt
 	Dim realTimeValue as RealTimeClock_TimeContainer
 	gettimeofday(@realTimeValue, NULL ) ' Set the current date time to realTimeValue
 	return(realTimeValue.timeValue_Seconds * 1000LL + realTimeValue.timeValue_USeconds / 1000)
 end function
+
+/'
+	Returns the system's offset, in hours, from the 
+	Coordinated Universal Time (UTC +0)
+'/
+function RealTimeClock.getUTCTimeZone() as Double
+	Dim result As Integer = 0
+	
+	#ifdef __FB_WIN32__
+		Dim tinfo As TIME_ZONE_INFORMATION 
+		GetTimeZoneInformation(@tinfo)
+		result = iif(tinfo.Bias > 720, tinfo.Bias - 720 , -tinfo.Bias)
+		result = result/60
+	#else
+		return 0
+	#endif
+	
+	return result
+end function
+
+/'
+	Returns the system's offset, in milliseconds, from the 
+	Coordinated Universal Time (UTC +0)
+'/
+function RealTimeClock.getUTCTimeZoneOffsetInMilliseconds() as LongInt
+	return RealTimeClock.getUTCTimeZone()*3600*1000
+end function
+
+
 
 

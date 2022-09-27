@@ -31,7 +31,6 @@
 '/
 
 #include once "core\Core.bi"
-#include once "core\KCalendar.bi"
 
 #include once "nio\Charset.bi"
 
@@ -40,7 +39,6 @@
 #include once "lang\System.bi"
 #include once "lang\Math.bi"
 #include once "lang\StringUtils.bi"
-
 
 #include once "util\Collection.bi"
 #include once "util\Comparator.bi"

@@ -31,6 +31,7 @@
 #include once "..\lang\System.bi"
 #include once "vbcompat.bi"
 #include once "..\lang\math.bi"
+
 Type DateTime extends KObject
 
 	protected:

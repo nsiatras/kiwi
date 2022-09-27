@@ -48,8 +48,7 @@ End Type
 	according to the system clock.
 '/
 Function System.unixTime() As Long
-	dim as time_t timerC
-	return time_(@timerC)
+	return floor(RealTimeClock.getUnixTimeInMilliseconds()/1000)
 End Function
 
 /'
@@ -58,7 +57,7 @@ End Function
 	according to the system clock.
 '/
 Function System.currentTimeMillis() As LongInt
-	return REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS()
+	return RealTimeClock.getUnixTimeInMilliseconds()
 End Function
 
 /'

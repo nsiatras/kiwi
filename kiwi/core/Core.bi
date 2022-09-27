@@ -33,6 +33,7 @@
 #include once "crt.bi" ' Needs for memcpy and RealTimeClock
 #include once "RealTimeClock.bi"
 
+
 ' Garbage Collector is experimental
 '#define USE_GARBAGE_COLLECTOR
 
