@@ -9,3 +9,5 @@ print "UTC Time:            " & utcTime.toString()
 Dim computerTime as DateTime = DateTime(System.currentTimeMillis(), KCalendar.getSystemTimeZoneOffsetHours())
 print "System's Time:       " & computerTime.toString()
 
+print KCalendar.getTimeInMillis()
+print System.currentTimeMillis()

@@ -33,6 +33,8 @@ Type KCalendar extends Object
 		Static fSystemTimeZone as String
 	
 	public:
+		declare static function getTimeInMillis() as LongInt
+		
 		declare static function getSystemTimeZoneOffsetHours() as Integer
 		declare static function getSystemTimeZoneOffsetMillis() as LongInt
 		declare static function getSystemTimeZoneTitle() as String
@@ -42,7 +44,17 @@ End Type
 dim KCalendar.fSystemTimeZone as String
 
 /'
-	Returns the offset in hours between the system's clock and the
+	Returns this Calendar's time value in milliseconds.
+'/
+function KCalendar.getTimeInMillis() as LongInt
+	Dim realTimeValue as RealTimeClock_TimeContainer
+	' The gettimeofday is defined inside RealTimeClock.bi
+	gettimeofday(@realTimeValue, NULL ) ' Set the current date time to realTimeValue
+	return(realTimeValue.timeValue_Seconds * 1000LL + realTimeValue.timeValue_USeconds / 1000)
+end function
+
+/'
+	Returns the offset in Hours between the system's clock and the
 	Coordinated Universal Time (UTC).
 '/
 function KCalendar.getSystemTimeZoneOffsetHours() as Integer
@@ -51,7 +63,7 @@ function KCalendar.getSystemTimeZoneOffsetHours() as Integer
 end function
 
 /'
-	Returns the offset in milliseconds between the system's clock and the
+	Returns the offset in Milliseconds between the system's clock and the
 	Coordinated Universal Time (UTC).
 '/
 function KCalendar.getSystemTimeZoneOffsetMillis() as LongInt
