@@ -28,6 +28,7 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
+#include once "..\lang\System.bi"
 #include once "vbcompat.bi"
 #include once "..\lang\math.bi"
 Type DateTime extends KObject
