@@ -47,17 +47,11 @@ end extern
 '/
 function REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS() As LongInt
 	Dim result As LongInt = 0
+	
 	#ifdef __FB_WIN32__
-		Dim tzi As TIME_ZONE_INFORMATION 
-		GetTimeZoneInformation(@tzi)
-		
-		'720 is international date
-		if tzi.Bias > 720 then
-			result = tzi.Bias - 720 '+ GMT
-		else
-			result = -tzi.Bias
-		endif
-		
+		Dim tinfo As TIME_ZONE_INFORMATION 
+		GetTimeZoneInformation(@tinfo)
+		result = iif(tinfo.Bias > 720, tinfo.Bias - 720 , -tinfo.Bias)
 		result *= 60 	' Convert to seconds
 		result *= 1000 	' Convert to milliseconds
 	#else
@@ -77,7 +71,7 @@ End Function
 function REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS() as longint
 	Dim realTimeValue as RealTimeClock_TimeContainer
 	gettimeofday(@realTimeValue, NULL ) ' Set the current date time to realTimeValue
-	return(realTimeValue.timeValue_Seconds * 1000LL + realTimeValue.timeValue_USeconds / 1000) + REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS()
+	return(realTimeValue.timeValue_Seconds * 1000LL + realTimeValue.timeValue_USeconds / 1000)
 end function
 
 

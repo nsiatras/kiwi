@@ -27,23 +27,42 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-Type Calendar extends Object
+Type KCalendar extends Object
 	
 	private:
 		Static fSystemTimeZone as String
 	
 	public:
-		declare static function getSystemTimeZone() as String
-
+		declare static function getSystemTimeZoneOffsetHours() as Integer
+		declare static function getSystemTimeZoneOffsetMillis() as LongInt
+		declare static function getSystemTimeZoneTitle() as String
+		
 End Type
 
-dim Calendar.fSystemTimeZone as String
+dim KCalendar.fSystemTimeZone as String
+
+/'
+	Returns the offset in hours between the system's clock and the
+	Coordinated Universal Time (UTC).
+'/
+function KCalendar.getSystemTimeZoneOffsetHours() as Integer
+	dim hoursOffset as Integer = floor((REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS() / 3600) / 1000)
+	return hoursOffset
+end function
+
+/'
+	Returns the offset in milliseconds between the system's clock and the
+	Coordinated Universal Time (UTC).
+'/
+function KCalendar.getSystemTimeZoneOffsetMillis() as LongInt
+	return REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS()
+end function
 
 /'
 	Returns a String representation of the System's time zone.
 	Example: UTC +2
 '/
-function Calendar.getSystemTimeZone() as String
+function KCalendar.getSystemTimeZoneTitle() as String
 	if fSystemTimeZone = "" then
 		' The fSystemTimeZone variable has not been initialized!
 		dim hoursOffset as Integer = floor((REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS() / 3600) / 1000)

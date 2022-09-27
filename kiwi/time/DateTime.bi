@@ -34,6 +34,8 @@ Type DateTime extends KObject
 
 	protected:
 		Dim fDateTimeInMillis as LongInt
+		Dim fTimeOffsetInHours as Integer
+		Dim fTimeOffsetInMilliseconds as Integer
 		
 	private:
 		declare function UnixTimeToDateSerial(byval dat as LongInt) as Double
@@ -42,21 +44,23 @@ Type DateTime extends KObject
 	public:
 		declare constructor()
 		declare constructor(millis as LongInt)
-		
-		declare function after(when as DateTime) as Boolean
-		declare function before(when as DateTime) as Boolean
+		declare constructor(millis as LongInt, utcOffset as Integer)
 		
 		declare sub setTime(millis as LongInt)		
 		declare function getTime() as LongInt
+		declare function getTimeZoneOffset() as Integer
+		declare sub setTimeZoneOffset(hours as Integer) 
+		
 		declare function toString() as String
-
 End Type
 
 /'
 	Constructs a new DateTime
 '/
 constructor DateTime()
-	fDateTimeInMillis = System.currentTimeMillis()
+	this.fDateTimeInMillis 			= System.currentTimeMillis()
+	this.fTimeOffsetInHours 		= 0
+	this.fTimeOffsetInMilliseconds 	= 0
 end constructor
 
 /'
@@ -66,33 +70,22 @@ end constructor
 	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
 constructor DateTime(millis as LongInt)
-	this.fDateTimeInMillis = millis
+	this.fDateTimeInMillis 			= millis
+	this.fTimeOffsetInHours 		= 0
+	this.fTimeOffsetInMilliseconds 	= 0
 end constructor
 
 /'
-	Tests if this date is after the specified date.
+	Constructs a new DateTime
 	
-	@param when is a DateTime
-	@return true if and only if the instant represented by this 
-	DateTime object is strictly later than the instant represented by 
-	when, otherwise it returns false.	
+	@param millis is the number of milliseconds elapsed since midnight (00:00:00), 
+	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
-function after(when as DateTime) as Boolean
-	 return false
-end function
-
-/'
-	Tests if this date is before the specified date.
-	
-	@param when is a DateTime
-	@return true if and only if the instant represented by this 
-	DateTime object is strictly before than the instant represented by 
-	when, otherwise it returns false.	
-'/
-function before(when as DateTime) as Boolean
-	 'return fDateTimeInMillis < when.getTime()
-	 return false
-end function
+constructor DateTime(millis as LongInt, utcOffset as Integer)
+	this.fDateTimeInMillis 			= millis
+	this.fTimeOffsetInHours 		= utcOffset
+	this.fTimeOffsetInMilliseconds  = this.fTimeOffsetInHours*3600*1000
+end constructor
 
 /'
 	Sets this DateTime object to represent a point in time that is
@@ -109,16 +102,35 @@ end sub
 	represented by this Date object.
 '/
 function DateTime.getTime() as LongInt
-	return fDateTimeInMillis 
+	return fDateTimeInMillis + fTimeOffsetInMilliseconds 
 end function
+
+/'
+	Returns the offset, in hours, between this date instance and 
+	the Coordinated Universal Time (UTC), 
+'/
+function DateTime.getTimeZoneOffset() as Integer
+	return this.fTimeOffsetInHours
+end function
+
+/'
+	Sets the offset, in hours, between this date instance and 
+	the Coordinated Universal Time (UTC), 
+	
+	@param hours is the offset in hours
+'/
+sub DateTime.setTimeZoneOffset(hours as Integer) 
+	this.fTimeOffsetInHours = hours
+end sub
 
 /'
 	Converts this DateTime object to a String of the form: 
 	ddd mmm yyyy hh:nn:ss. For exampe "Tue Jul 08 1986 18:30:25"
 '/
 function DateTime.toString() as String
-	Dim t as const Double = this.UnixTimeToDateSerial(this.getTime()/1000)
-	return Format(t, "ddd mmm dd yyyy hh:nn:ss " + Calendar.getSystemTimeZone())
+	Dim t as const Double = this.UnixTimeToDateSerial(this.getTime() / 1000)
+	Dim utcStr as String = iif(this.fTimeOffsetInHours>=0 , "+" & str(abs(fTimeOffsetInHours)), "-" & str(abs(fTimeOffsetInHours)))
+	return Format(t, "ddd mmm dd yyyy hh:nn:ss UTC " & utcStr )
 end function
 
 /'
