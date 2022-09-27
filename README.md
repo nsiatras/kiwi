@@ -21,6 +21,9 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 * [System](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.System)
 * [Thread](https://github.com/nsiatras/kiwi/wiki/kiwi.lang.Thread)
 
+### Kiwi.time
+[Calendar](https://github.com/nsiatras/kiwi/wiki/kiwi.time.Calendar)
+
 ### Kiwi.Util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
 * [Comparator](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Comparator)
