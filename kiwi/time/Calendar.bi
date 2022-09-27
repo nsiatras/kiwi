@@ -58,7 +58,7 @@ constructor Calendar(utcTimeZone as Integer)
 end constructor
 
 /'
-     Returns a Date object representing this Calendar's time value.
+     Returns a Date object representing this Calendar's current time value.
      
      @return a DateTime representing the time value.
 '/
@@ -68,7 +68,7 @@ function Calendar.getTime() as DateTime
 end function
 
 /'
-     Returns this Calendar's time value in milliseconds.
+     Returns this Calendar's current time value in milliseconds.
      
      @return the current time as UTC milliseconds from the calendar's 
      timezone.
