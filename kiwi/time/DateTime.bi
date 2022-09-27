@@ -61,7 +61,7 @@ end constructor
 	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
 constructor DateTime(millis as LongInt)
-	fDateTimeInMillis = System.currentTimeMillis()
+	fDateTimeInMillis = millis
 end constructor
 
 /'
@@ -76,7 +76,7 @@ end sub
 
 function DateTime.toString() as String
 	Dim t as const Double = this.UnixTimeToDateSerial(this.fDateTimeInMillis/1000)
-	return Format(t, "dd-mmm-yyyy hh:nn:ss")
+	return Format(t, "ddd mmm yyyy hh:nn:ss")
 end function
 
 /'

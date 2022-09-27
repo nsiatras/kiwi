@@ -33,11 +33,15 @@
 	' Kiwi compiles on windows
 	#ifdef __FB_WIN32__
 		#define unicode
+		#include once "windows.bi"
+		#undef max
+		#undef min
 	#endif
 	  
-  
 	' Fast Array Copy
 	#Define KIWI_FastArrayCopy(src, dest) memcpy(@dest(LBound(dest)), @src(LBound(dest)), SizeOf(dest) * (UBound(dest) - LBound(dest) + 1))
+
+
 
 	#define KIWI_CORE_INITIALIZED
 #endif

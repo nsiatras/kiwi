@@ -23,7 +23,7 @@
 '/
 
 /'
-	Description: This binary include (bi) contains methods in 
+	Description: This binary include (.bi) contains methods in 
 	order to get data from the System's clock 
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
@@ -32,10 +32,11 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '#include once "crt.bi"	--> crt.bi has already been included in Core.bi
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 extern "C"
 	Type RealTimeClock_TimeContainer
-		as long timeValue_Seconds
-		as long timeValue_USeconds
+		timeValue_Seconds as Long
+		timeValue_USeconds as Long
 	End Type
   	declare function gettimeofday(as RealTimeClock_TimeContainer ptr, as any ptr) as long
 end extern
@@ -47,7 +48,7 @@ end extern
 	System.CurrentTimeMillis() but it can also be used as standalone.
 '/
 function REALTIME_CLOCK_UNIX_TIME_IN_MILLISECONDS() as longint
-	dim realTimeValue as RealTimeClock_TimeContainer
+	Dim realTimeValue as RealTimeClock_TimeContainer
 	gettimeofday(@realTimeValue, NULL ) ' Set the current date time to realTimeValue
 	return(realTimeValue.timeValue_Seconds * 1000LL + realTimeValue.timeValue_USeconds / 1000)
 end function
