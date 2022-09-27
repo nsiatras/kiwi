@@ -66,13 +66,16 @@ end function
 function RealTimeClock.getUTCTimeZone() as Double
 	Dim result As Integer = 0
 	
-	#ifdef __FB_WIN32__
+	#if defined(__FB_WIN32__)
 		Dim tinfo As TIME_ZONE_INFORMATION 
 		GetTimeZoneInformation(@tinfo)
 		result = iif(tinfo.Bias > 720, tinfo.Bias - 720 , -tinfo.Bias)
 		result = result/60
-	#else
-		return 0
+	#elseif defined(__FB_LINUX__ )
+		dim as time_t t
+		dim as tm lt
+		localtime_r(@t, @lt)
+		result = floor(lt.__tm_gmtoff / 3600)
 	#endif
 	
 	return result
