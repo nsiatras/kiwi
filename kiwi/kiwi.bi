@@ -40,6 +40,7 @@
 #include once "lang\Math.bi"
 #include once "lang\StringUtils.bi"
 
+#include once "util\Calendar.bi"
 #include once "util\Collection.bi"
 #include once "util\Comparator.bi"
 #include once "util\ArrayList.bi"

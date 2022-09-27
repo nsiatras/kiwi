@@ -42,7 +42,12 @@ Type DateTime extends KObject
 	public:
 		declare constructor()
 		declare constructor(millis as LongInt)
-		declare sub setTime(millis as LongInt)
+		
+		declare function after(when as DateTime) as Boolean
+		declare function before(when as DateTime) as Boolean
+		
+		declare sub setTime(millis as LongInt)		
+		declare function getTime() as LongInt
 		declare function toString() as String
 
 End Type
@@ -61,8 +66,33 @@ end constructor
 	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
 constructor DateTime(millis as LongInt)
-	fDateTimeInMillis = millis
+	this.fDateTimeInMillis = millis
 end constructor
+
+/'
+	Tests if this date is after the specified date.
+	
+	@param when is a DateTime
+	@return true if and only if the instant represented by this 
+	DateTime object is strictly later than the instant represented by 
+	when, otherwise it returns false.	
+'/
+function after(when as DateTime) as Boolean
+	 return false
+end function
+
+/'
+	Tests if this date is before the specified date.
+	
+	@param when is a DateTime
+	@return true if and only if the instant represented by this 
+	DateTime object is strictly before than the instant represented by 
+	when, otherwise it returns false.	
+'/
+function before(when as DateTime) as Boolean
+	 'return fDateTimeInMillis < when.getTime()
+	 return false
+end function
 
 /'
 	Sets this DateTime object to represent a point in time that is
@@ -74,9 +104,21 @@ sub DateTime.setTime(millis as LongInt)
 	fDateTimeInMillis = millis
 end sub
 
+/'
+	Returns the number of milliseconds since January 1, 1970, 00:00:00 UTC 
+	represented by this Date object.
+'/
+function DateTime.getTime() as LongInt
+	return fDateTimeInMillis 
+end function
+
+/'
+	Converts this DateTime object to a String of the form: 
+	ddd mmm yyyy hh:nn:ss. For exampe "Tue Jul 08 1986 18:30:25"
+'/
 function DateTime.toString() as String
-	Dim t as const Double = this.UnixTimeToDateSerial(this.fDateTimeInMillis/1000)
-	return Format(t, "ddd mmm yyyy hh:nn:ss")
+	Dim t as const Double = this.UnixTimeToDateSerial(this.getTime()/1000)
+	return Format(t, "ddd mmm dd yyyy hh:nn:ss " + Calendar.getSystemTimeZone())
 end function
 
 /'

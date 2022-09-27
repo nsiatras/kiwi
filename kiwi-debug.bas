@@ -3,5 +3,5 @@
 
 
 Dim dateTimeNow as DateTime = DateTime(System.currentTimeMillis())
+print dateTimeNow.toString() 
 
-print dateTimeNow.toString() ' This prints current date and time

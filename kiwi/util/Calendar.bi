@@ -22,5 +22,53 @@
 	SOFTWARE.
 '/
 
-#include once "time\DateTime.bi"
+/'
+	Description: Kiwis Calendar
+	
+	Author: Nikos Siatras (https://github.com/nsiatras)
+'/
+Type Calendar extends Object
+	
+	private:
+		Static fSystemTimeZone as String
+	
+	public:
+		declare static function getSystemTimeZone() as String
+
+End Type
+
+dim Calendar.fSystemTimeZone as String
+
+/'
+	Returns a String representation of the System's time zone.
+	Example: UTC +2
+'/
+function Calendar.getSystemTimeZone() as String
+	if fSystemTimeZone = "" then
+		' The fSystemTimeZone variable has not been initialized!
+		dim hoursOffset as Integer = floor((REALTIME_CLOCK_GET_COMPUTERS_TIME_OFFSET_MILLISECONDS() / 3600) / 1000)
+		if hoursOffset > 0 then
+			fSystemTimeZone = "UTC +" & abs(hoursOffset)
+		else
+			fSystemTimeZone = "UTC -" & abs(hoursOffset)
+		end if	
+	endif
+	return fSystemTimeZone
+end function
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

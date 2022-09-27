@@ -22,6 +22,14 @@
 	SOFTWARE.
 '/
 
+' Kiwi compiles on windows
+#ifdef __FB_WIN32__
+	#define unicode
+	#include once "windows.bi"
+	#undef max
+	#undef min
+#endif
+
 #include once "crt.bi" ' Needs for memcpy and RealTimeClock
 #include once "RealTimeClock.bi"
 
@@ -30,18 +38,8 @@
 
 #ifndef KIWI_CORE_INITIALIZED
   
-	' Kiwi compiles on windows
-	#ifdef __FB_WIN32__
-		#define unicode
-		#include once "windows.bi"
-		#undef max
-		#undef min
-	#endif
-	  
 	' Fast Array Copy
 	#Define KIWI_FastArrayCopy(src, dest) memcpy(@dest(LBound(dest)), @src(LBound(dest)), SizeOf(dest) * (UBound(dest) - LBound(dest) + 1))
-
-
 
 	#define KIWI_CORE_INITIALIZED
 #endif
