@@ -8,6 +8,9 @@ FreeBasic on Discord:<br>
 ## Features Implemented
 Kiwi is under heavy development and new Features are been added on daily basis. In case you want to get involved fill free to do a Push Request.
 
+### Kiwi.DB
+* MySQL Connection - Coming to next release 1.0.1
+
 ### Kiwi.IO
 * [BufferedReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.BufferedReader)
 * [File](https://github.com/nsiatras/kiwi/wiki/kiwi.io.File)
