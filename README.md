@@ -31,5 +31,5 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 ### Kiwi.util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
 * [Comparator](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Comparator)
-* HashMap - Coming Soon
+* HashMap - Coming to next release 1.0.1
 * [Queue](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Queue)
