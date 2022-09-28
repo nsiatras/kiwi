@@ -32,7 +32,6 @@
 #include once "..\lang\System.bi"
 #include once "..\lang\math.bi"
 
-
 Type DateTime extends KObject
 
 	protected:
@@ -80,11 +79,11 @@ Dim DateTime.MILLISECOND 	as const Integer = 8
 /'
 	Constructs a new DateTime
 '/
-constructor DateTime()
+Constructor DateTime()
 	this.fDateTimeInMillis 			= System.currentTimeMillis()
 	this.fTimeOffsetInHours 		= 0
 	this.fTimeOffsetInMilliseconds 	= 0
-end constructor
+End Constructor
 
 /'
 	Constructs a new DateTime
@@ -92,11 +91,11 @@ end constructor
 	@param millis is the number of milliseconds elapsed since midnight (00:00:00), 
 	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
-constructor DateTime(millis as LongInt)
+Constructor DateTime(millis as LongInt)
 	this.fDateTimeInMillis 			= millis
 	this.fTimeOffsetInHours 		= RealTimeClock.getUTCTimeZone()
 	this.fTimeOffsetInMilliseconds 	= RealTimeClock.getUTCTimeZoneOffsetInMilliseconds()
-end constructor
+End Constructor
 
 /'
 	Constructs a new DateTime
@@ -104,11 +103,11 @@ end constructor
 	@param millis is the number of milliseconds elapsed since midnight (00:00:00), 
 	January 1st, 1970, Coordinated Universal Time (UTC)
 '/
-constructor DateTime(millis as LongInt, utcOffset as Integer)
+Constructor DateTime(millis as LongInt, utcOffset as Integer)
 	this.fDateTimeInMillis 			= millis
 	this.fTimeOffsetInHours 		= utcOffset
 	this.fTimeOffsetInMilliseconds  = this.fTimeOffsetInHours*3600*1000
-end constructor
+End Constructor
 
 /'
 	Sets this DateTime object to represent a point in time that is
@@ -116,25 +115,25 @@ end constructor
     
     @param millis the number of milliseconds.
 '/
-sub DateTime.setTime(millis as LongInt)
+Sub DateTime.setTime(millis as LongInt)
 	fDateTimeInMillis = millis
-end sub
+End Sub
 
 /'
 	Returns the number of milliseconds since January 1, 1970, 00:00:00 UTC 
 	represented by this Date object.
 '/
-function DateTime.getTime() as LongInt
+Function DateTime.getTime() as LongInt
 	return fDateTimeInMillis + fTimeOffsetInMilliseconds 
-end function
+End Function
 
 /'
 	Returns the offset, in hours, between this date instance and 
 	the Coordinated Universal Time (UTC).
 '/
-function DateTime.getTimeZoneOffset() as Integer
+Function DateTime.getTimeZoneOffset() as Integer
 	return this.fTimeOffsetInHours
-end function
+End Function
 
 /'
 	Sets the offset, in hours, between this date instance and 
@@ -142,9 +141,9 @@ end function
 	
 	@param hours is the offset in hours
 '/
-sub DateTime.setTimeZoneOffset(hours as Integer) 
+Sub DateTime.setTimeZoneOffset(hours as Integer) 
 	this.fTimeOffsetInHours = hours
-end sub
+End Sub
 
 /'
 	Adds or subtracts the specified amount of time to the given 
@@ -188,22 +187,22 @@ End Sub
 	Converts this DateTime object to a String of the form: 
 	ddd mmm yyyy hh:nn:ss. For example "Tue Jul 08 1986 18:30:25"
 '/
-function DateTime.toString() as String
+Function DateTime.toString() as String
 	Dim t as const Double = this.UnixTimeToDateSerial(this.getTime() / 1000)
 	Dim utcStr as String = iif(this.fTimeOffsetInHours>=0 , "+" & str(abs(fTimeOffsetInHours)), "-" & str(abs(fTimeOffsetInHours)))
 	return Format(t, "ddd mmm dd yyyy hh:nn:ss UTC " & utcStr )
-end function
+End Function
 
 /'
 	Converts UnixTime to FreeBasic's date serial
 '/
-function DateTime.UnixTimeToDateSerial(byval dat as LongInt) as Double
+Function DateTime.UnixTimeToDateSerial(byval dat as LongInt) as Double
 	return 25569# + (cdbl(dat) / 86400#)
-end function
+End Function
 
 /'
 	Converts FreeBasics DateSerial to UnixTime
 '/
-function DateTime.DateSerialToUnixTime(byval dat as double) as LongInt
+Function DateTime.DateSerialToUnixTime(byval dat as double) as LongInt
 	return (dat - 25569#) * 86400#
-end function
+End Function
