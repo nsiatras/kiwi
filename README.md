@@ -12,7 +12,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 * MySQL Connection - Coming to next release 1.0.1
 
 ### Kiwi.IO
-* [BinaryFileReader] - Coming to next release 1.0.1
+* BinaryFileReader - Coming to next release 1.0.1
 * [BufferedReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.BufferedReader)
 * [File](https://github.com/nsiatras/kiwi/wiki/kiwi.io.File)
 * [FileReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileReader)
