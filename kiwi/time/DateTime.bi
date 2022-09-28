@@ -32,6 +32,14 @@
 #include once "..\lang\System.bi"
 #include once "..\lang\math.bi"
 
+#undef YEAR
+#undef MONTH
+#undef DAY
+#undef HOUR
+#undef MINUTE
+#undef SECOND
+
+
 Type DateTime extends KObject
 
 	protected:
@@ -52,18 +60,29 @@ Type DateTime extends KObject
 		declare function getTime() as LongInt
 		declare function getTimeZoneOffset() as Integer
 		declare sub setTimeZoneOffset(hours as Integer) 
-		
-		declare sub addYears(years as Double)	
-		declare sub addMonths(months as Double)	
-		declare sub addDays(days as Double)
-		declare sub addHours(hours as Double)
-		declare sub addMinutes(minutes as Double)
-		declare sub addSeconds(seconds as Double)
-		declare sub addMilliseconds(ms as LongInt)
-		
+		declare sub add(timeField as Integer, amount as Integer)		
 		declare function toString() as String
 		
+		' Constants
+		Static YEAR 		as const Integer
+		Static MONTH 		as const Integer
+		Static WEEK 		as const Integer
+		Static DAY 			as const Integer
+		Static HOUR 		as const Integer
+		Static MINUTE 		as const Integer
+		Static SECOND 		as const Integer
+		Static MILLISECOND 	as const Integer
+		
 End Type
+
+Dim DateTime.YEAR 			as const Integer = 1
+Dim DateTime.MONTH 			as const Integer = 2
+Dim DateTime.WEEK 			as const Integer = 3
+Dim DateTime.DAY 			as const Integer = 3
+Dim DateTime.HOUR 			as const Integer = 4
+Dim DateTime.MINUTE 		as const Integer = 5 
+Dim DateTime.SECOND 		as const Integer = 6
+Dim DateTime.MILLISECOND 	as const Integer = 7
 
 /'
 	Constructs a new DateTime
@@ -135,92 +154,42 @@ sub DateTime.setTimeZoneOffset(hours as Integer)
 end sub
 
 /'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param years the years to add.
+	Adds or subtracts the specified amount of time to the given 
+	DateTime Object
+	
+	@param timeField the calendar field.
+	@param amount the amount of date or time to be added to the field.
+	
 '/
-sub DateTime.addYears(years as Double)
+Sub DateTime.add(timeField as Integer, amount as Integer)
+	Dim intervalStr as String = ""
+	
+	Select Case timeField
+		Case DateTime.YEAR 
+			intervalStr = "yyyy"
+		Case DateTime.MONTH
+			intervalStr = "m"
+		Case DateTime.WEEK
+			intervalStr = "ww"
+		Case DateTime.DAY
+			intervalStr = "d"
+		Case DateTime.HOUR
+			intervalStr = "h"
+		Case DateTime.MINUTE
+			intervalStr = "n"
+		Case DateTime.SECOND
+			intervalStr = "s"
+		Case DateTime.MILLISECOND  
+			this.fDateTimeInMillis += amount
+			exit sub
+	End Select
+	
+	' Add time amount to this.fDateTimeInMillis
 	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
 	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
-	Dim fbTime as Double = DateAdd("yyyy", years, unixTime)
+	Dim fbTime as Double = DateAdd(intervalStr, amount, unixTime)
 	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
-end sub	
-
-/'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param months the months to add.
-'/
-sub DateTime.addMonths(months as Double)	
-	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
-	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
-	Dim fbTime as Double = DateAdd("m", months, unixTime)
-	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
-end sub
-
-/'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param days the days to add.
-'/
-sub DateTime.addDays(days as Double)
-	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
-	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
-	Dim fbTime as Double = DateAdd("d", days, unixTime)
-	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
-end sub
-
-/'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param hours the hours to add.
-'/
-sub DateTime.addHours(hours as Double)
-	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
-	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
-	Dim fbTime as Double = DateAdd("h", hours, unixTime)
-	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
-end sub
-
-/'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param minutes the minutes to add.
-'/
-sub DateTime.addMinutes(minutes as Double)
-	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
-	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
-	Dim fbTime as Double = DateAdd("n", minutes, unixTime)
-	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
-end sub
-
-/'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param seconds the seconds to add.
-'/
-sub DateTime.addSeconds(seconds as Double)
-	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
-	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
-	Dim fbTime as Double = DateAdd("s", seconds, unixTime)
-	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
-end sub
-
-/'
-	 Adds or subtracts the specified amount of time to the given 
-	 DateTime Object
-     
-     @param ms the milliseconds to add.
-'/
-sub DateTime.addMilliseconds(ms as LongInt)
-	this.fDateTimeInMillis += ms
-end sub
+End Sub
 
 /'
 	Converts this DateTime object to a String of the form: 
