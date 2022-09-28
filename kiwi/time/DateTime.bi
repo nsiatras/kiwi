@@ -32,13 +32,6 @@
 #include once "..\lang\System.bi"
 #include once "..\lang\math.bi"
 
-#undef YEAR
-#undef MONTH
-#undef DAY
-#undef HOUR
-#undef MINUTE
-#undef SECOND
-
 
 Type DateTime extends KObject
 

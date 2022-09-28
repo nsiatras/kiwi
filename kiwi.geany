@@ -29,8 +29,8 @@ long_line_column=72
 
 [files]
 current_page=1
-FILE_NAME_0=610;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi-debug.bas;0;4
-FILE_NAME_1=5961;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi%5Ctime%5CDateTime.bi;0;4
+FILE_NAME_0=0;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi-debug.bas;0;4
+FILE_NAME_1=1383;FreeBasic;0;EUTF-8;1;1;0;C%3A%5CDevelopment%5Ckiwi%5Ckiwi%5Ctime%5CDateTime.bi;0;4
 
 [build-menu]
 FreeBasicFT_00_LB=_Compile
