@@ -71,11 +71,11 @@ End Type
 Dim DateTime.YEAR 			as const Integer = 1
 Dim DateTime.MONTH 			as const Integer = 2
 Dim DateTime.WEEK 			as const Integer = 3
-Dim DateTime.DAY 			as const Integer = 3
-Dim DateTime.HOUR 			as const Integer = 4
-Dim DateTime.MINUTE 		as const Integer = 5 
-Dim DateTime.SECOND 		as const Integer = 6
-Dim DateTime.MILLISECOND 	as const Integer = 7
+Dim DateTime.DAY 			as const Integer = 4
+Dim DateTime.HOUR 			as const Integer = 5
+Dim DateTime.MINUTE 		as const Integer = 6 
+Dim DateTime.SECOND 		as const Integer = 7
+Dim DateTime.MILLISECOND 	as const Integer = 8
 
 /'
 	Constructs a new DateTime

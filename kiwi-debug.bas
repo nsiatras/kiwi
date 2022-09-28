@@ -16,7 +16,7 @@ utcTime.add(DateTime.MINUTE, 45)
 utcTime.add(DateTime.SECOND, 10)
 utcTime.add(DateTime.MILLISECOND, 20)
 
-print utcTime.toString() ' This prints Sun Jan 16 2033 11:25:49 UTC +0
+print utcTime.toString() ' This prints Fri Dec 17 2032 11:25:49 UTC +0
 
 
 
