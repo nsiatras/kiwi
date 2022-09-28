@@ -40,20 +40,20 @@ Type DateTime extends KObject
 		Dim fTimeOffsetInMilliseconds as Integer
 		
 	private:
-		declare function UnixTimeToDateSerial(byval dat as LongInt) as Double
-		declare function DateSerialToUnixTime(byval dat as double) as LongInt
+		declare Function UnixTimeToDateSerial(byval dat as LongInt) as Double
+		declare Function DateSerialToUnixTime(byval dat as double) as LongInt
 		
 	public:
-		declare constructor()
-		declare constructor(millis as LongInt)
-		declare constructor(millis as LongInt, utcOffset as Integer)
+		declare Constructor()
+		declare Constructor(millis as LongInt)
+		declare Constructor(millis as LongInt, utcOffset as Integer)
 		
-		declare sub setTime(millis as LongInt)		
-		declare function getTime() as LongInt
-		declare function getTimeZoneOffset() as Integer
-		declare sub setTimeZoneOffset(hours as Integer) 
-		declare sub add(timeField as Integer, amount as Integer)		
-		declare function toString() as String
+		declare Sub setTime(millis as LongInt)		
+		declare Function getTime() as LongInt
+		declare Function getTimeZoneOffset() as Integer
+		declare Sub setTimeZoneOffset(hours as Integer) 
+		declare Sub add(timeField as Integer, amount as Integer)		
+		declare Function toString() as String
 		
 		' Constants
 		Static YEAR 		as const Integer
