@@ -53,7 +53,16 @@ Type DateTime extends KObject
 		declare function getTimeZoneOffset() as Integer
 		declare sub setTimeZoneOffset(hours as Integer) 
 		
+		declare sub addYears(years as Double)	
+		declare sub addMonths(months as Double)	
+		declare sub addDays(days as Double)
+		declare sub addHours(hours as Double)
+		declare sub addMinutes(minutes as Double)
+		declare sub addSeconds(seconds as Double)
+		declare sub addMilliseconds(ms as LongInt)
+		
 		declare function toString() as String
+		
 End Type
 
 /'
@@ -126,6 +135,94 @@ sub DateTime.setTimeZoneOffset(hours as Integer)
 end sub
 
 /'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param years the years to add.
+'/
+sub DateTime.addYears(years as Double)
+	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
+	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
+	Dim fbTime as Double = DateAdd("yyyy", years, unixTime)
+	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
+end sub	
+
+/'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param months the months to add.
+'/
+sub DateTime.addMonths(months as Double)	
+	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
+	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
+	Dim fbTime as Double = DateAdd("m", months, unixTime)
+	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
+end sub
+
+/'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param days the days to add.
+'/
+sub DateTime.addDays(days as Double)
+	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
+	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
+	Dim fbTime as Double = DateAdd("d", days, unixTime)
+	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
+end sub
+
+/'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param hours the hours to add.
+'/
+sub DateTime.addHours(hours as Double)
+	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
+	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
+	Dim fbTime as Double = DateAdd("h", hours, unixTime)
+	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
+end sub
+
+/'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param minutes the minutes to add.
+'/
+sub DateTime.addMinutes(minutes as Double)
+	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
+	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
+	Dim fbTime as Double = DateAdd("n", minutes, unixTime)
+	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
+end sub
+
+/'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param seconds the seconds to add.
+'/
+sub DateTime.addSeconds(seconds as Double)
+	Dim unixTime as const Double = this.UnixTimeToDateSerial(fDateTimeInMillis / 1000)
+	Dim msLeft as const Double = fDateTimeInMillis mod 1000 
+	Dim fbTime as Double = DateAdd("s", seconds, unixTime)
+	this.fDateTimeInMillis = (this.DateSerialToUnixTime(fbTime)*1000) + msLeft
+end sub
+
+/'
+	 Adds or subtracts the specified amount of time to the given 
+	 DateTime Object
+     
+     @param ms the milliseconds to add.
+'/
+sub DateTime.addMilliseconds(ms as LongInt)
+	this.fDateTimeInMillis += ms
+end sub
+
+/'
 	Converts this DateTime object to a String of the form: 
 	ddd mmm yyyy hh:nn:ss. For example "Tue Jul 08 1986 18:30:25"
 '/
@@ -138,13 +235,13 @@ end function
 /'
 	Converts UnixTime to FreeBasic's date serial
 '/
-function DateTime.UnixTimeToDateSerial(byval dat as longint) as Double
+function DateTime.UnixTimeToDateSerial(byval dat as LongInt) as Double
 	return 25569# + (cdbl(dat) / 86400#)
 end function
 
 /'
 	Converts FreeBasics DateSerial to UnixTime
 '/
-function DateSerialToUnixTime(byval dat as double) as LongInt
+function DateTime.DateSerialToUnixTime(byval dat as double) as LongInt
 	return (dat - 25569#) * 86400#
 end function

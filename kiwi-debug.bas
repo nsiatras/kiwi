@@ -8,9 +8,13 @@ Dim timeStampUTC as LongInt = 1664347239101
 Dim utcTime as DateTime = DateTime(timeStampUTC,0)
 print utcTime.toString()
 
-' Convert the timeStampUTC to Athens/Greece timezone and print to console
-Dim timeInAthens as DateTime = DateTime(timeStampUTC, 3)
-print timeInAthens.toString()
+utcTime.addDays(4)
+
+
+print utcTime.toString()
+
+
+
 
 
 
