@@ -109,7 +109,7 @@ end function
 
 /'
 	Returns the offset, in hours, between this date instance and 
-	the Coordinated Universal Time (UTC), 
+	the Coordinated Universal Time (UTC).
 '/
 function DateTime.getTimeZoneOffset() as Integer
 	return this.fTimeOffsetInHours
@@ -127,7 +127,7 @@ end sub
 
 /'
 	Converts this DateTime object to a String of the form: 
-	ddd mmm yyyy hh:nn:ss. For exampe "Tue Jul 08 1986 18:30:25"
+	ddd mmm yyyy hh:nn:ss. For example "Tue Jul 08 1986 18:30:25"
 '/
 function DateTime.toString() as String
 	Dim t as const Double = this.UnixTimeToDateSerial(this.getTime() / 1000)
