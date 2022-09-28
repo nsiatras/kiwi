@@ -15,7 +15,7 @@ utcTime.addMinutes(45)
 utcTime.addSeconds(10)
 utcTime.addMilliseconds(20)
 
-print utcTime.toString() ' This prints 
+print utcTime.toString() ' This prints Sun Oct 03 2032 11:25:49 UTC +0
 
 
 
