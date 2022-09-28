@@ -73,8 +73,8 @@ end constructor
 '/
 constructor DateTime(millis as LongInt)
 	this.fDateTimeInMillis 			= millis
-	this.fTimeOffsetInHours 		= 0
-	this.fTimeOffsetInMilliseconds 	= 0
+	this.fTimeOffsetInHours 		= RealTimeClock.getUTCTimeZone()
+	this.fTimeOffsetInMilliseconds 	= RealTimeClock.getUTCTimeZoneOffsetInMilliseconds()
 end constructor
 
 /'

@@ -23,7 +23,9 @@
 '/
 
 /'
-	Description: Kiwi's Real Time Clock
+	Description: The RealTime clock object provides methods for 
+	getting systemr's time and Timezone. Kiwi's System and time features 
+	uses the RealTimeClock in order to provide Date & Time accurately.
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
@@ -34,7 +36,7 @@ Type RealTimeClock extends Object
 
 	public:
 		declare static function getUnixTimeInMilliseconds() as LongInt
-		declare static function getUTCTimeZone() as Double
+		declare static function getUTCTimeZone() as Integer
 		declare static function getUTCTimeZoneTitle() as String
 		declare static function getUTCTimeZoneOffsetInMilliseconds() as LongInt
 End Type
@@ -63,7 +65,7 @@ end function
 	Returns the system's offset, in hours, from the 
 	Coordinated Universal Time (UTC +0)
 '/
-function RealTimeClock.getUTCTimeZone() as Double
+function RealTimeClock.getUTCTimeZone() as Integer
 	Dim result As Integer = 0
 	
 	#if defined(__FB_WIN32__)
@@ -79,6 +81,14 @@ function RealTimeClock.getUTCTimeZone() as Double
 	#endif
 	
 	return result
+end function
+
+/'
+	Returns the system's Time Zone title
+'/
+function RealTimeClock.getUTCTimeZoneTitle() as String
+	Dim utcOffset as Integer = RealTimeClock.getUTCTimeZone()
+	return "UTC " &iif(utcOffset>0 ,"+" & abs(utcOffset) , "-" & abs(utcOffset))
 end function
 
 /'

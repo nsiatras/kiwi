@@ -23,7 +23,13 @@
 '/
 
 /'
-	Description: A Calendar...
+	Description: The Calendar object provides methods for converting 
+	between a specific instant in time and a set of fields calendar 
+	fields such as YEAR, MONTH, DAY_OF_MONTH, HOUR, and so on, and 
+	for manipulating the calendar fields, such as getting the date 
+	of the next week. An instant in time can be represented by a 
+	millisecond value that is an offset from midnight (00:00:00) 
+	January 1, 1970 00:00:00.000 Coordinated Universal Time (UTC)
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
@@ -44,7 +50,7 @@ Type Calendar extends KObject
 End Type
 
 /'
-	Initializes a Calendar
+	Initializes a Calendar using the default time zone
 '/
 constructor Calendar()
 	this.fHoursOffset = RealTimeClock.getUTCTimeZone()
