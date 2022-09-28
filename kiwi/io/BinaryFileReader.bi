@@ -41,11 +41,11 @@ Type BinaryFileReader extends InputStreamReader
 		Dim fFileIsOpened as Boolean = false
 		Dim fFileStream as Integer
 		
-		Dim fFileSizeInBytes as LongInt = 0
-		Dim fBytesReadCounter as LongInt = 0
+		Dim fFileSizeInBytes as LongInt = 0		' Holds the total size of the file in bytes
+		Dim fBytesReadCounter as LongInt = 0	' A simple counter to count how many bytes so far are read from the file	
 		
 		' The read function is a virtual method of the InputStreamReader.
-		' BinaryFileReader doesn't use it!
+		' BinaryFileReadern doesn't use it, so far...
 		declare function read() as Integer
 					
 	public:
@@ -72,7 +72,6 @@ end constructor
 constructor BinaryFileReader(f as File)
 	base()
 	this.fMyFile = f
-	base.fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
 end constructor
 
@@ -82,7 +81,6 @@ end constructor
 constructor BinaryFileReader(fileName as String)
 	base()
 	this.fMyFile = File(fileName)
-	base.fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
 end constructor
 
