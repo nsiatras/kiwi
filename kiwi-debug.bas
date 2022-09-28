@@ -1,25 +1,31 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\time.bi" 
+#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' The following timestamp is from Wed Sep 28 2022 06:40:39 UTC +0
-Dim timeStampUTC as LongInt = 1664347239101
+' Initialize the file to read and a FileReader
+Dim myFile as File = File("C:\Users\nsiat\Desktop\MyFile.zip")
+Dim reader as BinaryFileReader = BinaryFileReader(myFile) 
 
-' Add time to timeStampUTC 
-Dim utcTime as DateTime = DateTime(timeStampUTC, 0)
+Dim byteCounter as LongInt = 0
 
-utcTime.add(DateTime.YEAR, 10)
-utcTime.add(DateTime.MONTH, 2)
-utcTime.add(DateTime.WEEK, 2)
-utcTime.add(DateTime.DAY, 5)
-utcTime.add(DateTime.HOUR, 4)
-utcTime.add(DateTime.MINUTE, 45)
-utcTime.add(DateTime.SECOND, 10)
-utcTime.add(DateTime.MILLISECOND, 20)
+' Try to open the file
+if reader.OpenStream() = true then
 
-print utcTime.toString() ' This prints Fri Dec 17 2032 11:25:49 UTC +0
+	' Create an array to hold file bytes
+	' Caution: This array has to be declared as Ubyte
+	Dim fileData(myFile.getSize()) as UByte
 
+    ' Read each file byte of the file and push 
+    ' it into the fileData array
+    while (reader.hasNext())
+        byteCounter += 1 
+        fileData(byteCounter) = reader.readNextByte()
+    wend
 
-
-
-
+    ' Close the File
+    reader.CloseStream()
+    
+    print "Total bytes read: " & byteCounter
+else
+    print "Unable to open the file!"
+end if  
 

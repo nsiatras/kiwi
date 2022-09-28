@@ -297,8 +297,8 @@ end function
 '/
 function File.getSize() as LongInt
 	'return FileLen(this.fPathName)
-	dim filehandle as integer = freefile()
-	open this.fPathName for input as #filehandle
+	Dim filehandle as Integer = freefile()
+	Open this.fPathName For Input Access Read As #filehandle
 	function = lof(filehandle)
 	close #filehandle
 end function
