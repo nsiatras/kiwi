@@ -31,6 +31,7 @@
 '/
 
 Type OutputStreamWriter extends KObject
+
 	protected:
 		Dim fMyCharset as Charset
 		
