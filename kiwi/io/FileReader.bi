@@ -37,6 +37,8 @@
 Type FileReader extends InputStreamReader
 	
 	private:
+		Dim As Any Ptr fLock
+		
 		Dim fMyFile as File
 		Dim fFileIsOpened as Boolean = false
 		Dim fFileStream as Integer
@@ -47,6 +49,7 @@ Type FileReader extends InputStreamReader
 		declare constructor(f as File, ch as Charset)
 		declare constructor(fileName as String)
 		declare constructor(fileName as String, ch as Charset)
+		declare destructor()
 		
 		declare function OpenStream() as Boolean
 		declare Sub CloseStream()
@@ -57,6 +60,7 @@ End Type
 
 constructor FileReader()
 	base()
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -67,6 +71,7 @@ constructor FileReader(f as File)
 	this.fMyFile = f
 	base.fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -77,6 +82,7 @@ constructor FileReader(f as File, ch as Charset)
 	this.fMyFile = f
 	this.fFileIsOpened = false
 	base.fMyCharset = ch
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -87,6 +93,7 @@ constructor FileReader(fileName as String)
 	this.fMyFile = File(fileName)
 	base.fMyCharset = Charset.forName("ascii")
 	this.fFileIsOpened = false
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -97,7 +104,12 @@ constructor FileReader(fileName as String, ch as Charset)
 	this.fMyFile = File(fileName)
 	this.fFileIsOpened = false
 	base.fMyCharset = ch
+	this.fLock = MutexCreate()
 end constructor
+
+destructor FileReader()
+	Mutexdestroy (this.fLock)
+end destructor
 
 /'
 	Reads a single character.
@@ -105,12 +117,15 @@ end constructor
 	@return The character read, or -1 if the end of the stream has been reached
 '/
 function FileReader.read() as Integer 
+	MutexLock(this.fLock)
 	if EOF(fFileStream) = true then
+		MutexUnLock(this.fLock)
 		this.CloseStream() ' Close the file
 		return -1
 	end if
-
-	return Asc(WInput(1, fFileStream))
+	
+	function = Asc(WInput(1, fFileStream))
+	MutexUnLock(this.fLock)
 end function
 
 /'
@@ -119,27 +134,32 @@ end function
 	@return true if file exists and can be read
 '/
 function FileReader.OpenStream() as Boolean
-	
+	MutexLock(this.fLock)
 	' Get a free file number
 	fFileStream = freefile 
 	
 	' Open the file for Input (Read) with the given Encoding
 	Open fMyFile.getPath() For Input encoding fMyCharset.getCharsetName() lock Read As #fFileStream
-	return iif(err(), false,true)
+	function = iif(err(), false,true)
+	MutexUnLock(this.fLock)
 end function
 
 /'
 	Closes the file Input Stream
 '/
 sub FileReader.CloseStream()
+	MutexLock(this.fLock)
 	Close #fFileStream
+	MutexUnLock(this.fLock)
 end sub
 
 /'
 	Resets the stream and the file can be readed again.
 '/
 sub FileReader.reset()
+	MutexLock(this.fLock)
 	this.CloseStream()
 	this.OpenStream()
+	MutexUnLock(this.fLock)
 end sub
 

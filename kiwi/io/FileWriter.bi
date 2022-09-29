@@ -47,7 +47,7 @@ Type FileWriter extends OutputStreamWriter
 		declare constructor(fileName as String, ch as Charset)
 				
 		declare sub write(s as String)
-		declare sub append(s as String)
+		declare sub append(s as String)	
 		
 End Type
 
