@@ -46,7 +46,6 @@ Type GarbageCollector extends Object
         Declare Static Sub UpdateKObjects(id as UInteger, value as _KObject, except as _KObject)
 End Type
 
-
 #macro MACRO_DefineGarbageCollectorMethods()
 	#ifndef GARBAGE_COLLECTOR_METHODS_DEFINED
 	

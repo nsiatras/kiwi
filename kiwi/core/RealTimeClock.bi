@@ -98,7 +98,3 @@ end function
 function RealTimeClock.getUTCTimeZoneOffsetInMilliseconds() as LongInt
 	return RealTimeClock.getUTCTimeZone()*3600*1000
 end function
-
-
-
-

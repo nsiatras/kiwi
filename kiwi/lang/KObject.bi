@@ -125,5 +125,3 @@ end function
 function KObject.getUniqueID() as UInteger
 	return this.fID
 end function
-
-

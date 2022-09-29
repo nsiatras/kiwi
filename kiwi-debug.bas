@@ -1,39 +1,30 @@
 ﻿#include once "kiwi\kiwi.bi"
+#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' Initialize a new Array for Double Values
-Dim values(0 to 9) as Double
+' Initialize the file to read and a FileInputStream
+Dim myFile as File = File("C:\Users\nsiat\Desktop\AAA.zip")
+Dim reader as FileInputStream = FileInputStream(myFile) 
 
-' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 9
-	values(i) = Math.random()
-next i 
+Dim byteCounter as LongInt = 0
 
-print "Array Elements Before Sort:"
-for i as Integer = 0 to ubound(values)
-	print "Element " & i &" = " & values(i)
-next
+' Try to open the Stream
+if reader.OpenStream() = true then
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Define a comparator Type
-MACRO_DefineComparator(Double)
-Type myComparator extends Comparator(Double)
-	declare function compare(a as Double, b as Double) as Integer
-End Type
+    ' Create an array to hold file bytes
+    ' Caution: This array has to be declared as Ubyte
+    Dim fileData(myFile.getSize()) as UByte
 
-function myComparator.compare(a as Double, b as Double) as Integer
-	return iif(a>=b, 1, -1) ' Ascending
-	'return iif(a<=b , 1, -1) 'Descending
-end function
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Initialize a comparator and use it to sort the array
-Dim c as myComparator
-c.quickSort(values(),0, ubound(values))
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-print ""
-print "Array Elements After Sort:"
-for i as Integer = 0 to ubound(values)
-	print "Element " & i &" = " & values(i)
-next
+    Dim byteRead as Integer = reader.read()
+    while (byteRead > - 1)
+	byteCounter += 1 
+	fileData(byteCounter) = CAST(Byte, byteRead)
+	byteRead = reader.read()
+    wend
+    
+    ' Close the Stream
+    reader.CloseStream()
+    
+    print "Total bytes read: " & byteCounter
+else
+    print "Unable to open the file!"
+end if 
