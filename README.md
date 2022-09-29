@@ -14,7 +14,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 ### Kiwi.IO
 * [BufferedReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.BufferedReader)
 * [File](https://github.com/nsiatras/kiwi/wiki/kiwi.io.File)
-* [FileInputStream](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileInputStream) - Coming to v1.0.2
+* [FileInputStream](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileInputStream)
 * [FileReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileReader)
 * [FileWriter](https://github.com/nsiatras/kiwi/wiki/kiwi.io.FileWriter)
 
