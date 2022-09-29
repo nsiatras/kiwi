@@ -15,7 +15,7 @@ End Type
 
 Sub Thread1_Process.run()
 	while (fKeepRunning)
-		print DATE & " " & Time
+		print "Hello from Thread #1"
 		sleep(1000)
 	wend
 	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
@@ -25,7 +25,10 @@ End Sub
 Dim runnable1 as Thread1_Process
 Dim thread1 as Thread = Thread(runnable1)
 thread1.start() ' Start the thread
-sleep(100)
+
+while(thread1.isAlive() = false)
+	' Wait for thread to start
+wend
 
 print "Thread 1 is live: " & thread1.isAlive()
 
@@ -37,7 +40,7 @@ fKeepRunning = false
 ' Wait for thread 1 to exit
 print "Waiting for thread to finish..."
 while thread1.isAlive()
-	' Do nothing...
+	' Wait for thread to finish
 wend
 
 print "Thread 1 is live: " & thread1.isAlive()
