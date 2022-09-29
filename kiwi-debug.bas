@@ -1,19 +1,43 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi" ' Include Kiwi's IO package
+#include once "kiwi\threading.bi" ' Include Kiwi's Threading package
 
-' Initialize a File and a FileReader
-Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
-Dim myReader as FileReader = FileReader(myFile, Charset.UTF8) ' Use UTF-8 Charset
+Dim Shared fKeepRunning as Boolean = true
+Dim tmpStr as String
 
-' Initialize a BufferedReader. The BufferedReader will be used to
-' read the text file line-by-line
-Dim bReader as BufferedReader = BufferedReader(myReader)
+print "Press Enter to exit"
+print ""
 
-if bReader.OpenStream() = true then
-	while bReader.hasNextLine()
-		print bReader.readLine() ' Print each line of the text file
+' Declare a new Runnable Object. A threads needs a Runnable
+' in order to start
+Type Thread1_Process extends Runnable 
+	Declare Sub run()
+End Type
+
+Sub Thread1_Process.run()
+	while (fKeepRunning)
+		print DATE & " " & Time
+		sleep(1000)
 	wend
-	bReader.CloseStream() ' Close the Stream
-else
-	print "Unable to open the file! Check if file is saved as 'UTF-8-BOM'"
-end if
+	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
+End Sub
+
+' Initialize a new runnable object and pass it to a new thread
+Dim runnable1 as Thread1_Process
+Dim thread1 as Thread = Thread(runnable1)
+thread1.start() ' Start the thread
+sleep(100)
+
+print "Thread 1 is live: " & thread1.isAlive()
+
+' Wait for user input in order to terminate the program.
+' To terminate the program set fKeepRunning = false
+input "", tmpStr
+fKeepRunning = false
+
+' Wait for thread 1 to exit
+print "Waiting for thread to finish..."
+while thread1.isAlive()
+	' Do nothing...
+wend
+
+print "Thread 1 is live: " & thread1.isAlive()

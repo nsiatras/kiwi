@@ -47,8 +47,11 @@ Type Thread extends KObject
 
 	public:
 		declare constructor()
-		declare constructor(r as Runnable Ptr )
+		declare constructor(r as Runnable Ptr)
+		declare constructor(byref r as Runnable)
 		declare constructor(r as Runnable Ptr, threadName as String)
+		declare constructor(byref r as Runnable, threadName as String)
+		
 		declare Sub start()
 		
 		declare Sub run()
@@ -77,8 +80,17 @@ constructor Thread(r as Runnable Ptr)
 	fMyRunnablePointer = r
 end constructor
 
+constructor Thread(byref r as Runnable)
+	fMyRunnablePointer = @r
+end constructor
+
 constructor Thread(r as Runnable Ptr, threadName as String)
 	fMyRunnablePointer = r
+	fMyName = threadName
+end constructor
+
+constructor Thread(r as Runnable, threadName as String)
+	fMyRunnablePointer = @r
 	fMyName = threadName
 end constructor
 
