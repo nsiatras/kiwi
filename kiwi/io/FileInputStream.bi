@@ -41,7 +41,6 @@ Type FileInputStream extends InputStreamReader
 		Dim fMyFile as File
 		Dim fFileIsOpened as Boolean = false
 		Dim fFileStream as Integer
-		
 		Dim fFileSizeInBytes as LongInt = 0		' Holds the total size of the file in bytes
 		Dim fBytesReadCounter as LongInt = 0	' A simple counter to count how many bytes so far are read from the file	
 							
@@ -54,9 +53,7 @@ Type FileInputStream extends InputStreamReader
 		declare function OpenStream() as Boolean
 		declare sub CloseStream()
 		declare function read() as Integer
-		
 		declare function readAllBytes(dataArray() as UByte) as Boolean
-		
 		declare sub reset()
 		
 End Type
@@ -118,17 +115,17 @@ end function
 '/
 function FileInputStream.readAllBytes(dataArray() as UByte) as Boolean
 	MutexLock(this.fLock)
-	fFileStream = freefile 	' Get a free file number
-	Open fMyFile.getPath() For Binary Access Read As #fFileStream
+	Dim localFileStream as Integer = freefile 	' Get a free file number
+	Open fMyFile.getPath() For Binary Access Read As #localFileStream
 	if err() then
 		function = false
 		MutexUnLock(this.fLock)
 		exit function
 	end if
 	
-	ReDim dataArray(Lof(fFileStream)-1)
-	Get #fFileStream, , dataArray()
-	Close #fFileStream
+	ReDim dataArray(Lof(localFileStream)-1)
+	Get #localFileStream, , dataArray()
+	Close #localFileStream
 	function = true
 	MutexUnLock(this.fLock)
 end function
@@ -142,12 +139,10 @@ function FileInputStream.OpenStream() as Boolean
 	MutexLock(this.fLock)
 	fFileStream = freefile 	' Get a free file number
 	fBytesReadCounter = 1	' Set fBytesReadCounter to 1
-	
 	' Open the file for Input (Read) with the given Encoding
 	Open fMyFile.getPath() For Binary Access Read As #fFileStream
-	
 	fFileSizeInBytes = LOF(fFileStream) ' Get file size in bytes
-	
+	' On error return false
 	function = iif(err() OR fFileSizeInBytes <1, false, true)
 	MutexUnLock(this.fLock)
 end function

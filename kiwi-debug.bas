@@ -1,22 +1,16 @@
 ﻿#include once "kiwi\kiwi.bi"
 #include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' Initialize the file to read and a FileReader
-Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
-Dim reader as FileReader = FileReader(myFile, Charset.UTF8) ' Use UTF8 charset
+' Initialize a file and a FileInput stream
+Dim myFile as File = File("C:\Users\nsiat\Desktop\MyFile.zip")
+Dim reader as FileInputStream = FileInputStream(myFile) 
 
-' Try to open the file
-if reader.OpenStream() = true then
+' Declare a UByte array to push the file bytes
+Dim As UByte dataArray() 
 
-    ' Read each char of the File and print it on screen
-    Dim c as Integer = reader.read()
-    while (c <> -1)
-        print WChr(c);
-        c = reader.read()
-    wend
-
-    ' Close the File
-    reader.CloseStream()
+' Ask FileInputStream to push all file bytes into dataArray() 
+if reader.readAllBytes(dataArray()) then
+	print "Total bytes read: " & ubound(dataArray)+1
 else
-    print "Unable to open the file! Check if file is saved as 'UTF-8-BOM'"
-end if  
+	print "Unable to open the file!"
+end if
