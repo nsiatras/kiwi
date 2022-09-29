@@ -28,7 +28,7 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-
+#include once "fbthread.bi"
 #include once "..\nio\Charset.bi"
 #include once "File.bi"
 #include once "InputStreamReader.bi"
@@ -36,6 +36,8 @@
 Type FileInputStream extends InputStreamReader
 	
 	private:
+		Dim As Any Ptr fLock
+		
 		Dim fMyFile as File
 		Dim fFileIsOpened as Boolean = false
 		Dim fFileStream as Integer
@@ -45,6 +47,7 @@ Type FileInputStream extends InputStreamReader
 							
 	public:
 		declare constructor()
+		declare destructor()
 		declare constructor(f as File)
 		declare constructor(fileName as String)
 		
@@ -52,12 +55,15 @@ Type FileInputStream extends InputStreamReader
 		declare sub CloseStream()
 		declare function read() as Integer
 		
+		declare function readAllBytes(dataArray() as UByte) as Boolean
+		
 		declare sub reset()
 		
 End Type
 
 constructor FileInputStream()
 	base()
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -67,6 +73,7 @@ constructor FileInputStream(f as File)
 	base()
 	this.fMyFile = f
 	this.fFileIsOpened = false
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -76,7 +83,12 @@ constructor FileInputStream(fileName as String)
 	base()
 	this.fMyFile = File(fileName)
 	this.fFileIsOpened = false
+	this.fLock = MutexCreate()
 end constructor
+
+destructor FileInputStream()
+	Mutexdestroy (this.fLock)
+end destructor
 
 /'
 	Reads a single byte.
@@ -84,8 +96,10 @@ end constructor
 	@return The byte read, or -1 if the end of the stream has been reached
 '/
 function FileInputStream.read() as Integer 
-	'if EOF(fFileStream) = true then
+	MutexLock(this.fLock)
+	
 	if fBytesReadCounter > fFileSizeInBytes  then
+		MutexUnLock(this.fLock)
 		this.CloseStream() ' Close the file
 		return -1
 	end if
@@ -93,7 +107,30 @@ function FileInputStream.read() as Integer
 	Dim byteToReturn as UByte
 	GET #fFileStream, this.fBytesReadCounter, byteToReturn
 	this.fBytesReadCounter += 1	
-	return byteToReturn
+	function = byteToReturn
+	MutexUnLock(this.fLock)
+end function
+
+/'
+	Reads all file bytes into the given byte array.
+	
+	@param dataArray the byte array to put all stream bytes
+'/
+function FileInputStream.readAllBytes(dataArray() as UByte) as Boolean
+	MutexLock(this.fLock)
+	fFileStream = freefile 	' Get a free file number
+	Open fMyFile.getPath() For Binary Access Read As #fFileStream
+	if err() then
+		function = false
+		MutexUnLock(this.fLock)
+		exit function
+	end if
+	
+	ReDim dataArray(Lof(fFileStream)-1)
+	Get #fFileStream, , dataArray()
+	Close #fFileStream
+	function = true
+	MutexUnLock(this.fLock)
 end function
 
 /'
@@ -102,6 +139,7 @@ end function
 	@return true if file exists and can be read
 '/
 function FileInputStream.OpenStream() as Boolean
+	MutexLock(this.fLock)
 	fFileStream = freefile 	' Get a free file number
 	fBytesReadCounter = 1	' Set fBytesReadCounter to 1
 	
@@ -110,21 +148,26 @@ function FileInputStream.OpenStream() as Boolean
 	
 	fFileSizeInBytes = LOF(fFileStream) ' Get file size in bytes
 	
-	return iif(err() OR fFileSizeInBytes <1, false, true)
+	function = iif(err() OR fFileSizeInBytes <1, false, true)
+	MutexUnLock(this.fLock)
 end function
 
 /'
 	Closes the Input Stream
 '/
 sub FileInputStream.CloseStream()
+	MutexLock (this.fLock)
 	fBytesReadCounter = 1	' Set fBytesReadCounter to 1
 	Close #fFileStream
+	MutexUnLock (this.fLock)
 end sub
 
 /'
 	Resets the stream and the file can be readed again.
 '/
 sub FileInputStream.reset()
+	MutexLock (this.fLock)
 	this.CloseStream()
 	this.OpenStream()
+	MutexUnLock (this.fLock)
 end sub
