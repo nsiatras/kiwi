@@ -1,46 +1,39 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\threading.bi" ' Include Kiwi's Threading package
 
-Dim Shared fKeepRunning as Boolean = true
-Dim tmpStr as String
+' Initialize a new Array for Double Values
+Dim values(0 to 9) as Double
 
-print "Press Enter to exit"
-print ""
+' Add 10 Random double values to myArrayList
+for i as Integer = 0 to 9
+	values(i) = Math.random()
+next i 
 
-' Declare a new Runnable Object. A threads needs a Runnable
-' in order to start
-Type Thread1_Process extends Runnable 
-	Declare Sub run()
+print "Array Elements Before Sort:"
+for i as Integer = 0 to ubound(values)
+	print "Element " & i &" = " & values(i)
+next
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Define a comparator Type
+MACRO_DefineComparator(Double)
+Type myComparator extends Comparator(Double)
+	declare function compare(a as Double, b as Double) as Integer
 End Type
 
-Sub Thread1_Process.run()
-	while (fKeepRunning)
-		print "Hello from Thread #1"
-		sleep(1000)
-	wend
-	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
-End Sub
+function myComparator.compare(a as Double, b as Double) as Integer
+	return iif(a>=b, 1, -1) ' Ascending
+	'return iif(a<=b , 1, -1) 'Descending
+end function
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-' Initialize a new runnable object and pass it to a new thread
-Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1)
-thread1.start() ' Start the thread
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Initialize a comparator and use it to sort the array
+Dim c as myComparator
+c.quickSort(values(),0, ubound(values))
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-while(thread1.isAlive() = false)
-	' Wait for thread to start
-wend
-
-print "Thread 1 is live: " & thread1.isAlive()
-
-' Wait for user input in order to terminate the program.
-' To terminate the program set fKeepRunning = false
-input "", tmpStr
-fKeepRunning = false
-
-' Wait for thread 1 to exit
-print "Waiting for thread to finish..."
-while thread1.isAlive()
-	' Wait for thread to finish
-wend
-
-print "Thread 1 is live: " & thread1.isAlive()
+print ""
+print "Array Elements After Sort:"
+for i as Integer = 0 to ubound(values)
+	print "Element " & i &" = " & values(i)
+next
