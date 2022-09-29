@@ -88,14 +88,14 @@ function BufferedReader.hasNextLine() as Boolean
 		' ASCII
 		while (c <> -1 AND c <> 10 AND c <> 13)
 			result = true
-			fTmpString = fTmpString & Chr(c)
+			fTmpString = fTmpString & WChr(c)
 			c =(*fMyInputStreamReaderPTR).read()
 		wend
 	else
 		' NON ASCII
 		while (c <> -1 AND c <> 10 )
 			result = true
-			fTmpString = fTmpString & Chr(c)
+			fTmpString = fTmpString & WChr(c)
 			c = (*fMyInputStreamReaderPTR).read()
 		wend
 	endif
