@@ -22,7 +22,6 @@
 	SOFTWARE.
 '/
 
-
 #include once "lang\Thread.bi"
 #include once "lang\ThreadsManager.bi"
 #include once "lang\Runnable.bi"

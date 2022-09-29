@@ -1,14 +1,29 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\io.bi" ' Include Kiwi's IO package
+#include once "kiwi\threading.bi" ' Include Kiwi's Threading package
 
-' Initialize a File and a FileWriter
-Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
-Dim myWriter as FileWriter = FileWriter(myFile) ' Using UTF-8 Charset
+' Declare a new Runnable Object. A threads needs a Runnable
+' in order to start
+Type Thread1_Process extends Runnable 
+	Declare Sub run()
+End Type
 
-' The fist line will be written to the text file
-myWriter.write("Hello!" & System.lineSeparator) 
+Sub Thread1_Process.run()
+	for i as Integer = 0 to 9
+		print i
+		sleep(1000)
+	next
+	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
+End Sub
 
-' The next 3 lines will be appended
-myWriter.append("This is simple Text file" & System.lineSeparator) 
-myWriter.append("created by Kiwi Framework" & System.lineSeparator)
-myWriter.append("for FreeBasic :)")
+' Initialize a new runnable object and pass it to a new thread
+Dim runnable1 as Thread1_Process
+Dim thread1 as Thread = Thread(runnable1)
+thread1.start() ' Start the thread
+
+while(thread1.isAlive() = false)
+	' Wait for thread to start
+wend
+
+while(thread1.isAlive() = true)
+	' Wait for thread to finish
+wend
