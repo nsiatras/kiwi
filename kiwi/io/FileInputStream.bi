@@ -96,7 +96,6 @@ function FileInputStream.read() as Integer
 	return byteToReturn
 end function
 
-
 /'
 	Opens the Input Stream
 	
@@ -118,6 +117,7 @@ end function
 	Closes the Input Stream
 '/
 sub FileInputStream.CloseStream()
+	fBytesReadCounter = 1	' Set fBytesReadCounter to 1
 	Close #fFileStream
 end sub
 
@@ -128,5 +128,3 @@ sub FileInputStream.reset()
 	this.CloseStream()
 	this.OpenStream()
 end sub
-
-
