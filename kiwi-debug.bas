@@ -1,16 +1,14 @@
 ﻿#include once "kiwi\kiwi.bi"
 #include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' Initialize a file and a FileInput stream
-Dim myFile as File = File("C:\Users\nsiat\Desktop\MyFile.zip")
-Dim reader as FileInputStream = FileInputStream(myFile) 
+' Initialize a File and a FileWriter
+Dim myFile as File = File("C:\Users\nsiat\Desktop\Test.txt")
+Dim myWriter as FileWriter = FileWriter(myFile) ' Using UTF-8 Charset
 
-' Declare a UByte array to push the file bytes
-Dim As UByte dataArray() 
+' The fist line will be written to the text file
+myWriter.write("Hello!" & System.lineSeparator) 
 
-' Ask FileInputStream to push all file bytes into dataArray() 
-if reader.readAllBytes(dataArray()) then
-	print "Total bytes read: " & ubound(dataArray)+1
-else
-	print "Unable to open the file!"
-end if
+' The next 3 lines will be appended
+myWriter.append("This is simple Text file" & System.lineSeparator) 
+myWriter.append("created by Kiwi Framework" & System.lineSeparator)
+myWriter.append("for FreeBasic :)")

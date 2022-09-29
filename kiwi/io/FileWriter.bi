@@ -37,14 +37,17 @@ Type FileWriter extends OutputStreamWriter
 	
 	protected:
 		Dim fMyFile as File
+		
+	private:
+		Dim As Any Ptr fLock
 					
 	public:
 		declare constructor()
-		
 		declare constructor(f as File)
 		declare constructor(f as File, ch as Charset)
 		declare constructor(fileName as String)
 		declare constructor(fileName as String, ch as Charset)
+		declare destructor()
 				
 		declare sub write(s as String)
 		declare sub append(s as String)	
@@ -57,6 +60,7 @@ End Type
 constructor FileWriter(f as File)
 	this.fMyFile = f
 	base.fMyCharset = Charset.forName("ascii")
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -65,6 +69,7 @@ end constructor
 constructor FileWriter(f as File, ch as Charset)
 	this.fMyFile = f
 	base.fMyCharset = ch
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -73,6 +78,7 @@ end constructor
 constructor FileWriter(fileName as String)
 	this.fMyFile = File(fileName)
 	base.fMyCharset = Charset.forName("ascii")
+	this.fLock = MutexCreate()
 end constructor
 
 /'
@@ -81,25 +87,34 @@ end constructor
 constructor FileWriter(fileName as String, ch as Charset)
 	this.fMyFile = File(fileName)
 	base.fMyCharset = ch
+	this.fLock = MutexCreate()
 end constructor
+
+destructor FileWriter()
+	Mutexdestroy(this.fLock)
+end destructor
 
 /'
 	Writes a string.
 '/
 sub FileWriter.write(st as String)
+	MutexLock(this.fLock)
 	Dim fileStream as Integer = freefile
 	Open fMyFile.getPath() For Output encoding fMyCharset.getCharsetName() Lock Write As #fileStream
 	print #fileStream, st; ' The ";" will print the text without any new line chars at the end
 	close #fileStream
+	MutexUnLock(this.fLock)
 end sub
 
 /'
 	Appends a string to the file.
 '/
 sub FileWriter.append(st as String)
+	MutexLock(this.fLock)
 	Dim fileStream as Integer = freefile
 	Open fMyFile.getPath() For Append encoding fMyCharset.getCharsetName() Lock Write As #fileStream
 	print #fileStream, st; ' The ";" will print the text without any new line chars at the end
 	close #fileStream
+	MutexUnLock(this.fLock)
 end sub
 
