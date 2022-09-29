@@ -23,9 +23,8 @@
 '/
 
 /'
-	Description: Reads text from character files using a default buffer size. 
-	Decoding from bytes to characters uses either a specified 
-	charset or the platform's default charset.
+	Description: A FileInputStream obtains input bytes from a file in a 
+	file system. What files are available depends on the host environment.
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
@@ -34,7 +33,7 @@
 #include once "File.bi"
 #include once "InputStreamReader.bi"
 
-Type BinaryFileReader extends InputStreamReader
+Type FileInputStream extends InputStreamReader
 	
 	private:
 		Dim fMyFile as File
@@ -43,11 +42,7 @@ Type BinaryFileReader extends InputStreamReader
 		
 		Dim fFileSizeInBytes as LongInt = 0		' Holds the total size of the file in bytes
 		Dim fBytesReadCounter as LongInt = 0	' A simple counter to count how many bytes so far are read from the file	
-		
-		' The read function is a virtual method of the InputStreamReader.
-		' BinaryFileReadern doesn't use it, so far...
-		declare function read() as Integer
-					
+							
 	public:
 		declare constructor()
 		declare constructor(f as File)
@@ -55,21 +50,20 @@ Type BinaryFileReader extends InputStreamReader
 		
 		declare function OpenStream() as Boolean
 		declare sub CloseStream()
-		declare function hasNext() as Boolean
-		declare function readNextByte() as UByte
+		declare function read() as Integer
 		
 		declare sub reset()
 		
 End Type
 
-constructor BinaryFileReader()
+constructor FileInputStream()
 	base()
 end constructor
 
 /'
 	Creates a new BinaryFileReader instance
 '/
-constructor BinaryFileReader(f as File)
+constructor FileInputStream(f as File)
 	base()
 	this.fMyFile = f
 	this.fFileIsOpened = false
@@ -78,35 +72,37 @@ end constructor
 /'
 	Creates a new BinaryFileReader instance
 '/
-constructor BinaryFileReader(fileName as String)
+constructor FileInputStream(fileName as String)
 	base()
 	this.fMyFile = File(fileName)
 	this.fFileIsOpened = false
 end constructor
 
 /'
-	Returns true if this BinaryFileReader has more bytes to read
+	Reads a single byte.
+	
+	@return The byte read, or -1 if the end of the stream has been reached
 '/
-function BinaryFileReader.hasNext() as Boolean
-	return fBytesReadCounter < fFileSizeInBytes + 1
-end function
-
-/'
-	Reads and returns a single byte from the stream and 
-'/
-function BinaryFileReader.readNextByte() as UByte 
+function FileInputStream.read() as Integer 
+	'if EOF(fFileStream) = true then
+	if fBytesReadCounter > fFileSizeInBytes  then
+		this.CloseStream() ' Close the file
+		return -1
+	end if
+	
 	Dim byteToReturn as UByte
 	GET #fFileStream, this.fBytesReadCounter, byteToReturn
 	this.fBytesReadCounter += 1	
 	return byteToReturn
 end function
 
+
 /'
-	Opens a file Input Stream
+	Opens the Input Stream
 	
 	@return true if file exists and can be read
 '/
-function BinaryFileReader.OpenStream() as Boolean
+function FileInputStream.OpenStream() as Boolean
 	fFileStream = freefile 	' Get a free file number
 	fBytesReadCounter = 1	' Set fBytesReadCounter to 1
 	
@@ -119,24 +115,18 @@ function BinaryFileReader.OpenStream() as Boolean
 end function
 
 /'
-	Closes the file Input Stream
+	Closes the Input Stream
 '/
-sub BinaryFileReader.CloseStream()
+sub FileInputStream.CloseStream()
 	Close #fFileStream
 end sub
 
 /'
 	Resets the stream and the file can be readed again.
 '/
-sub BinaryFileReader.reset()
+sub FileInputStream.reset()
 	this.CloseStream()
 	this.OpenStream()
 end sub
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' The read function is a virtual method of the InputStreamReader.
-' BinaryFileReader doesn't use it!
-function BinaryFileReader.read() as Integer
-	return 0
-end function
 

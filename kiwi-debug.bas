@@ -1,9 +1,9 @@
 ﻿#include once "kiwi\kiwi.bi"
 #include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-' Initialize the file to read and a FileReader
+' Initialize the file to read and a FileInputStream
 Dim myFile as File = File("C:\Users\nsiat\Desktop\MyFile.zip")
-Dim reader as BinaryFileReader = BinaryFileReader(myFile) 
+Dim reader as FileInputStream = FileInputStream(myFile) 
 
 Dim byteCounter as LongInt = 0
 
@@ -14,13 +14,13 @@ if reader.OpenStream() = true then
 	' Caution: This array has to be declared as Ubyte
 	Dim fileData(myFile.getSize()) as UByte
 
-    ' Read each file byte of the file and push 
-    ' it into the fileData array
-    while (reader.hasNext())
-        byteCounter += 1 
-        fileData(byteCounter) = reader.readNextByte()
+    Dim byteRead as Integer = reader.read()
+    while (byteRead > - 1)
+		byteCounter += 1 
+		fileData(byteCounter) = CAST(Byte, byteRead)
+		byteRead = reader.read()
     wend
-
+    
     ' Close the File
     reader.CloseStream()
     
@@ -28,6 +28,3 @@ if reader.OpenStream() = true then
 else
     print "Unable to open the file!"
 end if  
-
-
-

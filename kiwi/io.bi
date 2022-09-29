@@ -30,9 +30,10 @@
 	Url: https://www.github.com/nsiatras
 '/
 
-
+#include once "io\InputStreamReader.bi"
+#include once "io\OutputStreamWriter.bi"
 #include once "io\File.bi"
+#include once "io\FileInputStream.bi"
 #include once "io\FileReader.bi"
 #include once "io\BufferedReader.bi"
-#include once "io\BinaryFileReader.bi"
 #include once "io\FileWriter.bi"
