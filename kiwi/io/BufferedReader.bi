@@ -37,12 +37,12 @@
 Type BufferedReader extends KObject
 	
 	private:
-		Dim fMyInputStreamReader as FileReader
+		Dim fMyInputStreamReaderPTR as InputStreamReader PTR
 		Dim fTmpString as String
 					
 	public:
-		declare constructor(reader as FileReader)
-		
+		declare constructor(byref reader as InputStreamReader)
+
 		declare function OpenStream() as Boolean
 		declare sub CloseStream()
 		
@@ -54,25 +54,25 @@ End Type
 /'
 	Creates a new BufferedReader instance
 '/
-constructor BufferedReader(reader as FileReader)
-	this.fMyInputStreamReader = reader
+constructor BufferedReader(byref reader as InputStreamReader)
+	fMyInputStreamReaderPTR = @reader
 end constructor
 
 /'
-	Opens a file Input Stream
+	Opens the Input Stream
 	
 	@return true if file exists and can be read
 '/
 function BufferedReader.OpenStream() as Boolean
 	this.fTmpString = ""
-	return this.fMyInputStreamReader.OpenStream()
+	return (*fMyInputStreamReaderPTR).OpenStream()
 end function
 		
 /'
-	Closes the file Input Stream
+	Closes the Input Stream
 '/		
 sub BufferedReader.CloseStream()
-	this.fMyInputStreamReader.CloseStream()
+	(*fMyInputStreamReaderPTR).CloseStream()
 	this.fTmpString = ""
 end sub
 
@@ -82,21 +82,21 @@ end sub
 function BufferedReader.hasNextLine() as Boolean
 
 	Dim result as Boolean = false
-	Dim c as Integer = this.fMyInputStreamReader.read()
+	Dim c as Integer = (*fMyInputStreamReaderPTR).read()
 	
-	if lcase(this.fMyInputStreamReader.getEncoding()) = "ascii" then
+	if lcase((*fMyInputStreamReaderPTR).getEncoding()) = "ascii" then
 		' ASCII
 		while (c <> -1 AND c <> 10 AND c <> 13)
 			result = true
 			fTmpString = fTmpString & Chr(c)
-			c = this.fMyInputStreamReader.read()
+			c =(*fMyInputStreamReaderPTR).read()
 		wend
 	else
 		' NON ASCII
 		while (c <> -1 AND c <> 10 )
 			result = true
 			fTmpString = fTmpString & Chr(c)
-			c = this.fMyInputStreamReader.read()
+			c = (*fMyInputStreamReaderPTR).read()
 		wend
 	endif
     

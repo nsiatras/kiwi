@@ -39,12 +39,13 @@ Type InputStreamReader extends KObject
 	public:
 		declare constructor()
 		
-		declare virtual function OpenStream() as Boolean
-		declare virtual sub CloseStream() 
-		declare virtual function read() as Integer
-		declare virtual Sub reset()
+		declare abstract function OpenStream() as Boolean
+		declare abstract sub CloseStream() 
+		declare abstract function read() as Integer
+		declare abstract Sub reset()
 		
 		declare function getEncoding() as String
+		
 End Type
 
 /'
@@ -63,28 +64,3 @@ function InputStreamReader.getEncoding() as String
 	return fMyCharset.getCharsetName()
 end function
 
-function InputStreamReader.OpenStream() as Boolean
-	print "InputStreamReader.OpenStream() is empty!"
-	return false
-end function
-
-sub InputStreamReader.CloseStream() 
-	print "InputStreamReader.CloseStream() is empty!"
-end sub
-
-/'
-	Reads a single character.
-	
-	@return The character read, or -1 if the end of the stream has been reached
-'/
-function InputStreamReader.read() as Integer
-	print "InputStreamReader.read() is empty!"
-	return -1
-end function
-
-/'
-	Resets the stream and the file can be readed again.
-'/
-Sub InputStreamReader.reset()
-	
-end sub

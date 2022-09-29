@@ -46,6 +46,7 @@ Type KObject extends Object
 		declare operator let(value as KObject)
 		#endif
 				
+		declare virtual sub dispose()
 		declare virtual function toString() as String
 		declare function getUniqueID() as UInteger
 End Type
@@ -105,6 +106,13 @@ end operator
 #endif
 
 /'
+	Disposes the Object
+'/
+sub KObject.dispose()
+
+end sub
+
+/'
 	Returns a string representation of this KObject.
 '/
 function KObject.toString() as String
@@ -117,3 +125,5 @@ end function
 function KObject.getUniqueID() as UInteger
 	return this.fID
 end function
+
+
