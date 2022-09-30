@@ -86,8 +86,13 @@ end constructor
 	KObject's Destructor
 '/
 destructor KObject()
+	' Destroy the mutex 
 	Mutexdestroy(this.fKObjectLock)
-	CondDestroy(this.fNotifySignalThreashold)
+	
+	' Destroy the condition signal fNotifySignalThreashold
+	if this.fNotifySignalThreashold <> 0 then
+		CondDestroy(this.fNotifySignalThreashold)
+	end if
 	
 	#ifdef USE_GARBAGE_COLLECTOR
 		' Tell GC to Delete the Object
