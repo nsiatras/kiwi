@@ -31,12 +31,18 @@
 '/
 
 #include once "GarbageCollector.bi"
+#include once "fbthread.bi"
 
 Type KObject extends Object
 
 	protected:
 		Static Hash_Code_Counter as UInteger
 		Dim fID as UInteger
+		
+		Dim fKObjectLock As Any Ptr 
+		
+		Dim fNotifySignalThreashold As Any Ptr =0
+		Dim fNotified as Boolean = false
 
 	public:
 		declare constructor()					' Constructor
@@ -45,10 +51,13 @@ Type KObject extends Object
 		#ifdef USE_GARBAGE_COLLECTOR
 		declare operator let(value as KObject)
 		#endif
+		
+		declare sub wait()
+		declare sub notify()
 				
-		declare virtual sub dispose()
 		declare virtual function toString() as String
 		declare function getUniqueID() as UInteger
+
 End Type
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
@@ -65,7 +74,8 @@ constructor KObject()
 	' Assign a Unique ID to this KObject
 	KObject.Hash_Code_Counter += 1
 	this.fID = KObject.Hash_Code_Counter
-	
+	this.fKObjectLock = MutexCreate()
+			
 	#ifdef USE_GARBAGE_COLLECTOR
 		' Tell GC to Register the Object
 		GarbageCollector.RegisterObject(this)
@@ -76,6 +86,9 @@ end constructor
 	KObject's Destructor
 '/
 destructor KObject()
+	Mutexdestroy(this.fKObjectLock)
+	CondDestroy(this.fNotifySignalThreashold)
+	
 	#ifdef USE_GARBAGE_COLLECTOR
 		' Tell GC to Delete the Object
 		GarbageCollector.DeleteObject(this)
@@ -106,11 +119,35 @@ end operator
 #endif
 
 /'
-	Disposes the Object
+	Causes the current thread to wait until it is awakened, 
+	typically by being notified or interrupted.
 '/
-sub KObject.dispose()
-
+sub KObject.wait()
+	MutexLock(this.fKObjectLock)
+		this.fNotifySignalThreashold = CondCreate
+		this.fNotified = false
+		Condwait(fNotifySignalThreashold, this.fKObjectLock)
+	MutexUnLock(this.fKObjectLock)
 end sub
+
+/'
+	Wakes up a single thread that is waiting on this object's monitor. 
+	If any threads are waiting on this object, one of them is chosen to 
+	be awakened. The choice is arbitrary and occurs at the discretion of 
+	the implementation. A thread waits on an object's monitor by calling 
+	one of the wait methods.
+'/
+sub KObject.notify()
+	MutexLock(this.fKObjectLock)
+		this.fNotified = true
+		if this.fNotifySignalThreashold <> 0 then
+			CondSignal(fNotifySignalThreashold)
+			MutexUnLock(this.fKObjectLock)
+			exit sub
+		end if
+	MutexUnLock(this.fKObjectLock)
+end sub
+
 
 /'
 	Returns a string representation of this KObject.

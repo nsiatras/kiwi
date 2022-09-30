@@ -57,7 +57,7 @@ Type Thread extends KObject
 		declare function getName() as String
 		declare sub setName(newName as String)
 		declare function isAlive() as Boolean
-
+		
 End Type
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
