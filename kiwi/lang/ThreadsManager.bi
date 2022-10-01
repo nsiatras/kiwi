@@ -26,7 +26,24 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 
+#include once "Thread.bi"
 Type ThreadsManager extends Object
 
+	private:
+	
+		
+	public:
+		declare static sub ThreadInitialized(byref th as Thread)
+		declare static sub ThreadDestroyed(byref th as Thread)
 
 End Type
+
+
+sub ThreadsManager.ThreadInitialized(byref th as Thread)
+
+end sub
+
+sub ThreadsManager.ThreadDestroyed(byref th as Thread)
+
+end sub
+

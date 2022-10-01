@@ -49,6 +49,7 @@ Type Thread extends KObject
 		declare constructor()
 		declare constructor(byref r as Runnable)
 		declare constructor(byref r as Runnable, threadName as String)
+		declare destructor()
 		
 		declare Sub start()
 		
@@ -58,7 +59,13 @@ Type Thread extends KObject
 		declare sub setName(newName as String)
 		declare function isAlive() as Boolean
 		
+		' Statics
+		declare static function currentThread() as Thread
+		
 End Type
+
+' Include  "ThreadsManager.bi" in order to make cross reference possible
+#include once "ThreadsManager.bi"
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' ThreadAndRunnableContainer holds a pointer of a Thread and a pointer
@@ -71,17 +78,25 @@ End Type
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 constructor Thread()
-
+	this.fMyName = ""
+	ThreadsManager.ThreadInitialized(this)
 end constructor
 
 constructor Thread(byref r as Runnable)
-	fMyRunnablePointer = @r
+	this.fMyRunnablePointer = @r
+	this.fMyName = ""
+	ThreadsManager.ThreadInitialized(this)
 end constructor
 
 constructor Thread(r as Runnable, threadName as String)
-	fMyRunnablePointer = @r
-	fMyName = threadName
+	this.fMyRunnablePointer = @r
+	this.fMyName = threadName
+	ThreadsManager.ThreadInitialized(this)
 end constructor
+
+destructor Thread()
+	ThreadsManager.ThreadDestroyed(this)
+end destructor
 
 /'
 	Causes this thread to begin execution
@@ -154,4 +169,11 @@ end sub
 '/
 function Thread.isAlive() as Boolean
 	return this.fIsAlive
+end function
+
+
+function Thread.currentThread() as Thread
+	print THREADSELF
+	Dim aa as Thread = Thread()
+	return aa
 end function

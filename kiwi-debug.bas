@@ -1,5 +1,4 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\threading.bi" ' Include Kiwi's Threading package
 
 Dim Shared fLockObject as KObject
 
@@ -11,7 +10,7 @@ End Type
 Sub Thread1_Process.run()
 	while(true)
 		fLockObject.wait()
-		print date & " " & time	
+		print "Name:" & Thread.currentThread.getName()
 	wend
 End Sub
 

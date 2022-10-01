@@ -60,6 +60,11 @@ Type KObject extends Object
 
 End Type
 
+' Include Thread and Threads Manager here in order to make the 
+' cross reference possible
+#include once "Thread.bi"
+#include once "ThreadsManager.bi"
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' CAUTION: Define/Declare Garbage Collector Methods here!
 MACRO_DefineGarbageCollectorMethods()
