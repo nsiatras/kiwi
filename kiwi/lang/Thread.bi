@@ -173,7 +173,7 @@ end function
 
 
 function Thread.currentThread() as Thread
-	print THREADSELF
+	print "ThreadID: " & THREADSELF
 	Dim aa as Thread = Thread()
 	return aa
 end function

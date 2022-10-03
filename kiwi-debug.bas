@@ -10,7 +10,8 @@ End Type
 Sub Thread1_Process.run()
 	while(true)
 		fLockObject.wait()
-		print "Name:" & Thread.currentThread.getName()
+		print "Hello"
+		'print "Name:" & Thread.currentThread().getName()
 	wend
 End Sub
 
@@ -36,3 +37,4 @@ thread2.start() ' Start Thread2
 
 ' Wait for user input to exit
 sleep()
+
