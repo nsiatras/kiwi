@@ -27,7 +27,7 @@ Sub Thread2_Process.run()
 	wend
 End Sub
 
-print Thread.currentThread.getName()
+print "Main Thread's name is: " & Thread.currentThread.getName()
 
 Dim runnable1 as Thread1_Process
 Dim thread1 as Thread = Thread(runnable1,"Thread 1")
@@ -38,9 +38,5 @@ Dim thread2 as Thread = Thread(runnable2,"Thread 2")
 thread2.start() ' Start Thread2
 
 ' Wait for user input to exit
-sleep()
-
-
-
 sleep()
 
