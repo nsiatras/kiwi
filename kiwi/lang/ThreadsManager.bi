@@ -38,8 +38,9 @@ Type ThreadsManager extends Object
 		Static fLock As Any Ptr
 		Static fThreadsList(any) as Thread Ptr
 		Static fCount as UInteger 
+		Static fInitialized as Boolean
 		
-		Static fMainThread as Thread ' Holds a virtual main thread
+		Static fMainThread as Thread 	' Holds a virtual main thread
 		
 		declare static sub ResizeThreadsList(items as Integer)
 
@@ -56,25 +57,34 @@ Dim ThreadsManager.fLock As Any Ptr
 Dim ThreadsManager.fMainThread As Thread = Thread()
 Dim ThreadsManager.fThreadsList(any) as Thread Ptr
 Dim ThreadsManager.fCount as UInteger = 0
+Dim ThreadsManager.fInitialized as Boolean = false
 
-
+/'
+	Initializes the ThreadManager
+'/
 sub ThreadsManager.Initialize()
-	ThreadsManager.fLock = MutexCreate()
-	ThreadsManager.fMainThread.setName("Main Thread")
-	ThreadsManager.fCount = 0
+	if ThreadsManager.fInitialized = false then
+		ThreadsManager.fLock = MutexCreate()
+		ThreadsManager.fMainThread.setName("Main Thread")
+		ThreadsManager.fCount = 0
+		ThreadsManager.fInitialized = true
+	end if
 end sub
 
-'Dim ThreadsManager.fLock As Any Ptr = MutexCreate()
-
-
+/'
+	Each thread calls this method upon Initialization.
+'/
 sub ThreadsManager.ThreadInitialized(byref th as Thread)
 	MutexLock (ThreadsManager.fLock)
-	' Resize ThreadsList
-	ThreadsManager.ResizeThreadsList(+1)
-	ThreadsManager.fThreadsList(ThreadsManager.fCount - 1) =  @th
+		' Add the thread fThreadsList
+		ThreadsManager.ResizeThreadsList(+1)
+		ThreadsManager.fThreadsList(ThreadsManager.fCount - 1) =  @th
 	MutexUnlock (ThreadsManager.fLock)
 end sub
 
+/'
+	Each thread calls this method upon Destruction.
+'/
 sub ThreadsManager.ThreadDestroyed(byref th as Thread)
 	MutexLock (ThreadsManager.fLock)
 
@@ -141,6 +151,9 @@ function ThreadsManager.getThread(threadHandle as Any Ptr) byref as Thread
 	MutexUnlock (ThreadsManager.fLock)
 end function
 
+/'
+	Resizes the thread's list
+'/
 sub ThreadsManager.ResizeThreadsList(itemsToAdd as Integer)
 	ThreadsManager.fCount += itemsToAdd
 	redim preserve ThreadsManager.fThreadsList(fCount)

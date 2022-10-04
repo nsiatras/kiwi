@@ -21,7 +21,7 @@ End Type
 
 Sub Thread2_Process.run()
 	while(true)
-		sleep(1000,1)	
+		Thread.pause(1000)
 		print "Sleep:" & Thread.currentThread().getName()
 		fLockObject.notify()
 	wend
@@ -30,7 +30,7 @@ End Sub
 print "Main Thread's name is: " & Thread.currentThread.getName()
 
 Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1,"Thread 1")
+Dim thread1 as Thread = Thread(runnable1, "Thread 1")
 thread1.start() ' Start Thread1
 
 Dim runnable2 as Thread2_Process

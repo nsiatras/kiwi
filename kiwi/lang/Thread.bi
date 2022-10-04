@@ -37,11 +37,11 @@ Type Thread extends KObject
 	
 	protected:
 		Declare Static Sub StartThreadWithRunnable(r as Any PTR)
-		Dim fThreadMutex As Any Ptr 
 		Dim fIsAlive as Boolean = false
 		
 	private:	
-		Dim fThreadHandle As Any Ptr
+		Dim fMyThreadHandle As Any Ptr 	' The thread's handle
+		Dim fMyLock As Any Ptr			' The thread's lock object (MutexCreate())
 		Dim fMyRunnablePointer as Runnable Ptr = 0
 		Dim fMyName as String
 
@@ -51,6 +51,8 @@ Type Thread extends KObject
 		declare constructor(byref r as Runnable, threadName as String)
 		declare destructor()
 		
+		declare sub Initialize()
+		
 		declare Sub start()
 		declare Sub run()
 		
@@ -59,9 +61,11 @@ Type Thread extends KObject
 		declare sub setName(newName as String)
 		declare function isAlive() as Boolean
 		declare function getThreadHandle() as Any Ptr
+		declare function getThreadLock() as Any Ptr
 		
 		' Statics
 		declare static function currentThread() byref as Thread
+		declare static sub pause(ms as Long)
 		
 End Type
 
@@ -80,29 +84,44 @@ End Type
 
 constructor Thread()
 	this.fMyName = ""
-	ThreadsManager.ThreadInitialized(this)
+	this.Initialize()
 end constructor
 
 constructor Thread(byref r as Runnable)
 	this.fMyRunnablePointer = @r
 	this.fMyName = ""
-	ThreadsManager.ThreadInitialized(this)
+	this.Initialize()
 end constructor
 
-constructor Thread(r as Runnable, threadName as String)
+constructor Thread(byref r as Runnable, threadName as String)
 	this.fMyRunnablePointer = @r
 	this.fMyName = threadName
-	ThreadsManager.ThreadInitialized(this)
+	this.Initialize()
 end constructor
 
+/'
+	This sub initializes the thread and is designed to be called from 
+	the constructors.
+'/
+sub Thread.Initialize()
+	' Inform ThreadsManager for the newely initialized thread
+	ThreadsManager.ThreadInitialized(this)
+	
+	' Create a Mutex
+	this.fMyLock = MutexCreate()
+end sub
+
 destructor Thread()
+	' Inform ThreadsManager that the thread is been destroyed
 	ThreadsManager.ThreadDestroyed(this)
+	Mutexdestroy(this.fMyLock)
 end destructor
 
 /'
 	Causes this thread to begin execution
 '/
 Sub Thread.start()
+
 	' Create a container that contains a pointer of the Thread
 	' and the pointer of the Runnable
 	Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
@@ -111,13 +130,13 @@ Sub Thread.start()
 			
 	' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
 	' to the parameters
-	this.fThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
-	ThreadDetach(fThreadHandle)
+	this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
+	ThreadDetach(fMyThreadHandle)
+	
 End Sub
 
 Sub Thread.StartThreadWithRunnable(r as Any Ptr)
 	
-	'Dim pp As Runnable Ptr = Cast(Runnable ptr, r)
 	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr,r)
 	
 	' Mark Thread as Alive
@@ -176,8 +195,17 @@ end function
 	from ThreadsManager in order to identify threads.
 '/
 function Thread.getThreadHandle() as Any PTR
-	return this.fThreadHandle
+	return this.fMyThreadHandle
 end function
+
+/'
+	Returns the ThreadLock of this thread. This method is mainly used
+	from Thread.sleep method
+'/
+function Thread.getThreadLock() as Any PTR
+	return this.fMyLock
+end function
+
 
 /'
 	Returns the current thread instance
@@ -186,3 +214,13 @@ function Thread.currentThread() byref as Thread
 	Dim byref result as Thread = ThreadsManager.getThread(THREADSELF)
 	return result
 end function
+
+/'
+	Causes the currently executing thread to sleep (temporarily cease
+    execution) for the specified number of milliseconds, subject to
+    the precision and accuracy of system timers and schedulers. The thread
+    does not lose ownership of any monitors.
+'/
+sub Thread.pause(ms as Long)
+	sleep(ms,1)
+end sub
