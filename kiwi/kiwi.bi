@@ -48,3 +48,6 @@
 #include once "util\ArrayList.bi"
 #include once "util\Queue.bi"
 #include once "util\HashMap.bi"
+
+' Initialize the Threads manager
+ThreadsManager.Initialize()

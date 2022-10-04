@@ -52,15 +52,16 @@ Type Thread extends KObject
 		declare destructor()
 		
 		declare Sub start()
-		
 		declare Sub run()
 		
+		' Getters and Setters
 		declare function getName() as String
 		declare sub setName(newName as String)
 		declare function isAlive() as Boolean
+		declare function getThreadHandle() as Any Ptr
 		
 		' Statics
-		declare static function currentThread() as Thread
+		declare static function currentThread() byref as Thread
 		
 End Type
 
@@ -160,7 +161,6 @@ sub Thread.setName(newName as String)
 	this.fMyName = newname
 end sub
 
-
 /'
 	Returns true if this thread is alive otherwise false. 
 	A thread is alive if it has been started and has not yet died.
@@ -171,9 +171,18 @@ function Thread.isAlive() as Boolean
 	return this.fIsAlive
 end function
 
+/'
+	Returns the ThreadHandle of this thread. This method is mainly used
+	from ThreadsManager in order to identify threads.
+'/
+function Thread.getThreadHandle() as Any PTR
+	return this.fThreadHandle
+end function
 
-function Thread.currentThread() as Thread
-	print "ThreadID: " & THREADSELF
-	Dim aa as Thread = Thread()
-	return aa
+/'
+	Returns the current thread instance
+'/
+function Thread.currentThread() byref as Thread
+	Dim byref result as Thread = ThreadsManager.getThread(THREADSELF)
+	return result
 end function
