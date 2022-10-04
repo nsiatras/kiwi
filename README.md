@@ -9,7 +9,7 @@ FreeBasic on Discord:<br>
 Kiwi is under heavy development and new Features are been added on daily basis. In case you want to get involved fill free to do a Push Request.
 
 ### Kiwi.DB
-* MySQL Connection - Coming to v1.0.2
+* MySQL Connection - Coming soon
 
 ### Kiwi.IO
 * [BufferedReader](https://github.com/nsiatras/kiwi/wiki/kiwi.io.BufferedReader)
@@ -32,5 +32,5 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 ### Kiwi.util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
 * [Comparator](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Comparator)
-* HashMap - Coming to v1.0.2
+* HashMap - Coming soon
 * [Queue](https://github.com/nsiatras/kiwi/wiki/kiwi.util.Queue)
