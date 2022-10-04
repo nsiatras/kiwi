@@ -88,7 +88,7 @@ end function
 '/
 function RealTimeClock.getUTCTimeZoneTitle() as String
 	Dim utcOffset as Integer = RealTimeClock.getUTCTimeZone()
-	return "UTC " &iif(utcOffset>0 ,"+" & abs(utcOffset) , "-" & abs(utcOffset))
+	return "UTC " & iif(utcOffset>0 ,"+" & abs(utcOffset) , "-" & abs(utcOffset))
 end function
 
 /'

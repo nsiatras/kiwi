@@ -38,9 +38,9 @@
 #include once "lang\KObject.bi"
 #include once "lang\System.bi"
 #include once "lang\Math.bi"
-'#include once "lang\Thread.bi"			'It is included in KObject
-'#include once "lang\ThreadsManager.bi"	'It is included in KObject
-'#include once "lang\Runnable.bi"		'It is included in Thread
+#include once "lang\Thread.bi"			'It is included in KObject
+#include once "lang\ThreadsManager.bi"	'It is included in KObject
+#include once "lang\Runnable.bi"		'It is included in Thread
 #include once "lang\StringUtils.bi"
 
 #include once "util\Collection.bi"

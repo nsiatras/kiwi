@@ -35,13 +35,13 @@
 
 Type KObject extends Object
 
-	protected:
+	private:
 		Static Hash_Code_Counter as UInteger
 		Dim fID as UInteger
 		
-		Dim fKObjectLock As Any Ptr 
+		Dim fKObjectLock As Any Ptr = 0 
 		
-		Dim fNotifySignalThreashold As Any Ptr =0
+		Dim fNotifySignalThreshold As Any Ptr = 0
 		Dim fNotified as Boolean = false
 
 	public:
@@ -91,12 +91,15 @@ end constructor
 	KObject's Destructor
 '/
 destructor KObject()
+	
 	' Destroy the mutex 
-	Mutexdestroy(this.fKObjectLock)
+	if this.fKObjectLock <> 0 then
+		'Mutexdestroy(this.fKObjectLock)
+	end if
 	
 	' Destroy the condition signal fNotifySignalThreashold
-	if this.fNotifySignalThreashold <> 0 then
-		CondDestroy(this.fNotifySignalThreashold)
+	if this.fNotifySignalThreshold <> 0 then
+		CondDestroy(this.fNotifySignalThreshold)
 	end if
 	
 	#ifdef USE_GARBAGE_COLLECTOR
@@ -134,9 +137,9 @@ end operator
 '/
 sub KObject.wait()
 	MutexLock(this.fKObjectLock)
-		this.fNotifySignalThreashold = CondCreate
+		this.fNotifySignalThreshold = CondCreate
 		this.fNotified = false
-		Condwait(fNotifySignalThreashold, this.fKObjectLock)
+		Condwait(fNotifySignalThreshold, this.fKObjectLock)
 	MutexUnLock(this.fKObjectLock)
 end sub
 
@@ -150,8 +153,8 @@ end sub
 sub KObject.notify()
 	MutexLock(this.fKObjectLock)
 		this.fNotified = true
-		if this.fNotifySignalThreashold <> 0 then
-			CondSignal(fNotifySignalThreashold)
+		if this.fNotifySignalThreshold <> 0 then
+			CondSignal(fNotifySignalThreshold)
 			MutexUnLock(this.fKObjectLock)
 			exit sub
 		end if
