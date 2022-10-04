@@ -21,7 +21,7 @@ End Type
 
 Sub Thread2_Process.run()
     while(true)
-        sleep(1000,1)    
+		Thread.pause(1000)
         print "Sleep:" & Thread.currentThread().getName()
         fLockObject.notify()
     wend

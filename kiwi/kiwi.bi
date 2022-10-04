@@ -30,6 +30,8 @@
 	Url: https://www.github.com/nsiatras
 '/
 
+#Define KIWI_VERSION "1.0.2"
+
 #include once "core\Core.bi"
 
 #include once "nio\Charset.bi"
@@ -51,3 +53,5 @@
 
 ' Initialize the Threads manager
 ThreadsManager.Initialize()
+
+
