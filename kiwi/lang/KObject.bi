@@ -93,9 +93,13 @@ end constructor
 destructor KObject()
 	
 	' Destroy the mutex 
-	if this.fKObjectLock <> 0 then
+	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+	' This returns error !!!!!!!!!!!!!!!
+	' Should be investigated on later releases
+	'if this.fKObjectLock <> 0 then
 		'Mutexdestroy(this.fKObjectLock)
-	end if
+	'end if
+	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
 	' Destroy the condition signal fNotifySignalThreashold
 	if this.fNotifySignalThreshold <> 0 then
@@ -106,6 +110,7 @@ destructor KObject()
 		' Tell GC to Delete the Object
 		GarbageCollector.DeleteObject(this)
 	#endif
+	
 end destructor
 
 /'

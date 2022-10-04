@@ -69,8 +69,7 @@ end constructor
      @return a DateTime representing the time value.
 '/
 function Calendar.getTime() as DateTime
-	Dim dt as DateTime = DateTime(System.currentTimeMillis(), this.fHoursOffset)
-	return dt
+	function = DateTime(System.currentTimeMillis(), this.fHoursOffset)
 end function
 
 /'
@@ -92,7 +91,6 @@ end function
 	@return a DateTime representing the time value.
 '/
 function Calendar.createTime(timeInUTCMillis as LongInt) as DateTime
-	Dim dt as DateTime = DateTime(timeInUTCMillis,fHoursOffset)
-	return dt
+	function = DateTime(timeInUTCMillis,fHoursOffset)
 end function
 
