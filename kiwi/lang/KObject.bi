@@ -158,7 +158,6 @@ sub KObject.notify()
 	MutexUnLock(this.fKObjectLock)
 end sub
 
-
 /'
 	Returns a string representation of this KObject.
 '/
