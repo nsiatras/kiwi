@@ -25,7 +25,8 @@
 /'	
 	Description: ThreadsManager holds a list with every Thread that
 	is initialized. Each thread notifies the ThreadsManager when it 
-	Initializes and Destroys.
+	Initializes and Destroys so the ThreadManager always holds a list
+	with the live threads.
 
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
@@ -39,6 +40,8 @@ Type ThreadsManager extends Object
 		Static fCount as UInteger 
 		
 		Static fMainThread as Thread ' Holds a virtual main thread
+		
+		declare static sub ResizeThreadsList(items as Integer)
 
 	public:
 		declare static sub Initialize()
@@ -67,15 +70,46 @@ end sub
 sub ThreadsManager.ThreadInitialized(byref th as Thread)
 	MutexLock (ThreadsManager.fLock)
 	' Resize ThreadsList
-	ThreadsManager.fCount += 1
-	redim preserve ThreadsManager.fThreadsList(fCount)
+	ThreadsManager.ResizeThreadsList(+1)
 	ThreadsManager.fThreadsList(ThreadsManager.fCount - 1) =  @th
 	MutexUnlock (ThreadsManager.fLock)
 end sub
 
 sub ThreadsManager.ThreadDestroyed(byref th as Thread)
 	MutexLock (ThreadsManager.fLock)
-		' ToDo: Remove thread from the list
+
+		' Find the threads index inside ThreadsManager.fThreadsList
+		Dim index as Integer = -1
+		for i as Integer = 0 to fCount - 1
+			if (*ThreadsManager.fThreadsList(i)).getThreadHandle() = th.getThreadHandle() then
+				index = i
+				exit for
+			end if
+		next
+		
+		if index > -1 then
+			' Removal of the last item of the list
+			if index = (ThreadsManager.fCount-1) then
+				ThreadsManager.ResizeThreadsList(-1)
+				MutexUnLock (ThreadsManager.fLock)
+				exit sub
+			endif
+			
+			' The list has only 2 elements and we have to remove the first
+			if (index = 0) and (ThreadsManager.fCount < 3) then
+				ThreadsManager.fThreadsList(0) = ThreadsManager.fThreadsList(1)
+				ThreadsManager.ResizeThreadsList(-1)
+				MutexUnLock (ThreadsManager.fLock)
+				exit sub
+			endif
+			
+			' The rest of the code applies for 3 or more elements.
+			' Move the elements to be moved...
+			Dim elementsToMove as const uinteger = ThreadsManager.fCount - 1 - index
+			memcpy(@ThreadsManager.fThreadsList(index), @ThreadsManager.fThreadsList(index + 1), elementsToMove * sizeOf(Thread Ptr) )
+			ThreadsManager.ResizeThreadsList(-1)
+		end if	
+		
 	MutexUnlock (ThreadsManager.fLock)
 end sub
 
@@ -90,7 +124,7 @@ function ThreadsManager.getThread(threadHandle as Any Ptr) byref as Thread
 		' from the given ThreadHandle
 		if ThreadsManager.fCount > 0 then
 			for i as Integer = 0 to UBound(ThreadsManager.fThreadsList)
-				if (*ThreadsManager.fThreadsList(i)).getThreadHandle = threadHandle then
+				if (*ThreadsManager.fThreadsList(i)).getThreadHandle() = threadHandle then
 					function = (*ThreadsManager.fThreadsList(i))
 					found = true
 					MutexUnlock (ThreadsManager.fLock)
@@ -106,6 +140,11 @@ function ThreadsManager.getThread(threadHandle as Any Ptr) byref as Thread
 		end if	
 	MutexUnlock (ThreadsManager.fLock)
 end function
+
+sub ThreadsManager.ResizeThreadsList(itemsToAdd as Integer)
+	ThreadsManager.fCount += itemsToAdd
+	redim preserve ThreadsManager.fThreadsList(fCount)
+end sub
 
 
 

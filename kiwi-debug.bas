@@ -40,3 +40,7 @@ thread2.start() ' Start Thread2
 ' Wait for user input to exit
 sleep()
 
+
+
+sleep()
+
