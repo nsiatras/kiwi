@@ -87,6 +87,7 @@ constructor Thread()
 	this.Initialize()
 end constructor
 
+
 constructor Thread(byref r as Runnable)
 	this.fMyRunnablePointer = @r
 	this.fMyName = ""
