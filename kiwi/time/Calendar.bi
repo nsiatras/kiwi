@@ -41,6 +41,7 @@ Type Calendar extends KObject
 	
 	public:
 		declare constructor()
+		declare constructor(byref c as Calendar)
 		declare constructor(timeZoneOffsetHours as Integer)
 		
 		declare function getTime() as DateTime
@@ -54,6 +55,10 @@ End Type
 '/
 constructor Calendar()
 	this.fHoursOffset = RealTimeClock.getUTCTimeZone()
+end constructor
+
+constructor Calendar(byref c as Calendar)
+	@this = @c
 end constructor
 
 /'

@@ -38,15 +38,13 @@ Type KObject extends Object
 	private:
 		Static Hash_Code_Counter as UInteger
 		Dim fID as UInteger
-		
 		Dim fKObjectLock As Any Ptr = 0 
-		
 		Dim fNotifySignalThreshold As Any Ptr = 0
 		Dim fNotified as Boolean = false
 
 	public:
-		declare constructor()					' Constructor
-		declare destructor()					' Destructor
+		declare constructor()						' Constructor
+		declare destructor()						' Destructor
 		
 		#ifdef USE_GARBAGE_COLLECTOR
 		declare operator let(value as KObject)
@@ -92,16 +90,15 @@ end constructor
 '/
 destructor KObject()
 	
-	' Destroy the mutex 
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-	' This returns error !!!!!!!!!!!!!!!
-	' Should be investigated on later releases
-	'if this.fKObjectLock <> 0 then
-		'Mutexdestroy(this.fKObjectLock)
-	'end if
+	' Destroy the mutex 
+	if this.fKObjectLock > 0  then
+		this.fKObjectLock = 0
+		Mutexdestroy(this.fKObjectLock)
+	end if
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
-	' Destroy the condition signal fNotifySignalThreashold
+	' Destroy the condition signal fNotifySignalThreshold
 	if this.fNotifySignalThreshold <> 0 then
 		CondDestroy(this.fNotifySignalThreshold)
 	end if

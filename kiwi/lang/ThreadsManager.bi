@@ -48,6 +48,7 @@ Type ThreadsManager extends Object
 		declare static sub Initialize()
 		declare static sub ThreadInitialized(byref th as Thread)
 		declare static sub ThreadDestroyed(byref th as Thread)
+		declare static function threadExists(threadHandle as Any Ptr) as Boolean
 		
 		declare static function getThread(threadHandle as Any Ptr) byref as Thread
 		
@@ -148,6 +149,20 @@ function ThreadsManager.getThread(threadHandle as Any Ptr) byref as Thread
 		if found = false then
 			function = ThreadsManager.fMainThread
 		end if	
+	MutexUnlock (ThreadsManager.fLock)
+end function
+
+function ThreadsManager.threadExists(threadHandle as Any Ptr) as Boolean
+	MutexLock (ThreadsManager.fLock)
+		function = false
+		if ThreadsManager.fCount > 0 then
+			for i as Integer = 0 to UBound(ThreadsManager.fThreadsList)
+				if (*ThreadsManager.fThreadsList(i)).getThreadHandle() = threadHandle then
+					function = true
+					exit for
+				end if
+			next 
+		end if
 	MutexUnlock (ThreadsManager.fLock)
 end function
 

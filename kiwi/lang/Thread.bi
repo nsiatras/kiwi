@@ -114,7 +114,10 @@ end sub
 destructor Thread()
 	' Inform ThreadsManager that the thread is been destroyed
 	ThreadsManager.ThreadDestroyed(this)
-	Mutexdestroy(this.fMyLock)
+	if this.fMyLock <> 0 then
+		this.fMyLock = 0
+		Mutexdestroy(this.fMyLock)
+	end if
 end destructor
 
 /'
@@ -122,16 +125,18 @@ end destructor
 '/
 Sub Thread.start()
 
-	' Create a container that contains a pointer of the Thread
-	' and the pointer of the Runnable
-	Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
-	container->fThread = @this
-	container->fRunnable = fMyRunnablePointer
-			
-	' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
-	' to the parameters
-	this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
-	ThreadDetach(fMyThreadHandle)
+	MutexLock(this.fMyLock)
+		' Create a container that contains a pointer of the Thread
+		' and the pointer of the Runnable
+		Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
+		container->fThread = @this
+		container->fRunnable = fMyRunnablePointer
+				
+		' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
+		' to the parameters
+		this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
+		ThreadDetach(fMyThreadHandle)
+	MutexUnLock(this.fMyLock)
 	
 End Sub
 
