@@ -87,7 +87,6 @@ constructor Thread()
 	this.Initialize()
 end constructor
 
-
 constructor Thread(byref r as Runnable)
 	this.fMyRunnablePointer = @r
 	this.fMyName = ""
@@ -211,7 +210,6 @@ end function
 function Thread.getThreadLock() as Any PTR
 	return this.fMyLock
 end function
-
 
 /'
 	Returns the current thread instance
