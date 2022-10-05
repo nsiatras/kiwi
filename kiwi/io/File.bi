@@ -116,6 +116,9 @@ end function
 	Tests whether the file or directory denoted by this abstract pathname
 	exists. Returns true if and only if the file or directory denoted
     by this abstract pathname exists.
+    
+    @return true if and only if the file denoted by this abstract 
+	pathname exists, otherwise return false
 '/
 function File.exists() as Boolean
 	return this.canRead()
