@@ -8,7 +8,7 @@ Type Thread1_Process extends Runnable
 End Type
 
 Sub Thread1_Process.run()
-	for i as Integer = 1 to 10
+    for i as Integer = 1 to 10
         print Thread.currentThread().getName() & " " & i
         Thread.pause(1000)
     next
@@ -19,7 +19,10 @@ End Sub
 
 Dim runnable1 as Thread1_Process
 Dim thread1 as Thread = Thread(runnable1, "My Thread")
-thread1.start() ' Start thread1
+thread1.start() ' Start thread 1
 
 ' Wait for fWaitForThreadToFinish to get notified
 fWaitForThreadToFinish.wait()
+
+
+
