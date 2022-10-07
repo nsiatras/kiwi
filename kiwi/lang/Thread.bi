@@ -36,15 +36,16 @@
 Type Thread extends KObject
 	
 	protected:
-		Declare Static Sub StartThreadWithRunnable(r as Any PTR)
-		Dim fIsAlive as Boolean = false
 		
-	private:	
+		' Protected statics
+		declare static Sub StartThreadWithRunnable(r as Any PTR)
+		
+	private:
+		Dim fIsAlive as Boolean = false
 		Dim fMyThreadHandle As Any Ptr 	' The thread's handle
 		Dim fMyLock As Any Ptr			' The thread's lock object (MutexCreate())
 		Dim fMyRunnablePointer as Runnable Ptr = 0
 		Dim fMyName as String
-		
 		declare sub Private_pause(ms as Long)	
 
 	public:
@@ -65,7 +66,7 @@ Type Thread extends KObject
 		declare function getThreadHandle() as Any Ptr
 		declare function getThreadLock() as Any Ptr
 		
-		' Statics
+		' Public Statics
 		declare static function currentThread() byref as Thread
 		declare static sub pause(ms as Long)	
 		
@@ -142,6 +143,10 @@ Sub Thread.start()
 	
 End Sub
 
+/'
+	The Thread.StartThreadWithRunnable is a private Static only to be 
+	called from Thread.start() method.
+'/
 Sub Thread.StartThreadWithRunnable(r as Any Ptr)
 	
 	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr,r)
