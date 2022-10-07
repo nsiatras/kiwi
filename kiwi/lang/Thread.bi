@@ -44,6 +44,8 @@ Type Thread extends KObject
 		Dim fMyLock As Any Ptr			' The thread's lock object (MutexCreate())
 		Dim fMyRunnablePointer as Runnable Ptr = 0
 		Dim fMyName as String
+		
+		declare sub Private_pause(ms as Long)	
 
 	public:
 		declare constructor()
@@ -65,7 +67,7 @@ Type Thread extends KObject
 		
 		' Statics
 		declare static function currentThread() byref as Thread
-		declare static sub pause(ms as Long)
+		declare static sub pause(ms as Long)	
 		
 End Type
 
@@ -226,5 +228,14 @@ end function
     does not lose ownership of any monitors.
 '/
 sub Thread.pause(ms as Long)
+	' The static Thread.pause calles the Private_pause method
+	' of the current thread !
+	Thread.currentThread().Private_pause(ms)
+end sub
+
+/'
+	This method is called from the static Thread.pause method
+'/
+sub Thread.Private_pause(ms as Long)	
 	sleep(ms,1)
 end sub
