@@ -31,6 +31,7 @@
 '/
 
 #include once "DateTime.bi"
+#include once "vbcompat.bi"
 
 Type SimpleDateFormat extends KObject
 	
@@ -42,6 +43,7 @@ Type SimpleDateFormat extends KObject
 		declare constructor(pattern as String)
 		
 		declare function formatDateTime(dt as DateTime) as String
+		declare function parse(source as String) as DateTime
 		
 		declare function getPattern() as String
 		declare sub setPattern(pattern as String)
@@ -72,6 +74,17 @@ function SimpleDateFormat.formatDateTime(dt as DateTime) as String
 	result = StringUtils.Replace("utc", "UTC " + utcStr, result)
 	function = result 
 	
+end function
+
+function SimpleDateFormat.parse(source as String) as DateTime
+	Dim result as DateTime
+	Dim dtSerial as Double = DateValue(source)
+	Dim dtUnixTime as LongInt = result.DateSerialToUnixTime(dtSerial)
+	
+	
+	result.setTime(dtUnixTime*1000)
+	
+	return result
 end function
 
 /'

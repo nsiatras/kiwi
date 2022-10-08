@@ -47,6 +47,7 @@ Type Calendar extends KObject
 		declare function getTime() as DateTime
 		declare function getTimeInMillis() as LongInt
 		declare function createTime(timeInUTCMillis as LongInt) as DateTime
+		declare function createTime(dYear as Integer, dMonth as Integer, dDay as Integer, dHour as Integer, dMinute as Integer, dSecond as Integer) as DateTime
 
 End Type
 
@@ -96,6 +97,23 @@ end function
 	@return a DateTime representing the time value.
 '/
 function Calendar.createTime(timeInUTCMillis as LongInt) as DateTime
-	function = DateTime(timeInUTCMillis,fHoursOffset)
+	function = DateTime(timeInUTCMillis, fHoursOffset)
 end function
 
+
+/'
+	Creates and return's a DateTime object according to the given 
+	year, month, day, hour, minute and seconds 
+	
+	@return a DateTime representing the time value.
+'/
+function Calendar.createTime(dYear as Integer, dMonth as Integer, dDay as Integer, dHour as Integer, dMinute as Integer, dSecond as Integer) as DateTime
+	Dim result as DateTime = DateTime(0)
+	result.add(DateTime.YEAR, dYear - 1970)
+	result.add(DateTime.MONTH, dMonth - 1)
+	result.add(DateTime.DAY, dDay - 1)
+	result.add(DateTime.HOUR, dHour - this.fHoursOffset)
+	result.add(DateTime.MINUTE, dMinute)
+	result.add(DateTime.SECOND, dSecond)
+	function = result
+end function

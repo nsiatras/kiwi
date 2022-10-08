@@ -48,7 +48,7 @@ Type DateTime extends KObject
 		declare Function getTime() as LongInt
 		declare Function getTimeZoneOffset() as Integer
 		declare Sub setTimeZoneOffset(hours as Integer) 
-		declare Sub add(timeField as Integer, amount as Integer)		
+		declare Sub add(timeField as Byte, amount as Integer)		
 		declare Function toString() as String
 		
 		
@@ -56,25 +56,25 @@ Type DateTime extends KObject
 		declare Function DateSerialToUnixTime(byval dat as double) as LongInt
 		
 		' Constants
-		Static YEAR 		as const Integer
-		Static MONTH 		as const Integer
-		Static WEEK 		as const Integer
-		Static DAY 			as const Integer
-		Static HOUR 		as const Integer
-		Static MINUTE 		as const Integer
-		Static SECOND 		as const Integer
-		Static MILLISECOND 	as const Integer
+		Static YEAR 		as const Byte
+		Static MONTH 		as const Byte
+		Static WEEK 		as const Byte
+		Static DAY 			as const Byte
+		Static HOUR 		as const Byte
+		Static MINUTE 		as const Byte
+		Static SECOND 		as const Byte
+		Static MILLISECOND 	as const Byte
 		
 End Type
 
-Dim DateTime.YEAR 			as const Integer = 1
-Dim DateTime.MONTH 			as const Integer = 2
-Dim DateTime.WEEK 			as const Integer = 3
-Dim DateTime.DAY 			as const Integer = 4
-Dim DateTime.HOUR 			as const Integer = 5
-Dim DateTime.MINUTE 		as const Integer = 6 
-Dim DateTime.SECOND 		as const Integer = 7
-Dim DateTime.MILLISECOND 	as const Integer = 8
+Dim DateTime.YEAR 			as const Byte = 1
+Dim DateTime.MONTH 			as const Byte = 2
+Dim DateTime.WEEK 			as const Byte = 3
+Dim DateTime.DAY 			as const Byte = 4
+Dim DateTime.HOUR 			as const Byte = 5
+Dim DateTime.MINUTE 		as const Byte = 6 
+Dim DateTime.SECOND 		as const Byte = 7
+Dim DateTime.MILLISECOND 	as const Byte = 8
 
 /'
 	Constructs a new DateTime
@@ -153,7 +153,7 @@ End Sub
 	@param amount the amount of date or time to be added to the field.
 	
 '/
-Sub DateTime.add(timeField as Integer, amount as Integer)
+Sub DateTime.add(timeField as Byte, amount as Integer)
 	Dim intervalStr as String = ""
 	
 	Select Case timeField
