@@ -1,50 +1,23 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\time.bi"
+#include once "kiwi\time.bi" 
 
-Dim Shared fKeepRunning as Boolean = true
-Dim Shared fWaitForThreadToStart as KObject
-Dim Shared fWaitForThreadToFinish as KObject
-Dim tmpStr as String
+' The following timestamp is from Wed Sep 28 2022 06:40:39 UTC +0
+Dim timeStampUTC as LongInt = 1664347239101
 
-print "Press Enter to exit"
-print ""
+' Print the utcTime
+Dim utcTime as DateTime = DateTime(timeStampUTC, 0) ' UTC +0
 
-' Declare a new Runnable Object. A threads needs a Runnable
-' in order to start
-Type Thread1_Process extends Runnable 
-	Declare Sub run()
-End Type
+' Full date time with AM/PM and UTC TimeZone
+Dim sdf as SimpleDateFormat = SimpleDateFormat("dddd dd mmm yyyy h:n:s AM/PM UTC")
+print sdf.formatDateTime(utcTime)
 
-Sub Thread1_Process.run()
+' Date-Time (24 Hours Time)
+sdf.setPattern("dd/mm/yyyy H:n:s")
+print sdf.formatDateTime(utcTime)
 
-	fWaitForThreadToStart.notify() ' Notify fWaitForThreadToStart
-	
-	Dim cal as Calendar = Calendar()
-	while (fKeepRunning)
-		Dim dtNow as DateTime = cal.getTime()
-		print "Time at thread " & Thread.currentThread().getName() & " is " & dtNow.toString()
-		Thread.pause(1000)
-	wend
-	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
-	
-	fWaitForThreadToFinish.notify() ' Notify fWaitForThreadToFinish
+' Date only
+sdf.setPattern("dd/mm/yyyy")
+print sdf.formatDateTime(utcTime)
 
-End Sub
 
-' Initialize a new runnable object and pass it to a new thread
-Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1, "Thread #1")
-thread1.start() ' Start the thread
 
-' Wait for thread to start
-fWaitForThreadToStart.wait()
-print "Thread 1 is live: " & thread1.isAlive()
-
-' Wait for user input in order to terminate the program.
-' To terminate the program set fKeepRunning = false
-input "", tmpStr
-fKeepRunning = false
-
-' Wait for thread 1 to exit
-print "Waiting for thread to finish..."
-fWaitForThreadToFinish.wait()

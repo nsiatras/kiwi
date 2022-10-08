@@ -28,6 +28,8 @@ Type StringUtils extends Object
 		Declare Static Sub Split(byref stringToSplit as const String, byref delimiter as const String, result() as String)
 		Declare Static function Join(stringArray() As const String, byref delimiter As string) As String
 		
+		Declare static function Replace(byref search as String, byref replaceStr as String, byref subject as String) as String
+		
 End Type
 
 /'
@@ -109,3 +111,28 @@ Function StringUtils.Join(stringArray() As Const String, Byref delimiter As Stri
     end if
     return result
 End Function
+
+
+/'
+	Replace all occurrences of the search string with the replacement string
+	
+	@search is the value being searched for, otherwise known as the needle. 
+	@replace is the replacement value that replaces found search values. 
+	@subject is the string being searched and replaced on, otherwise known as the haystack.
+	@returns a string with all occurrences of search in subject replaced 
+	with the given replace val
+'/
+function StringUtils.Replace(byref search as String, byref replaceStr as String, byref subject as String) as string
+    Dim len1 as Integer = len(search)
+    Dim len2 as Integer = len(replaceStr)
+    Dim i as Integer 
+
+    i = instr(subject, search)
+    while i
+        subject = left(subject, i - 1) _
+                  & replaceStr _
+                  & mid(subject, i + len1)
+        i = instr(i + len2, subject, search)  
+    wend
+    function = subject 
+end function

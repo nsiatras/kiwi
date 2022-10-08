@@ -24,3 +24,4 @@
 
 #include once "time\DateTime.bi"
 #include once "time\Calendar.bi"
+#include once "time\SimpleDateFormat.bi"
