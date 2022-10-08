@@ -11,6 +11,13 @@ import java.util.Locale;
 public class ISOCountriesGenerator
 {
 
+    /**
+     * The following code generates the result ArrayList of
+     * Locale.getISOCountries() of Locale UDT object of Kiwi located in
+     * kiwi/locale/Locale.bi
+     *
+     * @param args
+     */
     public static void main(String[] args)
     {
         ArrayList<String> result = new ArrayList<String>();
@@ -22,9 +29,14 @@ public class ISOCountriesGenerator
             try
             {
                 String countryName = locale.getDisplayCountry();
-                String countryISO = locale.getISO3Country();
-                //String countryLanguage = locale.getDisplayLanguage();
-                result.add("Locale.fISOCountriesList.add(Country(\"" + countryName + "\", " + "\"" + countryISO + "\"" + ")");
+                String countryISO3 = locale.getISO3Country();
+
+                String tmp = "Locale.fISOCountriesList.add(Country(#name#, #iso#, #iso3#))";
+                tmp = tmp.replace("#name#", "\"" + countryName + "\"");
+                tmp = tmp.replace("#iso#", "\"" + countryCode + "\"");
+                tmp = tmp.replace("#iso3#", "\"" + countryISO3 + "\"");
+
+                result.add(tmp);
             }
             catch (Exception ex)
             {
@@ -42,8 +54,6 @@ public class ISOCountriesGenerator
             }
         });
 
-        //System.out.println("Dim result as ArrayList(Country)");
-        int i = 0;
         for (String s : result)
         {
             System.out.println(s);

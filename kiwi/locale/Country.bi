@@ -31,31 +31,53 @@ Type Country extends KObject
 	
 	private:
 		Dim fName as String
-		Dim fISOCode as String
+		Dim fISO as String
+		Dim fISO3 as String
 		
 	public:
 		declare constructor()
-		declare constructor(cName as String, isoCode as String)
+		declare constructor(cName as String, iso as String, iso3 as String)
 		
 		declare function getName() as String
 		declare function getISOCode() as String
+		declare function getISO3Code() as String
 	
 End Type
 
 constructor Country()
 	fName = ""
-	fISOCode = ""
+	fISO = ""
 end constructor
 
-constructor Country(cName as String, isoCode as String)
+constructor Country(cName as String, iso as String, iso3 as String)
 	fName = cName
-	fISOCode = isoCode
+	fISO = iso
+	fISO3 = iso3
 end constructor
 
+/'
+	Returns a name for this country that is appropriate for display 
+	to the user.
+	@return The name of the country 
+'/
 function Country.getName() as String
 	function = fName
 end function
 
+/'
+	Returns the 2-letter country code defined in ISO 3166.
+	@return the 2-letter country code defined in ISO 3166.
+'/
 function Country.getISOCode() as String
-	function = fISOCode
+	function = fISO
 end function
+
+
+/'
+	Returns a three-letter abbreviation for this locale's country.
+	@return A three-letter abbreviation of this locale's country.
+'/
+function Country.getISO3Code() as String
+	function = fISO3
+end function
+
