@@ -1,8 +1,8 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\locale.bi"
+#include once "kiwi\locale.bi" ' Include Kiwi Locale package
 
-Dim byref isoCountries as ArrayList(ISOCountry) = Locale.getISOCountries()
+Dim country as ISOCountry = Locale.getCountry("US")
+print "Country Name:        " & country.getName()
+print "3166 ISO Code:       " & country.getISOCode()
+print "3 letter ISO Code:   " &country.getISO3Code()
 
-for i as Integer = 0 to isoCountries.size() - 1
-	print isoCountries.get(i).getName() & ", " & isoCountries.get(i).getISOCode()& ", " & isoCountries.get(i).getISO3Code()
-next

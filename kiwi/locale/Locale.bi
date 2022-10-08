@@ -40,6 +40,7 @@ Type Locale extends KObject
 		 
 	public:
 		declare static function getISOCountries() byref as ArrayList(ISOCountry)
+		declare static function getCountry(iso as String) as ISOCountry
 
 End Type
 
@@ -302,4 +303,18 @@ function Locale.getISOCountries() byref as ArrayList(ISOCountry)
 	end if
 	
 	function = fISOCountriesList
+end function
+
+/'
+	Returns the ISO Country with the give ISO 3166 code
+	@return ISOCountry
+'/
+function Locale.getCountry(iso as String) as ISOCountry
+	Dim byref isoCountries as ArrayList(ISOCountry) = Locale.getISOCountries()
+	for i as Integer = 0 to isoCountries.size() - 1
+		if isoCountries.get(i).getISOCode() = iso then
+			function = isoCountries.get(i)
+			exit for
+		end if
+	next
 end function

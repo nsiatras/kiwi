@@ -37,8 +37,10 @@ Type System extends object
 		Declare Static Sub arraycopy(src() As Integer, srcPos as Integer, dest() As Integer, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Double, srcPos as Integer, dest() As Double, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Long, srcPos as Integer, dest() As Long, destPos as Integer, length as Integer)
+		Declare Static Sub arraycopy(src() As LongInt, srcPos as Integer, dest() As LongInt, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As String, srcPos as Integer, dest() As String, destPos as Integer, length as Integer)
 		Declare Static Sub arraycopy(src() As Object, srcPos as Integer, dest() As Object, destPos as Integer, length as Integer)
+		Declare Static Sub arraycopy(src() As KObject, srcPos as Integer, dest() As KObject, destPos as Integer, length as Integer)
 	
 End Type
 
@@ -99,9 +101,11 @@ End Function
 	MACRO_DefineSystemArrayCopy(Short)
 	MACRO_DefineSystemArrayCopy(Integer)
 	MACRO_DefineSystemArrayCopy(Long)
+	MACRO_DefineSystemArrayCopy(LongInt)
 	MACRO_DefineSystemArrayCopy(Double)
 	MACRO_DefineSystemArrayCopy(String)
 	MACRO_DefineSystemArrayCopy(Object)
+	MACRO_DefineSystemArrayCopy(KObject)
 	
 	#define KIWI_SystemArrayCopy_ALL_STANDARD_DATA_TYPES
 #endif 
