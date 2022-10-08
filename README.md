@@ -28,6 +28,7 @@ Kiwi is under heavy development and new Features are been added on daily basis. 
 ### Kiwi.time
 * [DateTime](https://github.com/nsiatras/kiwi/wiki/kiwi.time.DateTime)
 * [Calendar](https://github.com/nsiatras/kiwi/wiki/kiwi.time.Calendar)
+* [SimpleDateFormat](https://github.com/nsiatras/kiwi/wiki/kiwi.time.SimpleDateFormat) - Parse String to DateTime comming soon
 
 ### Kiwi.util
 * [ArrayList](https://github.com/nsiatras/kiwi/wiki/kiwi.util.ArrayList)
