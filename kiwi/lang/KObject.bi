@@ -42,7 +42,7 @@ Type KObject extends Object
 		
 		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 		' KObject ID/HashCodeCounter
-		static Hash_Code_Counter as UInteger
+		static KIWI_Hash_Code_Counter as UInteger
 		declare static function GET_HASH_CODE() as UInteger
 		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -90,7 +90,6 @@ end constructor
 	KObject's Destructor
 '/
 destructor KObject()
-	
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	' Destroy the mutex 
 	if this.fKObjectLock > 0  then
@@ -180,9 +179,9 @@ end function
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' KObject ID/HashCodeCounter
-Dim Shared Hash_Code_Counter_Lock as Any Ptr = 0
-Hash_Code_Counter_Lock = MutexCreate()
-Dim KObject.Hash_Code_Counter as UInteger = 0
+Dim Shared KIWI_Hash_Code_Counter_Lock as Any Ptr = 0
+KIWI_Hash_Code_Counter_Lock = MutexCreate()
+Dim KObject.KIWI_Hash_Code_Counter as UInteger = 0
 
 /'
 	USE ONLY WITH KObject CONSTRUCTOR !
@@ -190,9 +189,9 @@ Dim KObject.Hash_Code_Counter as UInteger = 0
 	KObject.Hash_Code_Counter.  
 '/
 function KObject.GET_HASH_CODE() as UInteger
-	MutexLock(Hash_Code_Counter_Lock)
-	KObject.Hash_Code_Counter += 1
-	function = KObject.Hash_Code_Counter
-	MutexUnLock(Hash_Code_Counter_Lock)
+	MutexLock(KIWI_Hash_Code_Counter_Lock)
+	KObject.KIWI_Hash_Code_Counter += 1
+	function = KObject.KIWI_Hash_Code_Counter
+	MutexUnLock(KIWI_Hash_Code_Counter_Lock)
 end function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

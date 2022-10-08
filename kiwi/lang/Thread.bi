@@ -233,7 +233,7 @@ end function
     does not lose ownership of any monitors.
 '/
 sub Thread.pause(ms as Long)
-	' The static Thread.pause calles the Private_pause method
+	' The static Thread.pause calls the Private_pause method
 	' of the current thread !
 	Thread.currentThread().Private_pause(ms)
 end sub

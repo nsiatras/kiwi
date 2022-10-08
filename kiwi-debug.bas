@@ -28,7 +28,7 @@ Sub Thread1_Process.run()
 	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
 	
 	fWaitForThreadToFinish.notify() ' Notify fWaitForThreadToFinish
-	 
+
 End Sub
 
 ' Initialize a new runnable object and pass it to a new thread
