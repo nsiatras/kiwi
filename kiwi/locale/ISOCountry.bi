@@ -27,7 +27,7 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-Type Country extends KObject
+Type ISOCountry extends KObject
 	
 	private:
 		Dim fName as String
@@ -44,12 +44,12 @@ Type Country extends KObject
 	
 End Type
 
-constructor Country()
+constructor ISOCountry()
 	fName = ""
 	fISO = ""
 end constructor
 
-constructor Country(cName as String, iso as String, iso3 as String)
+constructor ISOCountry(cName as String, iso as String, iso3 as String)
 	fName = cName
 	fISO = iso
 	fISO3 = iso3
@@ -60,7 +60,7 @@ end constructor
 	to the user.
 	@return The name of the country 
 '/
-function Country.getName() as String
+function ISOCountry.getName() as String
 	function = fName
 end function
 
@@ -68,7 +68,7 @@ end function
 	Returns the 2-letter country code defined in ISO 3166.
 	@return the 2-letter country code defined in ISO 3166.
 '/
-function Country.getISOCode() as String
+function ISOCountry.getISOCode() as String
 	function = fISO
 end function
 
@@ -77,7 +77,7 @@ end function
 	Returns a three-letter abbreviation for this locale's country.
 	@return A three-letter abbreviation of this locale's country.
 '/
-function Country.getISO3Code() as String
+function ISOCountry.getISO3Code() as String
 	function = fISO3
 end function
 

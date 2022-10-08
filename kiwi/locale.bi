@@ -22,5 +22,5 @@
 	SOFTWARE.
 '/
 
-#include once "locale\locale.bi"
-
+#include once "locale\Locale.bi"
+#include once "locale\ISOCountry.bi"

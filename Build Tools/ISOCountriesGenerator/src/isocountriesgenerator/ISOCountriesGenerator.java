@@ -31,7 +31,7 @@ public class ISOCountriesGenerator
                 String countryName = locale.getDisplayCountry();
                 String countryISO3 = locale.getISO3Country();
 
-                String tmp = "Locale.fISOCountriesList.add(Country(#name#, #iso#, #iso3#))";
+                String tmp = "Locale.fISOCountriesList.add(ISOCountry(#name#, #iso#, #iso3#))";
                 tmp = tmp.replace("#name#", "\"" + countryName + "\"");
                 tmp = tmp.replace("#iso#", "\"" + countryCode + "\"");
                 tmp = tmp.replace("#iso3#", "\"" + countryISO3 + "\"");
