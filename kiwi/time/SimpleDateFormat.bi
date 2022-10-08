@@ -80,10 +80,7 @@ function SimpleDateFormat.parse(source as String) as DateTime
 	Dim result as DateTime
 	Dim dtSerial as Double = DateValue(source)
 	Dim dtUnixTime as LongInt = result.DateSerialToUnixTime(dtSerial)
-	
-	
 	result.setTime(dtUnixTime*1000)
-	
 	return result
 end function
 

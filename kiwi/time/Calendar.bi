@@ -100,7 +100,6 @@ function Calendar.createTime(timeInUTCMillis as LongInt) as DateTime
 	function = DateTime(timeInUTCMillis, fHoursOffset)
 end function
 
-
 /'
 	Creates and return's a DateTime object according to the given 
 	year, month, day, hour, minute and seconds 
