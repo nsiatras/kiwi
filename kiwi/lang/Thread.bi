@@ -129,16 +129,18 @@ end destructor
 Sub Thread.start()
 
 	MutexLock(this.fMyLock)
-		' Create a container that contains a pointer of the Thread
-		' and the pointer of the Runnable
-		Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
-		container->fThread = @this
-		container->fRunnable = fMyRunnablePointer
-				
-		' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
-		' to the parameters
-		this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
-		ThreadDetach(fMyThreadHandle)
+		if fIsAlive = false then
+			' Create a container that contains a pointer of the Thread
+			' and the pointer of the Runnable
+			Dim container as ThreadAndRunnableContainer PTR = new ThreadAndRunnableContainer
+			container->fThread = @this
+			container->fRunnable = fMyRunnablePointer
+					
+			' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
+			' to the parameters
+			this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
+			ThreadDetach(fMyThreadHandle)
+		end if
 	MutexUnLock(this.fMyLock)
 	
 End Sub
