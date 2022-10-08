@@ -29,18 +29,22 @@
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
-
 #include once "GarbageCollector.bi"
 #include once "fbthread.bi"
 
 Type KObject extends Object
 
 	private:
-		Static Hash_Code_Counter as UInteger
 		Dim fID as UInteger
 		Dim fKObjectLock As Any Ptr = 0 
 		Dim fNotifySignalThreshold As Any Ptr = 0
 		Dim fNotified as Boolean = false
+		
+		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+		' KObject ID/HashCodeCounter
+		static Hash_Code_Counter as UInteger
+		declare static function GET_HASH_CODE() as UInteger
+		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 	public:
 		declare constructor()						' Constructor
@@ -54,7 +58,7 @@ Type KObject extends Object
 		declare sub notify()
 				
 		declare virtual function toString() as String
-		declare function getUniqueID() as UInteger
+		declare function getUniqueID() as UInteger	
 
 End Type
 
@@ -68,15 +72,12 @@ End Type
 MACRO_DefineGarbageCollectorMethods()
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Dim KObject.Hash_Code_Counter as UInteger = 0
-
 /'
 	KObject's Constructor
 '/
 constructor KObject()
 	' Assign a Unique ID to this KObject
-	KObject.Hash_Code_Counter += 1
-	this.fID = KObject.Hash_Code_Counter
+	this.fID = KObject.GET_HASH_CODE()
 	this.fKObjectLock = MutexCreate()
 			
 	#ifdef USE_GARBAGE_COLLECTOR
@@ -176,3 +177,22 @@ end function
 function KObject.getUniqueID() as UInteger
 	return this.fID
 end function
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' KObject ID/HashCodeCounter
+Dim Shared Hash_Code_Counter_Lock as Any Ptr = 0
+Hash_Code_Counter_Lock = MutexCreate()
+Dim KObject.Hash_Code_Counter as UInteger = 0
+
+/'
+	USE ONLY WITH KObject CONSTRUCTOR !
+	Adds 1 to KObject.Hash_Code_Counter and returns 
+	KObject.Hash_Code_Counter.  
+'/
+function KObject.GET_HASH_CODE() as UInteger
+	MutexLock(Hash_Code_Counter_Lock)
+	KObject.Hash_Code_Counter += 1
+	function = KObject.Hash_Code_Counter
+	MutexUnLock(Hash_Code_Counter_Lock)
+end function
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
