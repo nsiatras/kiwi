@@ -23,7 +23,7 @@
 '/
 
 /'
-	Description: 
+	Description: Holds country information such as Name and ISO 3166 code.
 	
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
