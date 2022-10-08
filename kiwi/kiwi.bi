@@ -30,7 +30,7 @@
 	Url: https://www.github.com/nsiatras
 '/
 
-#Define KIWI_VERSION "1.0.3"
+#Define KIWI_VERSION "1.0.4"
 
 #include once "core\Core.bi"
 
