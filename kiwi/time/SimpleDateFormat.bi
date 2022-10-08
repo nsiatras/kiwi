@@ -51,9 +51,13 @@ Type SimpleDateFormat extends KObject
 End Type
 
 constructor SimpleDateFormat()
-
+	fPattern = "dd/mm/yyyy"
 end constructor
 
+/'
+	Constructs a SimpleDateFormat using the given pattern
+	@param pattern is the pattern describing the date and time format
+'/
 constructor SimpleDateFormat(pattern as String)
 	fPattern = pattern
 end constructor
@@ -61,7 +65,7 @@ end constructor
 /'
 	Formats a DateTime into a date-time string.
 
-	@param dt the DateTime value to be formatted into a date-time string.
+	@param dt is the DateTime value to be formatted into a date-time string.
 	@return the formatted date-time string.
 '/
 function SimpleDateFormat.formatDateTime(dt as DateTime) as String
