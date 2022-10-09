@@ -152,7 +152,7 @@ sub KObject.wait(ms as LongInt)
 	
 	' Ask KiwiCallbackManager to asynchronously call "this.notify()"
 	' method after a delay of ms Milliseconds			
-	KiwiCallbackManager.AsynchronousNotifyCall(this, ms)
+	KiwiCallbackManager.AsynchronousNotifyCall(@this, ms)
 	
 	this.wait()
 end sub
@@ -165,9 +165,7 @@ end sub
 	one of the wait methods.
 '/
 sub KObject.notify()
-	print 1
 	MutexLock(this.fKObjectLock)
-		print 
 		this.fNotified = true
 		if this.fNotifySignalThreshold <> 0 then
 			CondSignal(fNotifySignalThreshold)

@@ -1,5 +1,6 @@
 ﻿#include once "kiwi\kiwi.bi"
 
+print "as"
 Dim obj as KObject
 obj.wait(1500)
 

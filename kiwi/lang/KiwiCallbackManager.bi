@@ -38,55 +38,56 @@ Type KiwiCallbackManager extends Object
 
 	private:
 		declare static sub RunTheCallBack(ByVal p As Any Ptr) 
+		declare static sub RunTheNotifyCallBack(ByVal p As Any Ptr) 
 
 	public:
-		declare static sub AsynchronousSubCall(ByVal subToCall As Sub, ByVal ms as LongInt)
+		declare static sub AsynchronousSubCall(ByVal subToCall As Sub, ms as LongInt)
 		declare static sub AsynchronousRunnableCall(r as Runnable Ptr)
-		declare static sub AsynchronousNotifyCall(obj as KObject, ms as LongInt)
+		declare static sub AsynchronousNotifyCall(obj as KObject PTR, ms as LongInt)
 
 End Type
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Type CallbackAndTimeContainer
+Type CallbackAndTimeContainer extends Object
 	fSub as Sub 
-	fMilliseconds as LongInt
+	fWaitTime as LongInt
 End Type
 
 sub KiwiCallbackManager.RunTheCallBack(ByVal p As Any Ptr)  
     Dim dt as CallbackAndTimeContainer Ptr = p
     
-    ' Sleep for for fMilliseconds time
-    if dt->fMilliseconds > 0 then
-		sleep(dt->fMilliseconds,1)
+     ' Sleep for fWaitTime time
+    if dt->fWaitTime > 0 then
+		sleep(dt->fWaitTime,1)
     end if
     
     ' Call the sub
     dt->fSub()
     delete dt
 end sub
+
+
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Type AsyncKObjectNotifyRunnable extends Runnable
-	private:
-		fObject as KObject PTR
-		fWaitTime as LongInt
-	public:
-		declare constructor(obj as KObject PTR, ms as LongInt)
-		declare sub run()
+Type KObjectAndTimeContainer extends Object	
+	fObject as KObject PTR = 0
+	fWaitTime as LongInt = 0
 End Type
 
-constructor AsyncKObjectNotifyRunnable(obj as KObject PTR, ms as LongInt)
-	fObject = obj
-	fWaitTime = ms
 
-end constructor
+sub KiwiCallbackManager.RunTheNotifyCallBack(ByVal p As Any Ptr)  
 
-sub AsyncKObjectNotifyRunnable.run()
-	if fWaitTime>0 then
-		Thread.pause(fWaitTime)
-		(*fObject).notify()
-	end if
+    Dim dt as KObjectAndTimeContainer Ptr = p    
+    ' Sleep for fWaitTime time
+    if dt->fWaitTime > 0 then
+		sleep(dt->fWaitTime,1)
+    end if
+    
+    ' Call the KObject.notify
+    dt->fObject->notify()
+    delete dt
+    
 end sub
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -96,16 +97,23 @@ end sub
 	@param subToCall is the sub to call asynchronously
 	@param ms is the amount of milliseconds to wait before calling the subToCall
 '/
-sub KiwiCallbackManager.AsynchronousSubCall(ByVal subToCall As Sub, ByVal ms as LongInt)
+sub KiwiCallbackManager.AsynchronousSubCall(ByVal subToCall As Sub, ms as LongInt)
 	Dim container as CallbackAndTimeContainer PTR = new CallbackAndTimeContainer
 	container->fSub = subToCall
-	container->fMilliseconds = ms
+	container->fWaitTime = ms
     Threaddetach(ThreadCreate(@KiwiCallbackManager.RunTheCallBack, container))
 end sub
 
-sub KiwiCallbackManager.AsynchronousNotifyCall(obj as KObject, ms as LongInt)
-	Dim async as AsyncKObjectNotifyRunnable = AsyncKObjectNotifyRunnable(@obj, ms)
-	KiwiCallbackManager.AsynchronousRunnableCall(@async)
+/'
+	Calls the KObject.notify method asynchronously
+	
+	This method is designed to be used only from KObject.wait(ms as LongInt)
+'/
+sub KiwiCallbackManager.AsynchronousNotifyCall(obj as KObject PTR, ms as LongInt)
+	Dim container as KObjectAndTimeContainer PTR = new KObjectAndTimeContainer
+	container->fObject = obj
+	container->fWaitTime = ms
+	Threaddetach(ThreadCreate(@KiwiCallbackManager.RunTheNotifyCallBack, container))
 end sub
 
 /'
