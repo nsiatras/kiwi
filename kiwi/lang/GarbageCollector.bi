@@ -31,7 +31,7 @@
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' Declare an alias Type of KObject in order to make the cross reference
 ' between GarbageCollector and KObject Possible.
-Type as KObject _KObject
+Type _KObject as KObject 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Type GarbageCollector extends Object

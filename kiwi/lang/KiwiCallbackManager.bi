@@ -23,36 +23,51 @@
 '/
 
 /'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
+	Description: 
 	
 	Author: Nikos Siatras
 	Url: https://www.github.com/nsiatras
 '/
 
-#Define KIWI_VERSION "1.0.4"
+#include once "fbthread.bi"
 
-#include once "core\Core.bi"
+Type KiwiCallbackManager extends Object
 
-#include once "nio\Charset.bi"
+	private:
+		declare static sub RunTheCallBack(ByVal p As Any Ptr) 
 
-#include once "lang\GarbageCollector.bi"
-#include once "lang\KiwiCallbackManager.bi"
-#include once "lang\KObject.bi"
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-#include once "lang\Thread.bi"			'It is included in KObject
-#include once "lang\ThreadsManager.bi"	'It is included in KObject
-#include once "lang\Runnable.bi"		'It is included in Thread
-#include once "lang\StringUtils.bi"
+	public:
+		declare static sub AsynchronousSubCall(ByVal subToCall As Sub, ByVal ms as LongInt)
 
-#include once "util\Collection.bi"
-#include once "util\Comparator.bi"
-#include once "util\ArrayList.bi"
-#include once "util\Queue.bi"
-#include once "util\HashMap.bi"
+End Type
 
-' Initialize the Threads manager
-ThreadsManager.Initialize()
+Type CallbackAndTimeContainer
+	fSub as Sub 
+	fMilliseconds as LongInt
+End Type
 
+sub KiwiCallbackManager.RunTheCallBack(ByVal p As Any Ptr)  
+    Dim dt as CallbackAndTimeContainer Ptr = p
+    
+    ' Sleep for for fMilliseconds time
+    if dt->fMilliseconds > 0 then
+		sleep(dt->fMilliseconds,1)
+    end if
+    
+    ' Call the sub
+    dt->fSub()
+    delete dt
+end sub
 
+/'
+	Calls the subToCall asynchronously.
+	
+	@param subToCall is the sub to call asynchronously
+	@param ms is the amount of milliseconds to wait before calling the subToCall
+'/
+sub KiwiCallbackManager.AsynchronousSubCall(ByVal subToCall As Sub, ByVal ms as LongInt)
+	Dim container as CallbackAndTimeContainer PTR = new CallbackAndTimeContainer
+	container->fSub = subToCall
+	container->fMilliseconds = ms
+    Threaddetach(ThreadCreate(@KiwiCallbackManager.RunTheCallBack, container))
+end sub

@@ -30,6 +30,7 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 #include once "GarbageCollector.bi"
+#include once "KiwiCallbackManager.bi"
 #include once "fbthread.bi"
 
 Type KObject extends Object
@@ -39,13 +40,13 @@ Type KObject extends Object
 		Dim fKObjectLock As Any Ptr = 0 
 		Dim fNotifySignalThreshold As Any Ptr = 0
 		Dim fNotified as Boolean = false
-		
+
 		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 		' KObject ID/HashCodeCounter
 		static KIWI_Hash_Code_Counter as UInteger
 		declare static function GET_HASH_CODE() as UInteger
 		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
+		
 	public:
 		declare constructor()						' Constructor
 		declare destructor()						' Destructor
@@ -55,6 +56,7 @@ Type KObject extends Object
 		#endif
 		
 		declare sub wait()
+		declare sub wait(ms as LongInt)
 		declare sub notify()
 				
 		declare virtual function toString() as String
@@ -141,6 +143,21 @@ sub KObject.wait()
 	MutexLock(this.fKObjectLock)
 		this.fNotifySignalThreshold = CondCreate
 		this.fNotified = false
+		Condwait(fNotifySignalThreshold, this.fKObjectLock)
+	MutexUnLock(this.fKObjectLock)
+end sub
+
+
+sub KObject.wait(ms as LongInt)
+	MutexLock(this.fKObjectLock)
+		this.fNotifySignalThreshold = CondCreate
+		this.fNotified = false
+		
+	
+		' Ask KiwiCallbackManager to asynchronously call the "this.notify()"
+		' method after a delay of ms Milliseconds
+		'KiwiCallbackManager.AsynchronousSubCall(this.notify, ms)
+		
 		Condwait(fNotifySignalThreshold, this.fKObjectLock)
 	MutexUnLock(this.fKObjectLock)
 end sub

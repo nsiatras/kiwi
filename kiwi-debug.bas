@@ -1,20 +1,69 @@
-﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\time.bi" 
+﻿#include once "kiwi/kiwi.bi"
 
-' The following timestamp is from Wed Sep 28 2022 06:40:39 UTC +0
-Dim timeStampUTC as LongInt = 1664347239101
+Dim shared timeStart as Double = 0
 
-' Print the utcTime
-Dim utcTime as DateTime = DateTime(timeStampUTC, 0) ' UTC +0
+sub MySub1()
+   print "Sub 1 executed after " & str((timer-timeStart)*1000) & " ms"
+end sub
 
-' Full date time with AM/PM and UTC TimeZone
-Dim sdf as SimpleDateFormat = SimpleDateFormat("dddd dd mmm yyyy h:n:s AM/PM UTC")
-print sdf.formatDateTime(utcTime)
+sub MySub2()
+  print "Sub 2 executed after " &  str((timer-timeStart)*1000) & " ms"
+end sub
 
-' Date-Time (24 Hours Time)
-sdf.setPattern("dd/mm/yyyy H:n:s")
-print sdf.formatDateTime(utcTime)
+sub MySub3()
+  print "Sub 3 executed after " &  str((timer-timeStart)*1000) & " ms"
+end sub
 
-' Date only
-sdf.setPattern("dd/mm/yyyy")
-print sdf.formatDateTime(utcTime)
+timeStart = timer()
+
+' Ask KiwiCallbackManager to call MySub1,MySub2 and MySub3 asynchronously
+KiwiCallbackManager.AsynchronousSubCall(@MySub1, 3000)
+KiwiCallbackManager.AsynchronousSubCall(@MySub2, 2500)
+KiwiCallbackManager.AsynchronousSubCall(@MySub3, 150)
+
+sleep()
+
+/'
+#Include "fbthread.bi"
+
+Type CallbackAndTimeContainer
+	fSub as Sub 
+	fMilliseconds as LongInt
+End Type
+
+
+sub RunTheCallBack(ByVal p As Any Ptr)  
+    
+    Dim dt as CallbackAndTimeContainer Ptr = p
+    
+    sleep(dt->fMilliseconds,1)
+    dt->fSub()
+ 
+    
+    delete dt
+    
+   
+end sub
+
+function AsynchronousSubCall(ByVal f As Sub, ByVal ms as LongInt) as Boolean
+	Dim container as CallbackAndTimeContainer PTR = new CallbackAndTimeContainer
+	container->fSub = f
+	container->fMilliseconds = ms
+	
+    Threaddetach(ThreadCreate(@RunTheCallBack, container))
+    return true
+end function
+
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+sub MySub()
+   print "My Sub executed"
+end sub
+
+
+print AsynchronousSubCall(@MySub, 1000)
+
+
+sleep()'/
+
+

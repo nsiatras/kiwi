@@ -149,9 +149,9 @@ End Sub
 	The Thread.StartThreadWithRunnable is a private Static only to be 
 	called from Thread.start() method.
 '/
-Sub Thread.StartThreadWithRunnable(r as Any Ptr)
+Sub Thread.StartThreadWithRunnable(con as Any Ptr)
 	
-	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr,r)
+	Dim container as ThreadAndRunnableContainer Ptr = CAST(ThreadAndRunnableContainer Ptr, con)
 	
 	' Mark Thread as Alive
 	(*container).fThread->fIsAlive = true
