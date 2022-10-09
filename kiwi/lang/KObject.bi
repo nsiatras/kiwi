@@ -30,7 +30,6 @@
 	Author: Nikos Siatras (https://github.com/nsiatras)
 '/
 #include once "GarbageCollector.bi"
-#include once "KiwiCallbackManager.bi"
 #include once "fbthread.bi"
 
 Type KObject extends Object
@@ -68,6 +67,7 @@ End Type
 ' cross reference possible
 #include once "Thread.bi"
 #include once "ThreadsManager.bi"
+#include once "KiwiCallbackManager.bi"
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' CAUTION: Define/Declare Garbage Collector Methods here!
@@ -149,17 +149,12 @@ end sub
 
 
 sub KObject.wait(ms as LongInt)
-	MutexLock(this.fKObjectLock)
-		this.fNotifySignalThreshold = CondCreate
-		this.fNotified = false
-		
 	
-		' Ask KiwiCallbackManager to asynchronously call the "this.notify()"
-		' method after a delay of ms Milliseconds
-		'KiwiCallbackManager.AsynchronousSubCall(this.notify, ms)
-		
-		Condwait(fNotifySignalThreshold, this.fKObjectLock)
-	MutexUnLock(this.fKObjectLock)
+	' Ask KiwiCallbackManager to asynchronously call "this.notify()"
+	' method after a delay of ms Milliseconds			
+	KiwiCallbackManager.AsynchronousNotifyCall(this, ms)
+	
+	this.wait()
 end sub
 
 /'
@@ -170,7 +165,9 @@ end sub
 	one of the wait methods.
 '/
 sub KObject.notify()
+	print 1
 	MutexLock(this.fKObjectLock)
+		print 
 		this.fNotified = true
 		if this.fNotifySignalThreshold <> 0 then
 			CondSignal(fNotifySignalThreshold)

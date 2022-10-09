@@ -37,13 +37,13 @@
 #include once "nio\Charset.bi"
 
 #include once "lang\GarbageCollector.bi"
-#include once "lang\KiwiCallbackManager.bi"
 #include once "lang\KObject.bi"
 #include once "lang\System.bi"
 #include once "lang\Math.bi"
 #include once "lang\Thread.bi"			'It is included in KObject
 #include once "lang\ThreadsManager.bi"	'It is included in KObject
 #include once "lang\Runnable.bi"		'It is included in Thread
+#include once "lang\KiwiCallbackManager.bi"
 #include once "lang\StringUtils.bi"
 
 #include once "util\Collection.bi"

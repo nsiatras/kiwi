@@ -1,5 +1,12 @@
-﻿#include once "kiwi/kiwi.bi"
+﻿#include once "kiwi\kiwi.bi"
 
+Dim obj as KObject
+obj.wait(1500)
+
+print "A"
+
+
+/'
 Dim shared timeStart as Double = 0
 
 sub MySub1()
@@ -16,12 +23,27 @@ end sub
 
 timeStart = timer()
 
+
 ' Ask KiwiCallbackManager to call MySub1,MySub2 and MySub3 asynchronously
 KiwiCallbackManager.AsynchronousSubCall(@MySub1, 3000)
 KiwiCallbackManager.AsynchronousSubCall(@MySub2, 2500)
 KiwiCallbackManager.AsynchronousSubCall(@MySub3, 150)
 
-sleep()
+
+Type MyRunnable extends Runnable
+	public:
+		declare sub run()
+End Type
+
+sub MyRunnable.run()
+	Thread.pause(1000)
+	print "Runnable executed after " &  str((timer-timeStart)*1000) & " ms"
+end sub
+
+Dim aaa as MyRunnable
+KiwiCallbackManager.AsynchronousRunnableCall(@aaa)
+
+sleep()'/
 
 /'
 #Include "fbthread.bi"

@@ -30,6 +30,9 @@
 '/
 
 #include once "fbthread.bi"
+#include once "KObject.bi"
+#include once "Thread.bi"
+#include once "Runnable.bi"
 
 Type KiwiCallbackManager extends Object
 
@@ -38,9 +41,13 @@ Type KiwiCallbackManager extends Object
 
 	public:
 		declare static sub AsynchronousSubCall(ByVal subToCall As Sub, ByVal ms as LongInt)
+		declare static sub AsynchronousRunnableCall(r as Runnable Ptr)
+		declare static sub AsynchronousNotifyCall(obj as KObject, ms as LongInt)
 
 End Type
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Type CallbackAndTimeContainer
 	fSub as Sub 
 	fMilliseconds as LongInt
@@ -58,6 +65,30 @@ sub KiwiCallbackManager.RunTheCallBack(ByVal p As Any Ptr)
     dt->fSub()
     delete dt
 end sub
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Type AsyncKObjectNotifyRunnable extends Runnable
+	private:
+		fObject as KObject PTR
+		fWaitTime as LongInt
+	public:
+		declare constructor(obj as KObject PTR, ms as LongInt)
+		declare sub run()
+End Type
+
+constructor AsyncKObjectNotifyRunnable(obj as KObject PTR, ms as LongInt)
+	fObject = obj
+	fWaitTime = ms
+
+end constructor
+
+sub AsyncKObjectNotifyRunnable.run()
+	if fWaitTime>0 then
+		Thread.pause(fWaitTime)
+		(*fObject).notify()
+	end if
+end sub
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 /'
 	Calls the subToCall asynchronously.
@@ -70,4 +101,17 @@ sub KiwiCallbackManager.AsynchronousSubCall(ByVal subToCall As Sub, ByVal ms as 
 	container->fSub = subToCall
 	container->fMilliseconds = ms
     Threaddetach(ThreadCreate(@KiwiCallbackManager.RunTheCallBack, container))
+end sub
+
+sub KiwiCallbackManager.AsynchronousNotifyCall(obj as KObject, ms as LongInt)
+	Dim async as AsyncKObjectNotifyRunnable = AsyncKObjectNotifyRunnable(@obj, ms)
+	KiwiCallbackManager.AsynchronousRunnableCall(@async)
+end sub
+
+/'
+	Runs a runnable...
+'/
+sub KiwiCallbackManager.AsynchronousRunnableCall(r as Runnable Ptr)
+	Dim th as Thread = Thread(*r)
+	th.start()
 end sub
