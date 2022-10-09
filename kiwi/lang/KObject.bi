@@ -55,7 +55,7 @@ Type KObject extends Object
 		#endif
 		
 		declare sub wait()
-		declare sub wait(ms as LongInt)
+		declare sub wait(timeoutMillis as LongInt)
 		declare sub notify()
 				
 		declare virtual function toString() as String
@@ -147,12 +147,18 @@ sub KObject.wait()
 	MutexUnLock(this.fKObjectLock)
 end sub
 
-
-sub KObject.wait(ms as LongInt)
+/'
+	Causes the current thread to wait until it is awakened, typically
+    by being notified or interrupted, or until a
+    certain amount of real time has elapsed.
+    
+    @param timeoutMillis is the maximum time to wait, in milliseconds
+'/
+sub KObject.wait(timeoutMillis as LongInt)
 	
 	' Ask KiwiCallbackManager to asynchronously call "this.notify()"
 	' method after a delay of ms Milliseconds			
-	KiwiCallbackManager.AsynchronousNotifyCall(@this, ms)
+	KiwiCallbackManager.AsynchronousNotifyCall(@this, timeoutMillis)
 	
 	this.wait()
 end sub

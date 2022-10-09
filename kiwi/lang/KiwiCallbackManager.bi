@@ -48,11 +48,18 @@ Type KiwiCallbackManager extends Object
 End Type
 
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Containers for the Async Calls
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Type CallbackAndTimeContainer extends Object
 	fSub as Sub 
 	fWaitTime as LongInt
 End Type
+
+Type KObjectAndTimeContainer extends Object	
+	fObject as KObject PTR
+	fWaitTime as LongInt
+End Type
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 sub KiwiCallbackManager.RunTheCallBack(ByVal p As Any Ptr)  
     Dim dt as CallbackAndTimeContainer Ptr = p
@@ -66,15 +73,6 @@ sub KiwiCallbackManager.RunTheCallBack(ByVal p As Any Ptr)
     dt->fSub()
     delete dt
 end sub
-
-
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-Type KObjectAndTimeContainer extends Object	
-	fObject as KObject PTR = 0
-	fWaitTime as LongInt = 0
-End Type
-
 
 sub KiwiCallbackManager.RunTheNotifyCallBack(ByVal p As Any Ptr)  
 

@@ -42,11 +42,12 @@ Type Thread extends KObject
 		
 	private:
 		Dim fIsAlive as Boolean = false
-		Dim fMyThreadHandle As Any Ptr 	' The thread's handle
-		Dim fMyLock As Any Ptr			' The thread's lock object (MutexCreate())
+		Dim fMyThreadHandle As Any Ptr 		' The thread's handle
+		Dim fMyPauseObject As KObject Ptr 	' This object is to be used with Thread.pause method
+		Dim fMyLock As Any Ptr				' The thread's lock object (MutexCreate())
 		Dim fMyRunnablePointer as Runnable Ptr = 0
 		Dim fMyName as String
-		declare sub Private_pause(ms as Long)	
+		declare sub Private_pause(ms as LongInt)	
 
 	public:
 		declare constructor()
@@ -58,6 +59,7 @@ Type Thread extends KObject
 		
 		declare Sub start()
 		declare Sub run()
+		declare Sub interrupt()
 		
 		' Getters and Setters
 		declare function getName() as String
@@ -68,7 +70,7 @@ Type Thread extends KObject
 		
 		' Public Statics
 		declare static function currentThread() byref as Thread
-		declare static sub pause(ms as Long)	
+		declare static sub pause(ms as LongInt)	
 		
 End Type
 
@@ -79,7 +81,7 @@ End Type
 ' ThreadAndRunnableContainer holds a pointer of a Thread and a pointer
 ' of a Runnable Instance
 ' WARNING: NEVER USE UNION FOR THIS TYPE
-Type ThreadAndRunnableContainer
+Type ThreadAndRunnableContainer extends Object
 	fThread as Thread PTR
 	fRunnable as Runnable PTR
 End Type
@@ -107,6 +109,7 @@ end constructor
 	the constructors.
 '/
 sub Thread.Initialize()
+	fMyPauseObject = new KObject()
 	' Inform ThreadsManager for the newely initialized thread
 	ThreadsManager.ThreadInitialized(this)
 	
@@ -121,6 +124,7 @@ destructor Thread()
 		this.fMyLock = 0
 		Mutexdestroy(this.fMyLock)
 	end if
+	delete fMyPauseObject
 end destructor
 
 /'
@@ -179,6 +183,19 @@ Sub Thread.run()
 End Sub
 
 /'
+	Interrupts this thread.
+	
+	If this thread is blocked in an invocation of the Thread.Pause, 
+	KObject.wait() or KObject.wait(LongInt) methods then this method 
+	will resume the thread.
+'/
+Sub Thread.interrupt()
+	MutexLock(this.fMyLock)
+		this.fMyPauseObject->notify()
+	MutexUnLock(this.fMyLock)	
+End Sub
+
+/'
 	Return the Thread's name
 '/
 function Thread.getName() as String
@@ -234,7 +251,7 @@ end function
     the precision and accuracy of system timers and schedulers. The thread
     does not lose ownership of any monitors.
 '/
-sub Thread.pause(ms as Long)
+sub Thread.pause(ms as LongInt)
 	' The static Thread.pause calls the Private_pause method
 	' of the current thread !
 	Thread.currentThread().Private_pause(ms)
@@ -243,6 +260,6 @@ end sub
 /'
 	This method is called from the static Thread.pause method
 '/
-sub Thread.Private_pause(ms as Long)	
-	sleep(ms,1)
+sub Thread.Private_pause(ms as LongInt)	
+	this.fMyPauseObject->wait(ms)
 end sub
