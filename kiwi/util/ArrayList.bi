@@ -253,14 +253,14 @@
 			
 			MutexLock (this.fLock)
 			
-			for i as Integer = 0 to ubound(base.fElements)
-				if base.fElements(i) = e then
-					MutexUnLock (this.fLock)
-					return i
-				end if
-			next i
-			
-			function = -1
+				for i as Integer = 0 to ubound(base.fElements)
+					if base.fElements(i) = e then
+						MutexUnLock (this.fLock)
+						return i
+					end if
+				next i
+				
+				function = -1
 			
 			MutexUnLock (this.fLock)
 			

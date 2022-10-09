@@ -1,45 +1,31 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-Dim Shared fLockObject as KObject
-
-Type Thread1_Process extends Runnable 
-    public:
-        Declare Sub run()
+' In this example we will create an ArrayList that holds Students
+Type Student extends KObject ' Always inherit from KObject for all UDTs
+	firstName as String
+	lastName as String
 End Type
 
-Sub Thread1_Process.run()
-    while(true)
-		print ""
-		print Thread.currentThread().getName() & " is waiting..."
-        fLockObject.wait()
-        print Thread.currentThread().getName() & " is running!"
-    wend
-End Sub
+' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
+MACRO_DefineArrayList(Student)
 
-Type Thread2_Process extends Runnable 
-    public:
-        Declare Sub run()
-End Type
+' Initialize a new ArrayList to hold students
+Dim students as ArrayList(Student)
 
-Sub Thread2_Process.run()
-    while(true)
-        Thread.pause(2000)
-        fLockObject.notify()
-    wend
-End Sub
+Dim student1 as student
+student1.firstName = "Nikos"
+student1.lastName = "Siatras"
+students.Add(student1) ' Add student1 to students ArrayList
 
-print "Start !"
+Dim student2 As student
+student2.firstName = "Elon"
+student2.lastName = "Musk"
+students.Add(student2) ' Add student2 to students ArrayList
 
-Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1,"Thread 1")
-thread1.start() ' Start Thread1
+print "Students ArrayList contains " & students.size() & " elements"
+print ""
 
-Dim runnable2 as Thread2_Process
-Dim thread2 as Thread = Thread(runnable2,"Thread 2")
-thread2.start() ' Start Thread2
-
-' Wait for user input to exit
-sleep()
-
-thread1.interrupt()
-thread2.interrupt()
+print "Students: "
+for i as Integer = 0 to students.size() - 1
+	print "Student " & i & " = " & students.get(i).firstName & " " & students.get(i).lastName 
+next i
