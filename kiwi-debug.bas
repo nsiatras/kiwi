@@ -1,52 +1,30 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\time.bi"
+#include once "kiwi\io.bi" ' Include Kiwi's IO package
 
-Dim Shared fKeepRunning as Boolean = true
-Dim Shared fWaitForThreadToStart as KObject
-Dim Shared fWaitForThreadToFinish as KObject
-Dim tmpStr as String
+' Initialize the file to read and a FileInputStream
+Dim myFile as File = File("C:\Users\nsiat\Desktop\MyFile.zip")
+Dim reader as FileInputStream = FileInputStream(myFile) 
 
-print "This program displays time every 5seconds"
-print "Press Enter to interrupt the thread and exit"
-print ""
+Dim byteCounter as LongInt = 0
 
-' Declare a new Runnable Object. A threads needs a Runnable
-' in order to start
-Type Thread1_Process extends Runnable 
-	Declare Sub run()
-End Type
+' Try to open the Stream
+if reader.OpenStream() = true then
 
-Sub Thread1_Process.run()
+    ' Create an array to hold file bytes
+    ' Caution: This array has to be declared as Ubyte
+    Dim fileData(myFile.getSize()) as UByte
 
-	fWaitForThreadToStart.notify() ' Notify fWaitForThreadToStart
-	Dim obj as KObject
-	Dim cal as Calendar = Calendar()
-	while (fKeepRunning)
-		Dim dtNow as DateTime = cal.getTime()
-		print "Time at thread " & Thread.currentThread().getName() & " is " & dtNow.toString()
-		Thread.pause(1000)
-	wend
-	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
-	
-	fWaitForThreadToFinish.notify() ' Notify fWaitForThreadToFinish
-	 
-End Sub
-
-' Initialize a new runnable object and pass it to a new thread
-Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1, "Thread #1")
-thread1.start() ' Start the thread
-
-' Wait for thread to start
-fWaitForThreadToStart.wait()
-print "Thread 1 is live: " & thread1.isAlive()
-
-' Wait for user input in order to terminate the program.
-' To terminate the program set fKeepRunning = false
-input "", tmpStr
-fKeepRunning = false
-
-' Wait for thread 1 to exit
-print "Waiting for thread to finish..."
-thread1.interrupt() ' Interrupt the thread
-fWaitForThreadToFinish.wait()
+    Dim byteRead as Integer = reader.read()
+    while (byteRead > - 1)
+        byteCounter += 1 
+        fileData(byteCounter) = CAST(Byte, byteRead)
+        byteRead = reader.read()
+    wend
+    
+    ' Close the Stream
+    reader.CloseStream()
+    
+    print "Total bytes read: " & byteCounter
+else
+    print "Unable to open the file!"
+end if   
