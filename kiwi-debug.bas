@@ -1,31 +1,52 @@
 ﻿#include once "kiwi\kiwi.bi"
+#include once "kiwi\time.bi"
 
-' In this example we will create an ArrayList that holds Students
-Type Student extends KObject ' Always inherit from KObject for all UDTs
-	firstName as String
-	lastName as String
-End Type
+Dim Shared fKeepRunning as Boolean = true
+Dim Shared fWaitForThreadToStart as KObject
+Dim Shared fWaitForThreadToFinish as KObject
+Dim tmpStr as String
 
-' Tells FreeBasic, that you want to use an ArrayList with "Student" variables
-MACRO_DefineArrayList(Student)
-
-' Initialize a new ArrayList to hold students
-Dim students as ArrayList(Student)
-
-Dim student1 as student
-student1.firstName = "Nikos"
-student1.lastName = "Siatras"
-students.Add(student1) ' Add student1 to students ArrayList
-
-Dim student2 As student
-student2.firstName = "Elon"
-student2.lastName = "Musk"
-students.Add(student2) ' Add student2 to students ArrayList
-
-print "Students ArrayList contains " & students.size() & " elements"
+print "This program displays time every 5seconds"
+print "Press Enter to interrupt the thread and exit"
 print ""
 
-print "Students: "
-for i as Integer = 0 to students.size() - 1
-	print "Student " & i & " = " & students.get(i).firstName & " " & students.get(i).lastName 
-next i
+' Declare a new Runnable Object. A threads needs a Runnable
+' in order to start
+Type Thread1_Process extends Runnable 
+	Declare Sub run()
+End Type
+
+Sub Thread1_Process.run()
+
+	fWaitForThreadToStart.notify() ' Notify fWaitForThreadToStart
+	Dim obj as KObject
+	Dim cal as Calendar = Calendar()
+	while (fKeepRunning)
+		Dim dtNow as DateTime = cal.getTime()
+		print "Time at thread " & Thread.currentThread().getName() & " is " & dtNow.toString()
+		Thread.pause(1000)
+	wend
+	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
+	
+	fWaitForThreadToFinish.notify() ' Notify fWaitForThreadToFinish
+	 
+End Sub
+
+' Initialize a new runnable object and pass it to a new thread
+Dim runnable1 as Thread1_Process
+Dim thread1 as Thread = Thread(runnable1, "Thread #1")
+thread1.start() ' Start the thread
+
+' Wait for thread to start
+fWaitForThreadToStart.wait()
+print "Thread 1 is live: " & thread1.isAlive()
+
+' Wait for user input in order to terminate the program.
+' To terminate the program set fKeepRunning = false
+input "", tmpStr
+fKeepRunning = false
+
+' Wait for thread 1 to exit
+print "Waiting for thread to finish..."
+thread1.interrupt() ' Interrupt the thread
+fWaitForThreadToFinish.wait()
