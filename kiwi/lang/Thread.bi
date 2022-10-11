@@ -38,7 +38,7 @@ Type Thread extends KObject
 	protected:
 		
 		' Protected statics
-		declare static Sub StartThreadWithRunnable(r as Any PTR)
+		declare static sub StartThreadWithRunnable(r as Any PTR)
 		
 	private:
 		Dim fIsAlive as Boolean = false
@@ -142,7 +142,7 @@ Sub Thread.start()
 					
 			' Call ThreadCreate for Thread.RunTheRunnable and pass the container 
 			' to the parameters
-			this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container )
+			this.fMyThreadHandle = ThreadCreate(@Thread.StartThreadWithRunnable, container)
 			ThreadDetach(fMyThreadHandle)
 		end if
 	MutexUnLock(this.fMyLock)
@@ -261,5 +261,6 @@ end sub
 	This method is called from the static Thread.pause method
 '/
 sub Thread.Private_pause(ms as LongInt)	
+	' Calls the fMyPauseObject.wait(LongInt) method
 	this.fMyPauseObject->wait(ms)
 end sub

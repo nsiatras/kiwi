@@ -36,9 +36,11 @@ Type KObject extends Object
 
 	private:
 		Dim fID as UInteger
-		Dim fKObjectLock As Any Ptr = 0 
+		
+		' Variables for wait() & notify() methods
+		Dim fWaitAndNotifyLock As Any Ptr = 0 
 		Dim fNotifySignalThreshold As Any Ptr = 0
-		Dim fNotified as Boolean = false
+		Dim fObjectIsWaiting as Boolean = false
 
 		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 		' KObject ID/HashCodeCounter
@@ -80,7 +82,7 @@ MACRO_DefineGarbageCollectorMethods()
 constructor KObject()
 	' Assign a Unique ID to this KObject
 	this.fID = KObject.GET_HASH_CODE()
-	this.fKObjectLock = MutexCreate()
+	this.fWaitAndNotifyLock = MutexCreate()
 			
 	#ifdef USE_GARBAGE_COLLECTOR
 		' Tell GC to Register the Object
@@ -94,9 +96,9 @@ end constructor
 destructor KObject()
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	' Destroy the mutex 
-	if this.fKObjectLock > 0  then
-		this.fKObjectLock = 0
-		Mutexdestroy(this.fKObjectLock)
+	if this.fWaitAndNotifyLock > 0  then
+		this.fWaitAndNotifyLock = 0
+		Mutexdestroy(this.fWaitAndNotifyLock)
 	end if
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	
@@ -140,11 +142,15 @@ end operator
 	typically by being notified or interrupted.
 '/
 sub KObject.wait()
-	MutexLock(this.fKObjectLock)
+
+	MutexLock(this.fWaitAndNotifyLock)
+		
 		this.fNotifySignalThreshold = CondCreate
-		this.fNotified = false
-		Condwait(fNotifySignalThreshold, this.fKObjectLock)
-	MutexUnLock(this.fKObjectLock)
+		fObjectIsWaiting = true
+		Condwait(fNotifySignalThreshold, this.fWaitAndNotifyLock)
+	
+	MutexUnLock(this.fWaitAndNotifyLock)
+	
 end sub
 
 /'
@@ -161,6 +167,7 @@ sub KObject.wait(timeoutMillis as LongInt)
 	KiwiCallbackManager.AsynchronousNotifyCall(@this, timeoutMillis)
 	
 	this.wait()
+	
 end sub
 
 /'
@@ -171,14 +178,17 @@ end sub
 	one of the wait methods.
 '/
 sub KObject.notify()
-	MutexLock(this.fKObjectLock)
-		this.fNotified = true
-		if this.fNotifySignalThreshold <> 0 then
+
+	MutexLock(this.fWaitAndNotifyLock)
+	
+		if this.fObjectIsWaiting = true And this.fNotifySignalThreshold <> 0 then
 			CondSignal(fNotifySignalThreshold)
-			MutexUnLock(this.fKObjectLock)
+			MutexUnLock(this.fWaitAndNotifyLock)
 			exit sub
 		end if
-	MutexUnLock(this.fKObjectLock)
+		
+	MutexUnLock(this.fWaitAndNotifyLock)
+	
 end sub
 
 /'
@@ -195,6 +205,10 @@ function KObject.getUniqueID() as UInteger
 	return this.fID
 end function
 
+
+
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ' KObject ID/HashCodeCounter
 Dim Shared KIWI_Hash_Code_Counter_Lock as Any Ptr = 0
