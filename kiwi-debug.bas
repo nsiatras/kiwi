@@ -1,45 +1,39 @@
 ﻿#include once "kiwi\kiwi.bi"
 
-Dim Shared fLockObject as KObject
+' Initialize a new Array for Double Values
+Dim values(0 to 9) as Double
 
-Type Thread1_Process extends Runnable 
-    public:
-        Declare Sub run()
+' Add 10 Random double values to myArrayList
+for i as Integer = 0 to 9
+	values(i) = Math.random()
+next i 
+
+print "Array Elements Before Sort:"
+for i as Integer = 0 to ubound(values)
+	print "Element " & i &" = " & values(i)
+next
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Define a comparator Type
+MACRO_DefineComparator(Double)
+Type myComparator extends Comparator(Double)
+	declare function compare(a as Double, b as Double) as Integer
 End Type
 
-Sub Thread1_Process.run()
-    while(true)
-		print ""
-		print Thread.currentThread().getName() & " is waiting..."
-		fLockObject.wait()
-        print Thread.currentThread().getName() & " is running!"
-    wend
-End Sub
+function myComparator.compare(a as Double, b as Double) as Integer
+	return iif(a>=b, 1, -1) ' Ascending
+	'return iif(a<=b , 1, -1) 'Descending
+end function
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Type Thread2_Process extends Runnable 
-    public:
-        Declare Sub run()
-End Type
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Initialize a comparator and use it to sort the array
+Dim c as myComparator
+c.quickSort(values(),0, ubound(values))
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Sub Thread2_Process.run()
-    while(true)
-        Thread.pause(1000)
-        fLockObject.notify()
-    wend
-End Sub
-
-print "Start !"
-
-Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1,"Thread 1")
-thread1.start() ' Start Thread1
-
-Dim runnable2 as Thread2_Process
-Dim thread2 as Thread = Thread(runnable2,"Thread 2")
-thread2.start() ' Start Thread2
-
-' Wait for user input to exit
-sleep()
-
-thread1.interrupt()
-thread2.interrupt()
+print ""
+print "Array Elements After Sort:"
+for i as Integer = 0 to ubound(values)
+	print "Element " & i &" = " & values(i)
+next
