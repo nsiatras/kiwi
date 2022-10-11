@@ -35,19 +35,17 @@
 Type KObject extends Object
 
 	private:
-		Dim fID as UInteger
+		Dim fID as UInteger	' fID holds the Unique ID of this KObject
 		
 		' Variables for wait() & notify() methods
 		Dim fWaitAndNotifyLock As Any Ptr = 0 
 		Dim fNotifySignalThreshold As Any Ptr = 0
 		Dim fObjectIsWaiting as Boolean = false
 
-		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-		' KObject ID/HashCodeCounter
+		' Variables for KObject ID generation
 		static KIWI_Hash_Code_Counter as UInteger
 		declare static function GET_HASH_CODE() as UInteger
-		'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-		
+
 	public:
 		declare constructor()						' Constructor
 		declare destructor()						' Destructor
@@ -65,8 +63,8 @@ Type KObject extends Object
 
 End Type
 
-' Include Thread and Threads Manager here in order to make the 
-' cross reference possible
+' Include Thread.bi, ThreadsManager.bi & KiwiCallbackManager.bi here 
+' in order to make the cross reference possible
 #include once "Thread.bi"
 #include once "ThreadsManager.bi"
 #include once "KiwiCallbackManager.bi"
@@ -146,7 +144,7 @@ sub KObject.wait()
 	MutexLock(this.fWaitAndNotifyLock)
 		
 		this.fNotifySignalThreshold = CondCreate
-		fObjectIsWaiting = true
+		this.fObjectIsWaiting = true ' Mark the fObjectIsWaiting as true
 		Condwait(fNotifySignalThreshold, this.fWaitAndNotifyLock)
 	
 	MutexUnLock(this.fWaitAndNotifyLock)
@@ -180,7 +178,9 @@ end sub
 sub KObject.notify()
 
 	MutexLock(this.fWaitAndNotifyLock)
-	
+		
+		' Run only if fObjectIsWaiting is true and fNotifySignalThreshold
+		' is not Null
 		if this.fObjectIsWaiting = true And this.fNotifySignalThreshold <> 0 then
 			CondSignal(fNotifySignalThreshold)
 			MutexUnLock(this.fWaitAndNotifyLock)
@@ -222,8 +222,8 @@ Dim KObject.KIWI_Hash_Code_Counter as UInteger = 0
 '/
 function KObject.GET_HASH_CODE() as UInteger
 	MutexLock(KIWI_Hash_Code_Counter_Lock)
-	KObject.KIWI_Hash_Code_Counter += 1
-	function = KObject.KIWI_Hash_Code_Counter
+		KObject.KIWI_Hash_Code_Counter += 1
+		function = KObject.KIWI_Hash_Code_Counter
 	MutexUnLock(KIWI_Hash_Code_Counter_Lock)
 end function
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

@@ -1,52 +1,45 @@
 ﻿#include once "kiwi\kiwi.bi"
-#include once "kiwi\time.bi"
 
-Dim Shared fKeepRunning as Boolean = true
-Dim Shared fWaitForThreadToStart as KObject
-Dim Shared fWaitForThreadToFinish as KObject
-Dim tmpStr as String
+Dim Shared fLockObject as KObject
 
-print "This program displays time every 5seconds"
-print "Press Enter to interrupt the thread and exit"
-print ""
-
-' Declare a new Runnable Object. A threads needs a Runnable
-' in order to start
 Type Thread1_Process extends Runnable 
-	Declare Sub run()
+    public:
+        Declare Sub run()
 End Type
 
 Sub Thread1_Process.run()
-
-	fWaitForThreadToStart.notify() ' Notify fWaitForThreadToStart
-	
-	Dim cal as Calendar = Calendar()
-	while (fKeepRunning)
-		Dim dtNow as DateTime = cal.getTime()
-		print "Time at thread " & Thread.currentThread().getName() & " is " & dtNow.toString()
-		Thread.pause(1500)
-	wend
-	print "Thread 1 Finished" ' This prints after fKeepRunning turns to false
-	
-	fWaitForThreadToFinish.notify() ' Notify fWaitForThreadToFinish
-	 
+    while(true)
+		print ""
+		print Thread.currentThread().getName() & " is waiting..."
+		fLockObject.wait()
+        print Thread.currentThread().getName() & " is running!"
+    wend
 End Sub
 
-' Initialize a new runnable object and pass it to a new thread
+Type Thread2_Process extends Runnable 
+    public:
+        Declare Sub run()
+End Type
+
+Sub Thread2_Process.run()
+    while(true)
+        Thread.pause(1000)
+        fLockObject.notify()
+    wend
+End Sub
+
+print "Start !"
+
 Dim runnable1 as Thread1_Process
-Dim thread1 as Thread = Thread(runnable1, "Thread #1")
-thread1.start() ' Start the thread
+Dim thread1 as Thread = Thread(runnable1,"Thread 1")
+thread1.start() ' Start Thread1
 
-' Wait for thread to start
-fWaitForThreadToStart.wait()
-print "Thread 1 is live: " & thread1.isAlive()
+Dim runnable2 as Thread2_Process
+Dim thread2 as Thread = Thread(runnable2,"Thread 2")
+thread2.start() ' Start Thread2
 
-' Wait for user input in order to terminate the program.
-' To terminate the program set fKeepRunning = false
-input "", tmpStr
-fKeepRunning = false
+' Wait for user input to exit
+sleep()
 
-' Wait for thread 1 to exit
-print "Waiting for thread to finish..."
-thread1.interrupt() ' Interrupt the thread
-fWaitForThreadToFinish.wait()
+thread1.interrupt()
+thread2.interrupt()
