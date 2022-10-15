@@ -1,39 +1,20 @@
 ﻿#include once "kiwi\kiwi.bi"
+#include once "kiwi\time.bi" 
 
-' Initialize a new Array for Double Values
-Dim values(0 to 9) as Double
+' The following timestamp is from Wed Sep 28 2022 06:40:39 UTC +0
+Dim timeStampUTC as LongInt = 1664347239101
 
-' Add 10 Random double values to myArrayList
-for i as Integer = 0 to 9
-	values(i) = Math.random()
-next i 
+' Print the utcTime
+Dim utcTime as DateTime = DateTime(timeStampUTC, 0) ' UTC +0
 
-print "Array Elements Before Sort:"
-for i as Integer = 0 to ubound(values)
-	print "Element " & i &" = " & values(i)
-next
+' Full date time with AM/PM and UTC TimeZone
+Dim sdf as SimpleDateFormat = SimpleDateFormat("dddd dd mmm yyyy h:n:s AM/PM UTC")
+print sdf.formatDateTime(utcTime)
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Define a comparator Type
-MACRO_DefineComparator(Double)
-Type myComparator extends Comparator(Double)
-	declare function compare(a as Double, b as Double) as Integer
-End Type
+' Date-Time (24 Hours Time)
+sdf.setPattern("dd/mm/yyyy H:n:s")
+print sdf.formatDateTime(utcTime)
 
-function myComparator.compare(a as Double, b as Double) as Integer
-	return iif(a>=b, 1, -1) ' Ascending
-	'return iif(a<=b , 1, -1) 'Descending
-end function
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-' Initialize a comparator and use it to sort the array
-Dim c as myComparator
-c.quickSort(values(),0, ubound(values))
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-
-print ""
-print "Array Elements After Sort:"
-for i as Integer = 0 to ubound(values)
-	print "Element " & i &" = " & values(i)
-next
+' Date only
+sdf.setPattern("dd/mm/yyyy")
+print sdf.formatDateTime(utcTime)
