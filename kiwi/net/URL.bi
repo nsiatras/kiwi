@@ -53,7 +53,7 @@ End Type
 /'
 	Creates a URL object from the given string representation.
 	
-	@spec the {@code String} to parse as a URL.
+	@spec the String to parse as a URL.
 	@delimeter is the delimiter to use
 	@result is an array of strings, each of which is a substring of string formed by splitting it on boundaries formed by the string delimeter.	
 '/
@@ -63,7 +63,7 @@ end constructor
 
 /'
 	Get the host part of this URL.
-	@return  the authority part of this {@code URL}
+	@return  the authority part of this URL
 '/
 function URL.getHost() as String
 	
