@@ -22,37 +22,5 @@
 	SOFTWARE.
 '/
 
-/'
-	Description: The intention of this binary include (bi) is to
-	allow FreeBasic developers include the most basic Kiwi stuff to their code. 
-	
-	Author: Nikos Siatras
-	Url: https://www.github.com/nsiatras
-'/
-
-#Define KIWI_VERSION "1.0.7"
-
-#include once "core\Core.bi"
-
-#include once "nio\Charset.bi"
-
-#include once "lang\GarbageCollector.bi"
-#include once "lang\KObject.bi"
-#include once "lang\System.bi"
-#include once "lang\Math.bi"
-'#include once "lang\Thread.bi"					'It is included in KObject
-'#include once "lang\ThreadsManager.bi"			'It is included in KObject
-'#include once "lang\Runnable.bi"				'It is included in Thread
-'#include once "lang\KiwiCallbackManager.bi" 	'It is included in KObject
-#include once "lang\StringUtils.bi"
-
-#include once "util\Collection.bi"
-#include once "util\Comparator.bi"
-#include once "util\ArrayList.bi"
-#include once "util\Queue.bi"
-#include once "util\HashMap.bi"
-
-' Initialize the Threads manager
-ThreadsManager.Initialize()
-
+#include once "net\URL.bi"
 
